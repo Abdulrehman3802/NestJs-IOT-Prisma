@@ -37,7 +37,25 @@ export declare class SensorRepository {
         date_updated: Date;
         assigned_by: number;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
-    findAssignSensor(): import(".prisma/client").Prisma.PrismaPromise<{
+    findAssignSensor(): import(".prisma/client").Prisma.PrismaPromise<({
+        customers: {
+            customerid: number;
+            customername: string;
+            contactperson: string;
+            email: string;
+            phone: string;
+            address: string;
+            city: string;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            created_by: number;
+            updated_by: number;
+            street: string;
+            postcode: number;
+        };
+    } & {
         sensorid: number;
         deviceid: number;
         is_active: boolean;
@@ -47,8 +65,26 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
-    }[]>;
-    findAssignSensorByOrganizationId(orgId: number): import(".prisma/client").Prisma.PrismaPromise<{
+    })[]>;
+    findAssignSensorByOrganizationId(orgId: number): import(".prisma/client").Prisma.PrismaPromise<({
+        customers: {
+            customerid: number;
+            customername: string;
+            contactperson: string;
+            email: string;
+            phone: string;
+            address: string;
+            city: string;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            created_by: number;
+            updated_by: number;
+            street: string;
+            postcode: number;
+        };
+    } & {
         sensorid: number;
         deviceid: number;
         is_active: boolean;
@@ -58,7 +94,7 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
-    }[]>;
+    })[]>;
     updateSensor(id: number, updateSensorDto: SensorDto): import(".prisma/client").Prisma.Prisma__sensorsClient<{
         sensorid: number;
         deviceid: number;

@@ -10,6 +10,7 @@ export declare class SensorService {
     assignSensor(userId: number, createSensorDto: CreateSensorDto): Promise<ApiResponseDto<SensorDto>>;
     getAllAssignedSensor(token: Token): Promise<ApiResponseDto<SensorDto[]>>;
     getAllUnAssignedSensors(token: Token): Promise<ApiResponseDto<string[]>>;
-    update(id: number, updateSensorDto: UpdateSensorDto): string;
+    updateAssignedSensor(userid: number, id: number, updateDto: UpdateSensorDto): Promise<ApiResponseDto<SensorDto>>;
+    unAssignedSensor(id: number): Promise<ApiResponseDto<SensorDto>>;
     remove(id: number): string;
 }

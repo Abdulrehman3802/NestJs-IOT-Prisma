@@ -10,6 +10,7 @@ export class CreateSensorDto {
     @IsString()
     @IsNotEmpty()
     aws_sensorid: string
+
 }
 
 

@@ -21,6 +21,11 @@ export declare class FacilityRepository {
         customerid: number;
         created_by: number;
         updated_by: number;
+        facility_type: string;
+        street: string;
+        city: string;
+        postcode: number;
+        site_manager: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     createFacilityUser(model: CreateFacilityUserModelDto): import(".prisma/client").Prisma.Prisma__facilityusersClient<{
         facilityuserid: number;
@@ -44,6 +49,11 @@ export declare class FacilityRepository {
         customerid: number;
         created_by: number;
         updated_by: number;
+        facility_type: string;
+        street: string;
+        city: string;
+        postcode: number;
+        site_manager: string;
     }[]>;
     findAllFacilitiesOfOrgAdmin(orgId: number): import(".prisma/client").Prisma.PrismaPromise<{
         facilityid: number;
@@ -61,6 +71,11 @@ export declare class FacilityRepository {
         customerid: number;
         created_by: number;
         updated_by: number;
+        facility_type: string;
+        street: string;
+        city: string;
+        postcode: number;
+        site_manager: string;
     }[]>;
     findFacilityByUserId(userId: number): import(".prisma/client").Prisma.Prisma__facilityusersClient<{
         facilityuserid: number;
@@ -84,6 +99,11 @@ export declare class FacilityRepository {
         customerid: number;
         created_by: number;
         updated_by: number;
+        facility_type: string;
+        street: string;
+        city: string;
+        postcode: number;
+        site_manager: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     updateFacility(id: number, body: UpdateFacilityDto): import(".prisma/client").Prisma.Prisma__facilitiesClient<{
         facilityid: number;
@@ -101,6 +121,11 @@ export declare class FacilityRepository {
         customerid: number;
         created_by: number;
         updated_by: number;
+        facility_type: string;
+        street: string;
+        city: string;
+        postcode: number;
+        site_manager: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     deleteFacility(id: number): import(".prisma/client").Prisma.Prisma__facilitiesClient<{
         facilityid: number;
@@ -118,5 +143,10 @@ export declare class FacilityRepository {
         customerid: number;
         created_by: number;
         updated_by: number;
+        facility_type: string;
+        street: string;
+        city: string;
+        postcode: number;
+        site_manager: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
 }

@@ -43,6 +43,9 @@ export class SensorRepository{
             where: {
                 assigned_by: {not:null},
                 is_deleted: false
+            },
+            include:{
+                customers:true,
             }
         });
     }
@@ -55,6 +58,9 @@ export class SensorRepository{
                 assigned_by: {not:null},
                 is_deleted: false,
                 is_active: true
+            },
+            include:{
+                customers:true
             }
         });
     }

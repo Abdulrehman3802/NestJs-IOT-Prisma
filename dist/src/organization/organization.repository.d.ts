@@ -19,6 +19,8 @@ export declare class OrganizationRepository {
         is_deleted: boolean;
         created_by: number;
         updated_by: number;
+        street: string;
+        postcode: number;
     }>;
     createOrganizationUser(model: OrganizationUserModelDto): Promise<{
         organizationuserid: number;
@@ -40,6 +42,8 @@ export declare class OrganizationRepository {
         is_deleted: boolean;
         created_by: number;
         updated_by: number;
+        street: string;
+        postcode: number;
     }[]>;
     findOrganization(orgId: number): Promise<{
         customerid: number;
@@ -55,6 +59,8 @@ export declare class OrganizationRepository {
         is_deleted: boolean;
         created_by: number;
         updated_by: number;
+        street: string;
+        postcode: number;
     }>;
     findOrganizationByUserId(userId: number): Promise<{
         organizationuserid: number;
@@ -76,6 +82,8 @@ export declare class OrganizationRepository {
         is_deleted: boolean;
         created_by: number;
         updated_by: number;
+        street: string;
+        postcode: number;
     }>;
     deleteOrganization(orgId: number): Promise<{
         customerid: number;
@@ -91,5 +99,7 @@ export declare class OrganizationRepository {
         is_deleted: boolean;
         created_by: number;
         updated_by: number;
+        street: string;
+        postcode: number;
     }>;
 }

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SensorService = void 0;
 const common_1 = require("@nestjs/common");
+const create_sensor_dto_1 = require("./dto/create-sensor.dto");
 const sensor_repository_1 = require("./sensor.repository");
 const aws_service_1 = require("../aws/aws.service");
 let SensorService = class SensorService {
@@ -154,8 +155,50 @@ let SensorService = class SensorService {
             throw error;
         }
     }
-    update(id, updateSensorDto) {
-        return `This action updates a #${id} sensor`;
+    async updateAssignedSensor(userid, id, updateDto) {
+        try {
+            const model = new create_sensor_dto_1.SensorDto();
+            model.customerid = updateDto.customerid;
+            model.deviceid = updateDto.deviceid;
+            model.assigned_by = userid;
+            const sensor = await this.sensorRepository.updateSensor(id, model);
+            if (!sensor) {
+                throw new common_1.NotImplementedException("Cannot Update Sensor");
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async unAssignedSensor(id) {
+        try {
+            const model = new create_sensor_dto_1.SensorDto();
+            model.customerid = null;
+            model.deviceid = null;
+            model.assigned_by = null;
+            model.date_updated = new Date();
+            const sensor = await this.sensorRepository.updateSensor(id, model);
+            if (!sensor) {
+                throw new common_1.NotImplementedException("Cannot Update Sensor");
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
     }
     remove(id) {
         return `This action removes a #${id} sensor`;

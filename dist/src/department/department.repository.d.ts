@@ -18,6 +18,7 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     createDepartmentUserDto(model: CreateDepartmentUserModelDto): import(".prisma/client").Prisma.Prisma__departmentusersClient<{
         departmentuserid: number;
@@ -38,6 +39,7 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }[]>;
     findAllDepartmentsByOrganizationId(organizationId: number): import(".prisma/client").Prisma.PrismaPromise<{
         departmentid: number;
@@ -52,6 +54,7 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }[]>;
     findAllDepartmentsByFacilityId(facilityId: number): import(".prisma/client").Prisma.PrismaPromise<{
         departmentid: number;
@@ -66,6 +69,7 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }[]>;
     findDepartmentByUserId(userId: number): import(".prisma/client").Prisma.Prisma__departmentusersClient<{
         departmentuserid: number;
@@ -86,6 +90,7 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     updateDepartment(id: number, body: UpdateDepartmentDto): import(".prisma/client").Prisma.Prisma__departmentsClient<{
         departmentid: number;
@@ -100,6 +105,7 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     deleteDepartment(id: number): import(".prisma/client").Prisma.Prisma__departmentsClient<{
         departmentid: number;
@@ -114,5 +120,6 @@ export declare class DepartmentRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        description: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
 }
