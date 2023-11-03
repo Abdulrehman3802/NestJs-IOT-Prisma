@@ -27,6 +27,7 @@
     "@nestjs/jwt": "^10.1.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
+     "@nestjs/mapped-types": "*",
     "@prisma/client": "^5.4.2",
     "aws-sdk": "^2.1482.0",
     "bcrypt": "^5.1.1",
