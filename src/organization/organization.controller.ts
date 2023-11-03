@@ -1,0 +1,45 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import { OrganizationService } from './organization.service';
+import { CreateOrganizationDto } from './dto/request/create-organization.dto';
+import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
+import { JwtAuthGuard, RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
+import { Permission } from 'core/generics/Guards/PermissionDecorator';
+import { Category, PermissionType } from 'core/generics/Enums/GeneralEnums';
+
+@UseGuards(JwtAuthGuard)
+@Controller('organization')
+export class OrganizationController {
+  constructor(private readonly organizationService: OrganizationService) { }
+
+  @Permission(Category.ORGANIZATION, PermissionType.CREATE)
+  @Post()
+  create(@Body() createOrganizationDto: CreateOrganizationDto,@Req() req: RequestWithUser) {
+    // Extarcting userid from the request
+    const userid = req.token.id;
+    return this.organizationService.create(createOrganizationDto,userid);
+  }
+
+  @Permission(Category.ORGANIZATION, PermissionType.VIEW)
+  @Get()
+  findAll() {
+    return this.organizationService.findAll();
+  }
+
+  @Permission(Category.ORGANIZATION, PermissionType.VIEW)
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.organizationService.findOne(+id);
+  }
+
+  @Permission(Category.ORGANIZATION, PermissionType.UPDATE)
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateOrganizationDto: UpdateOrganizationDto) {
+    return this.organizationService.update(+id, updateOrganizationDto);
+  }
+
+  @Permission(Category.ORGANIZATION, PermissionType.DELETE)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.organizationService.remove(+id);
+  }
+}
