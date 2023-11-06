@@ -50,7 +50,6 @@ model departments {
   departmentid                        Int               @id @default(autoincrement())
   departmentname                      String            @db.VarChar(100)
   customerid                          Int
-  location                            String?           @db.VarChar(255)
   is_active                           Boolean?          @default(true)
   date_created                        DateTime          @default(now()) @db.Timestamp(6)
   date_updated                        DateTime?         @default(now()) @db.Timestamp(6)
@@ -259,7 +258,6 @@ model escalationstatus {
 model facilities {
   facilityid                         Int             @id @default(autoincrement())
   name                               String?         @db.VarChar(255)
-  location                           String?         @db.VarChar(255)
   address                            String?         @db.VarChar(255)
   contactname                        String?         @db.VarChar(255)
   contactphonenumber                 String?         @db.VarChar(255)
@@ -277,6 +275,8 @@ model facilities {
   city                               String?         @db.VarChar(100)
   postcode                           Int?
   site_manager                       String?         @db.VarChar
+  longitude                          Int?
+  latitude                           Int?
   departments                        departments[]
   devices                            devices[]
   users_facilities_created_byTousers users           @relation("facilities_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_createdby_fkey")

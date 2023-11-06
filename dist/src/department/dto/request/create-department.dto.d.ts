@@ -3,14 +3,12 @@ export declare class CreateDepartmentDto {
     departmentname: string;
     customerid: number;
     facilityid: number;
-    location: string;
 }
 export declare class ModelDepartmentDto {
     departmentname: string;
     email: string;
     customerid: number;
     facilityid: number;
-    location: string;
     is_active: boolean;
     date_created: Date;
     date_updated: Date;

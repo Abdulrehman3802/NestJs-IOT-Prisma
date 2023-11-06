@@ -33,11 +33,6 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CreateDepartmentDto.prototype, "facilityid", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateDepartmentDto.prototype, "location", void 0);
 exports.CreateDepartmentDto = CreateDepartmentDto;
 class ModelDepartmentDto {
 }

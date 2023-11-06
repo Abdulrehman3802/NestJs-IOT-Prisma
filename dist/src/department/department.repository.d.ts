@@ -9,7 +9,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;
@@ -30,7 +29,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;
@@ -45,7 +43,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;
@@ -60,7 +57,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;
@@ -81,7 +77,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;
@@ -96,7 +91,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;
@@ -111,7 +105,6 @@ export declare class DepartmentRepository {
         departmentid: number;
         departmentname: string;
         customerid: number;
-        location: string;
         is_active: boolean;
         date_created: Date;
         date_updated: Date;

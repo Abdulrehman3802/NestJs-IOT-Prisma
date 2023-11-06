@@ -39,10 +39,10 @@ export class UserService {
       if(!user){
         throw new NotImplementedException("Cannot Create User")
       }
-      const email = await this.emailService.sendEmail('Welcome to NazTEC\'s Online System Access!','email.hbs',user.email, {userName:`${user.firstname} ${user.lastname}`,userPassword:password,userEmail:user.email})
-      if(email.rejected.length > 0){
-        throw new NotImplementedException("Cannot Send email to user")
-      }
+      // const email = await this.emailService.sendEmail('Welcome to NazTEC\'s Online System Access!','email.hbs',user.email, {userName:`${user.firstname} ${user.lastname}`,userPassword:password,userEmail:user.email})
+      // if(email.rejected.length > 0){
+      //   throw new NotImplementedException("Cannot Send email to user")
+      // }
       const response:ApiResponseDto<ResponseUserDto> = {
         statusCode:HttpStatus.OK,
           message:"User Created Successfully",

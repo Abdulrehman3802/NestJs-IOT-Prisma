@@ -4,14 +4,16 @@ export declare class CreateFacilityDto {
     contactname: string;
     email: string;
     isfacilityadmin: boolean;
-    location: string;
     address: string;
     contactphonenumber: string;
+    longitude: number;
+    latitude: number;
 }
 export declare class ModelFacilityDto {
     customerid: number;
     name: string;
-    location: string;
+    longitude: number;
+    latitude: number;
     address: string;
     contactname: string;
     contactphonenumber: string;

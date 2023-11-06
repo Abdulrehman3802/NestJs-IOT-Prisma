@@ -129,7 +129,6 @@ export class DepartmentService {
           is_deleted: department.is_deleted,
           created_by: department.created_by,
           updated_by: department.updated_by,
-          location: department.location,
           is_active: department.is_active,
           date_created: department.date_created,
           date_updated: department.date_updated
@@ -156,7 +155,6 @@ export class DepartmentService {
           is_deleted: updatedDepartment.is_deleted,
           created_by: updatedDepartment.created_by,
           updated_by: updatedDepartment.updated_by,
-          location: updatedDepartment.location,
           is_active: updatedDepartment.is_active,
           date_created: updatedDepartment.date_created,
           date_updated: updatedDepartment.date_updated

@@ -17,9 +17,6 @@ export class CreateDepartmentDto {
     @IsNumber()
     facilityid: number;
 
-    @IsOptional()
-    @IsString()
-    location: string;
 }
 
 export class ModelDepartmentDto {
@@ -27,7 +24,6 @@ export class ModelDepartmentDto {
     email:string;
     customerid: number;
     facilityid: number;
-    location: string;
     is_active: boolean;
     date_created: Date;
     date_updated: Date;

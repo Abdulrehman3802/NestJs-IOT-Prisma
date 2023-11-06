@@ -25,21 +25,26 @@ export class CreateFacilityDto {
 
     @IsOptional()
     @IsString()
-    location: string;
-
-    @IsOptional()
-    @IsString()
     address: string;
 
     @IsOptional()
     @IsString()
     contactphonenumber: string;
+
+    @IsOptional()
+    @IsNumber()
+    longitude: number;
+
+    @IsOptional()
+    @IsNumber()
+    latitude: number;
 }
 
 export class ModelFacilityDto {
     customerid: number;
     name: string;
-    location: string;
+    longitude: number;
+    latitude: number;
     address: string;
     contactname: string;
     contactphonenumber: string;

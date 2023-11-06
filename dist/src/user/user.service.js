@@ -35,10 +35,6 @@ let UserService = class UserService {
             if (!user) {
                 throw new common_1.NotImplementedException("Cannot Create User");
             }
-            const email = await this.emailService.sendEmail('Welcome to NazTEC\'s Online System Access!', 'email.hbs', user.email, { userName: `${user.firstname} ${user.lastname}`, userPassword: password, userEmail: user.email });
-            if (email.rejected.length > 0) {
-                throw new common_1.NotImplementedException("Cannot Send email to user");
-            }
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "User Created Successfully",
