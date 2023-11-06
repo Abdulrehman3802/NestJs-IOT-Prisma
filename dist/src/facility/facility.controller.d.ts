@@ -10,5 +10,5 @@ export declare class FacilityController {
     findOne(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-facility.dto").ResponseFacilityDto>>;
     finAllFacilitiesByOrgId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-facility.dto").ResponseFacilityDto[]>>;
     update(id: string, updateFacilityDto: UpdateFacilityDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-facility.dto").ResponseFacilityDto>>;
-    remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-facility.dto").ResponseFacilityDto>>;
+    remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;
 }

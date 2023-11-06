@@ -38,6 +38,10 @@ export class CreateFacilityDto {
     @IsOptional()
     @IsNumber()
     latitude: number;
+
+    @IsOptional()
+    @IsString()
+    facility_type: string;
 }
 
 export class ModelFacilityDto {
@@ -49,6 +53,7 @@ export class ModelFacilityDto {
     contactname: string;
     contactphonenumber: string;
     email: string;
+    facility_type: string;
     isfacilityadmin: boolean;
     is_active: boolean;
     is_deleted: boolean;

@@ -8,6 +8,7 @@ export declare class CreateFacilityDto {
     contactphonenumber: string;
     longitude: number;
     latitude: number;
+    facility_type: string;
 }
 export declare class ModelFacilityDto {
     customerid: number;
@@ -18,6 +19,7 @@ export declare class ModelFacilityDto {
     contactname: string;
     contactphonenumber: string;
     email: string;
+    facility_type: string;
     isfacilityadmin: boolean;
     is_active: boolean;
     is_deleted: boolean;

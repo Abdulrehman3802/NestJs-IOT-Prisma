@@ -14,6 +14,6 @@ export declare class FacilityService {
     findAll(decodedtoken: Token): Promise<ApiResponseDto<ResponseFacilityDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseFacilityDto>>;
     update(id: number, updateFacilityDto: UpdateFacilityDto): Promise<ApiResponseDto<ResponseFacilityDto>>;
-    remove(id: number): Promise<ApiResponseDto<ResponseFacilityDto>>;
+    remove(id: number): Promise<ApiResponseDto<null>>;
     findAllFacilities(orgId: number): Promise<ApiResponseDto<ResponseFacilityDto[]>>;
 }

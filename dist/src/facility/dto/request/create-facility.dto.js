@@ -59,6 +59,11 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CreateFacilityDto.prototype, "latitude", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateFacilityDto.prototype, "facility_type", void 0);
 exports.CreateFacilityDto = CreateFacilityDto;
 class ModelFacilityDto {
 }

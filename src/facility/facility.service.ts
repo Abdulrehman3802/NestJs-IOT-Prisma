@@ -134,10 +134,10 @@ export class FacilityService {
 
       const facility = await this.facilityRepository.deleteFacility(id);
 
-      const response: ApiResponseDto<ResponseFacilityDto> = {
+      const response: ApiResponseDto<null> = {
         statusCode: HttpStatus.OK,
         message: "Facility Deleted Successfully!",
-        data: facility,
+        data: null,
         error: false
       }
       return response;

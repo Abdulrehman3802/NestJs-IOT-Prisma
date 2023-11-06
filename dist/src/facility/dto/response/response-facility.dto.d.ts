@@ -5,6 +5,7 @@ export declare class ResponseFacilityDto {
     longitude: number;
     latitude: number;
     address: string;
+    facility_type: string;
     contactname: string;
     contactphonenumber: string;
     email: string;

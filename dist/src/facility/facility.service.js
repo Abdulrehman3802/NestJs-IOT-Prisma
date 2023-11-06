@@ -114,7 +114,7 @@ let FacilityService = class FacilityService {
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Facility Deleted Successfully!",
-                data: facility,
+                data: null,
                 error: false
             };
             return response;
