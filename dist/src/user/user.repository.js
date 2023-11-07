@@ -64,6 +64,12 @@ let UserRepository = class UserRepository {
                         is_deleted: false,
                         is_active: true
                     }
+                },
+                facilities: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
                 }
             }
         });
@@ -75,6 +81,12 @@ let UserRepository = class UserRepository {
             },
             include: {
                 users: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                },
+                departments: {
                     where: {
                         is_deleted: false,
                         is_active: true

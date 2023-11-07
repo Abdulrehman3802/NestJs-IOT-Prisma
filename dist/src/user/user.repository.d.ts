@@ -85,6 +85,29 @@ export declare class UserRepository {
         resettoken: string;
     }[]>;
     findAllFacilityAdmins(): Promise<({
+        facilities: {
+            facilityid: number;
+            name: string;
+            address: string;
+            contactname: string;
+            contactphonenumber: string;
+            email: string;
+            isfacilityadmin: boolean;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            customerid: number;
+            created_by: number;
+            updated_by: number;
+            facility_type: string;
+            street: string;
+            city: string;
+            postcode: number;
+            site_manager: string;
+            longitude: number;
+            latitude: number;
+        };
         users: {
             userid: number;
             firstname: string;
@@ -108,6 +131,20 @@ export declare class UserRepository {
         is_admin: boolean;
     })[]>;
     findAllDepartmentAdmins(): Promise<({
+        departments: {
+            departmentid: number;
+            departmentname: string;
+            customerid: number;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+            description: string;
+        };
         users: {
             userid: number;
             firstname: string;
