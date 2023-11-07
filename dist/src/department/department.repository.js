@@ -21,7 +21,12 @@ let DepartmentRepository = class DepartmentRepository {
             data: model,
         });
     }
-    createDepartmentUserDto(model) {
+    createDepartmentUser(model) {
+        return this.prismaService.departmentusers.create({
+            data: model,
+        });
+    }
+    createDepartmentAdmin(model) {
         return this.prismaService.departmentusers.create({
             data: model,
         });
@@ -75,6 +80,28 @@ let DepartmentRepository = class DepartmentRepository {
         return this.prismaService.departments.update({
             where: {
                 departmentid: id
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        });
+    }
+    async deleteDepartmentByOrganizationId(orgid) {
+        return this.prismaService.departments.updateMany({
+            where: {
+                customerid: orgid
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        });
+    }
+    async deleteDepartmentByFacilityId(facilityid) {
+        return this.prismaService.departments.updateMany({
+            where: {
+                facilityid: facilityid
             },
             data: {
                 is_active: false,

@@ -48,6 +48,17 @@ export class DeviceRepository {
         });
     }
 
+    findDevicesByDepartmentIds(departmentIds: number[]) {
+        return this.prismaService.devices.findMany({
+            where: {
+                is_deleted: false,
+                departmentid: {
+                    in: departmentIds
+                }
+            }
+        });
+    }
+
     findOneDevice(id: number) {
         return this.prismaService.devices.findFirst({
             where: {
@@ -72,6 +83,42 @@ export class DeviceRepository {
         return this.prismaService.devices.update({
             where: {
                 deviceid: id,
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        })
+    }
+
+    deleteDeviceByOrganizationId(orgid: number) {
+        return this.prismaService.devices.updateMany({
+            where: {
+                customerid: orgid,
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        })
+    }
+
+    deleteDeviceByFacilityId(facilityid: number) {
+        return this.prismaService.devices.updateMany({
+            where: {
+                facilityid: facilityid,
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        })
+    }
+
+    deleteDeviceByDepartmentId(departmentid: number) {
+        return this.prismaService.devices.updateMany({
+            where: {
+                departmentid: departmentid,
             },
             data: {
                 is_active: false,

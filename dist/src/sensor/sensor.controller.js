@@ -30,6 +30,12 @@ let SensorController = class SensorController {
     getAllAssignedSensors(req) {
         return this.sensorService.getAllAssignedSensor(req.token);
     }
+    getSensorsByOrganizationId(id) {
+        return this.sensorService.getSensorByOrgId(+id);
+    }
+    getSensorByDeviceId(id) {
+        return this.sensorService.getSensorByDeviceId(+id);
+    }
     getAllUnAssignedSensors(req) {
         return this.sensorService.getAllUnAssignedSensors(req.token);
     }
@@ -60,6 +66,22 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SensorController.prototype, "getAllAssignedSensors", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('/get-sensors-by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "getSensorsByOrganizationId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('/get-sensors-by-deviceId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "getSensorByDeviceId", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('/get-unassigned-sensors'),

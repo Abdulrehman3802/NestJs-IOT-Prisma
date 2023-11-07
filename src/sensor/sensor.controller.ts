@@ -19,6 +19,20 @@ export class SensorController {
   getAllAssignedSensors(@Req()req:RequestWithUser,) {
     return this.sensorService.getAllAssignedSensor(req.token);
   }
+
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Get('/get-sensors-by-orgId/:id')
+  getSensorsByOrganizationId(@Param('id')id:string) {
+    return this.sensorService.getSensorByOrgId(+id);
+  }
+
+
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Get('/get-sensors-by-deviceId/:id')
+  getSensorByDeviceId(@Param('id')id:string) {
+    return this.sensorService.getSensorByDeviceId(+id);
+  }
+
   @Permission(Category.SENSOR, PermissionType.VIEW)
   @Get('/get-unassigned-sensors')
   getAllUnAssignedSensors(@Req()req:RequestWithUser) {

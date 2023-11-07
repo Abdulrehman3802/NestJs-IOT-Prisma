@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ModelDepartmentDto } from "./dto/request/create-department.dto";
 import { UpdateDepartmentDto } from "./dto/request/update-department.dto";
-import {CreateDepartmentUserModelDto} from "./dto/request/create-department-user.dto";
+import {CreateDepartmentAdminModelDto, CreateDepartmentUserModelDto} from "./dto/request/create-department-user.dto";
 
 @Injectable()
 export class DepartmentRepository {
@@ -14,9 +14,15 @@ export class DepartmentRepository {
         })
     }
 
-    createDepartmentUserDto(model:CreateDepartmentUserModelDto){
+    createDepartmentUser(model:CreateDepartmentUserModelDto){
         return this.prismaService.departmentusers.create({
             data: model,
+        })
+    }
+
+    createDepartmentAdmin(model:CreateDepartmentAdminModelDto){
+        return this.prismaService.departmentusers.create({
+            data:model,
         })
     }
 
@@ -75,6 +81,30 @@ export class DepartmentRepository {
         return this.prismaService.departments.update({
             where: {
                 departmentid: id
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        })
+    }
+
+    async deleteDepartmentByOrganizationId(orgid: number) {
+        return this.prismaService.departments.updateMany({
+            where: {
+                customerid: orgid
+            },
+            data: {
+                is_active: false,
+                is_deleted: true,
+            }
+        })
+    }
+
+    async deleteDepartmentByFacilityId(facilityid: number) {
+        return this.prismaService.departments.updateMany({
+            where: {
+                facilityid: facilityid
             },
             data: {
                 is_active: false,

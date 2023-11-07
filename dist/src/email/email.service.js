@@ -21,6 +21,32 @@ let EmailService = class EmailService {
     async sendEmail(subject, fileName, email, replacements, html = null) {
         try {
             let response;
+            if (replacements.resetToken) {
+                response = await this.emailService.sendMail({
+                    to: email,
+                    from: this.configService.get('MAIL_EMAIL'),
+                    subject: subject,
+                    template: fileName,
+                    context: {
+                        username: replacements.userName,
+                        to: replacements.userEmail,
+                        token: replacements.resetToken
+                    },
+                });
+            }
+            else {
+                response = await this.emailService.sendMail({
+                    to: email,
+                    from: this.configService.get('MAIL_EMAIL'),
+                    subject: subject,
+                    template: fileName,
+                    context: {
+                        username: replacements.userName,
+                        to: replacements.userEmail,
+                        userPassword: replacements.userPassword
+                    },
+                });
+            }
             return response;
         }
         catch (err) {

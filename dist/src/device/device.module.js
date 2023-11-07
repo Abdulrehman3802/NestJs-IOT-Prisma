@@ -15,13 +15,15 @@ const prisma_service_1 = require("../prisma/prisma.service");
 const device_repository_1 = require("./device.repository");
 const permissions_repository_1 = require("../permissions/permissions.repository");
 const jwt_1 = require("@nestjs/jwt");
+const sensor_module_1 = require("../sensor/sensor.module");
 let DeviceModule = class DeviceModule {
 };
 DeviceModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule],
+        imports: [prisma_module_1.PrismaModule, sensor_module_1.SensorModule],
         controllers: [device_controller_1.DeviceController],
-        providers: [device_service_1.DeviceService, prisma_service_1.PrismaService, device_repository_1.DeviceRepository, permissions_repository_1.PermissionsRepository, jwt_1.JwtService]
+        providers: [device_service_1.DeviceService, prisma_service_1.PrismaService, device_repository_1.DeviceRepository, permissions_repository_1.PermissionsRepository, jwt_1.JwtService],
+        exports: [device_service_1.DeviceService]
     })
 ], DeviceModule);
 exports.DeviceModule = DeviceModule;

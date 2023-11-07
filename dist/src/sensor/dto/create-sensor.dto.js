@@ -20,7 +20,7 @@ __decorate([
 ], CreateSensorDto.prototype, "deviceid", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateSensorDto.prototype, "customerid", void 0);
 __decorate([

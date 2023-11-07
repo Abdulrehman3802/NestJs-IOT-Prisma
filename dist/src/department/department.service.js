@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DepartmentService = void 0;
 const common_1 = require("@nestjs/common");
@@ -15,11 +18,15 @@ const department_repository_1 = require("./department.repository");
 const create_user_dto_1 = require("../user/dto/request/create-user.dto");
 const roles_service_1 = require("../roles/roles.service");
 const user_service_1 = require("../user/user.service");
+const device_service_1 = require("../device/device.service");
+const sensor_service_1 = require("../sensor/sensor.service");
 let DepartmentService = class DepartmentService {
-    constructor(departmentRepository, userService, roleService) {
+    constructor(departmentRepository, userService, roleService, deviceService, sensorService) {
         this.departmentRepository = departmentRepository;
         this.userService = userService;
         this.roleService = roleService;
+        this.deviceService = deviceService;
+        this.sensorService = sensorService;
     }
     async create(createDepartmentDto, token) {
         try {
@@ -43,14 +50,33 @@ let DepartmentService = class DepartmentService {
             const department = await this.departmentRepository.createDepartment(departmentModel);
             const userDto = new create_user_dto_1.CreateUserDto();
             userDto.email = department.email;
-            const user = await this.userService.create(userDto);
+            const user = await this.userService.create(userDto, token);
             const depAdminId = await this.roleService.findRoleByName('DepartmentAdmin');
             await this.roleService.createUserRole({ userid: user.data.userid, roleid: depAdminId.roleid });
-            await this.departmentRepository.createDepartmentUserDto({ userid: user.data.userid, departmentid: department.departmentid });
+            await this.departmentRepository.createDepartmentUser({ userid: user.data.userid, departmentid: department.departmentid });
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: 'Department Created Successfully!',
                 data: department,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async createDepartmentAdmin(userid, departmentid) {
+        try {
+            await this.departmentRepository.createDepartmentAdmin({
+                userid: userid,
+                departmentid: departmentid,
+                is_admin: true
+            });
+            const response = {
+                statusCode: common_1.HttpStatus.CREATED,
+                message: "Department Admin Created Successfully!",
+                data: null,
                 error: false
             };
             return response;
@@ -72,6 +98,21 @@ let DepartmentService = class DepartmentService {
             else {
                 departments = await this.departmentRepository.findAllDepartments();
             }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: 'Departments Found Successfully!',
+                data: departments,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async GetAllDepartmentIdsByFacilityId(facilityid) {
+        try {
+            const departments = await this.departmentRepository.findAllDepartmentsByFacilityId(facilityid);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: 'Departments Found Successfully!',
@@ -141,7 +182,41 @@ let DepartmentService = class DepartmentService {
     }
     async remove(id) {
         try {
-            const department = await this.departmentRepository.deleteDepartment(id);
+            await this.departmentRepository.deleteDepartment(id);
+            const devices = await this.deviceService.findAllDevices(id);
+            await this.deviceService.removeByDepartmentId(id);
+            const deviceIds = devices.data.map(dev => dev.deviceid);
+            await this.sensorService.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: 'Department Deleted Successfully!',
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async removeByOrganizationId(orgid) {
+        try {
+            await this.departmentRepository.deleteDepartmentByOrganizationId(orgid);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: 'Department Deleted Successfully!',
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async removeByFacilityId(facilityid) {
+        try {
+            await this.departmentRepository.deleteDepartmentByFacilityId(facilityid);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: 'Department Deleted Successfully!',
@@ -157,9 +232,6 @@ let DepartmentService = class DepartmentService {
     async findAllDepartments(facId) {
         try {
             const allDepartments = await this.departmentRepository.findAllDepartmentsByFacilityId(facId);
-            if (allDepartments.length == 0) {
-                throw new common_1.NotFoundException(`Departments Not Found that are assigned to facility with id ${facId}`);
-            }
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Departments Found Associated to Facility",
@@ -175,9 +247,12 @@ let DepartmentService = class DepartmentService {
 };
 DepartmentService = __decorate([
     (0, common_1.Injectable)(),
+    __param(1, (0, common_1.Inject)((0, common_1.forwardRef)(() => user_service_1.UserService))),
     __metadata("design:paramtypes", [department_repository_1.DepartmentRepository,
         user_service_1.UserService,
-        roles_service_1.RolesService])
+        roles_service_1.RolesService,
+        device_service_1.DeviceService,
+        sensor_service_1.SensorService])
 ], DepartmentService);
 exports.DepartmentService = DepartmentService;
 //# sourceMappingURL=department.service.js.map

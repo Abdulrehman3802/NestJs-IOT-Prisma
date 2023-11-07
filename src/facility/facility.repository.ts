@@ -3,7 +3,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { ModelFacilityDto } from "./dto/request/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/request/update-facility.dto";
 import { facilities } from '@prisma/client';
-import {CreateFacilityUserModelDto} from "./dto/request/create-facility-user.dto";
+import {CreateFacilityAdminModelDto, CreateFacilityUserModelDto} from "./dto/request/create-facility-user.dto";
 
 @Injectable()
 export class FacilityRepository {
@@ -16,6 +16,12 @@ export class FacilityRepository {
     }
 
     createFacilityUser(model:CreateFacilityUserModelDto){
+        return this.prismaService.facilityusers.create({
+            data:model,
+        })
+    }
+
+    createFacilityAdmin(model:CreateFacilityAdminModelDto){
         return this.prismaService.facilityusers.create({
             data:model,
         })
@@ -66,10 +72,22 @@ export class FacilityRepository {
         })
     }
 
-    deleteFacility(id: number) {
+    async deleteFacility(id: number) {
         return this.prismaService.facilities.update({
             where: {
                 facilityid: id,
+            },
+            data: {
+                is_active: false,
+                is_deleted: true
+            }
+        })
+    }
+
+    async deleteFacilityByOrganizationId(orgid: number) {
+        return this.prismaService.facilities.updateMany({
+            where: {
+                customerid: orgid,
             },
             data: {
                 is_active: false,

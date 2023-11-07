@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceService = void 0;
 const common_1 = require("@nestjs/common");
 const device_repository_1 = require("./device.repository");
+const sensor_service_1 = require("../sensor/sensor.service");
 let DeviceService = class DeviceService {
-    constructor(deviceRepository) {
+    constructor(deviceRepository, sensorService) {
         this.deviceRepository = deviceRepository;
+        this.sensorService = sensorService;
     }
     async create(createDeviceDto, token) {
         try {
@@ -70,6 +72,21 @@ let DeviceService = class DeviceService {
             else {
                 devices = await this.deviceRepository.findAllDevices();
             }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Devices Found Successfully!",
+                data: devices,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findDevicesByDepartmentIds(departmentIds) {
+        try {
+            const devices = await this.deviceRepository.findDevicesByDepartmentIds(departmentIds);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Devices Found Successfully!",
@@ -145,7 +162,53 @@ let DeviceService = class DeviceService {
     }
     async remove(id) {
         try {
-            const device = await this.deviceRepository.deleteDevice(id);
+            await this.deviceRepository.deleteDevice(id);
+            await this.sensorService.unAssignSensorOnDeviceDeletion(id);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Device Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async removeByOrganizationId(orgid) {
+        try {
+            await this.deviceRepository.deleteDeviceByOrganizationId(orgid);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Device Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async removeByFacilityId(facilityid) {
+        try {
+            await this.deviceRepository.deleteDeviceByFacilityId(facilityid);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Device Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async removeByDepartmentId(departmentid) {
+        try {
+            await this.deviceRepository.deleteDeviceByDepartmentId(departmentid);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Device Deleted Successfully!",
@@ -161,9 +224,6 @@ let DeviceService = class DeviceService {
     async findAllDevices(depId) {
         try {
             const allDevices = await this.deviceRepository.findAllDevicesByDepartmentId(depId);
-            if (allDevices.length == 0) {
-                throw new common_1.NotFoundException(`Devices Not Found that are assigned to department with id ${depId}`);
-            }
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Devices Found Associated to Department",
@@ -179,7 +239,8 @@ let DeviceService = class DeviceService {
 };
 DeviceService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [device_repository_1.DeviceRepository])
+    __metadata("design:paramtypes", [device_repository_1.DeviceRepository,
+        sensor_service_1.SensorService])
 ], DeviceService);
 exports.DeviceService = DeviceService;
 //# sourceMappingURL=device.service.js.map

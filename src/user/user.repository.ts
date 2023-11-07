@@ -49,6 +49,39 @@ export class UserRepository{
             }
         })
     }
+
+    async findAllFacilityAdmins(){
+        return this.prismaService.facilityusers.findMany({
+            where:{
+                is_admin:true
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  }
+            }
+        })
+    }
+
+    async findAllDepartmentAdmins(){
+        return this.prismaService.departmentusers.findMany({
+            where:{
+                is_admin:true
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  }
+            }
+        })
+    }
+
 // For deleting user not use till
     async deleteUser(id:number){
         return this.prismaService.users.delete({

@@ -1,7 +1,7 @@
 import { PrismaService } from "src/prisma/prisma.service";
 import { ModelFacilityDto } from "./dto/request/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/request/update-facility.dto";
-import { CreateFacilityUserModelDto } from "./dto/request/create-facility-user.dto";
+import { CreateFacilityAdminModelDto, CreateFacilityUserModelDto } from "./dto/request/create-facility-user.dto";
 export declare class FacilityRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
@@ -29,6 +29,12 @@ export declare class FacilityRepository {
         latitude: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     createFacilityUser(model: CreateFacilityUserModelDto): import(".prisma/client").Prisma.Prisma__facilityusersClient<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    createFacilityAdmin(model: CreateFacilityAdminModelDto): import(".prisma/client").Prisma.Prisma__facilityusersClient<{
         facilityuserid: number;
         facilityid: number;
         userid: number;
@@ -132,7 +138,7 @@ export declare class FacilityRepository {
         longitude: number;
         latitude: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
-    deleteFacility(id: number): import(".prisma/client").Prisma.Prisma__facilitiesClient<{
+    deleteFacility(id: number): Promise<{
         facilityid: number;
         name: string;
         address: string;
@@ -154,5 +160,6 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    }>;
+    deleteFacilityByOrganizationId(orgid: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }

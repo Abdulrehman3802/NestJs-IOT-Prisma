@@ -5,10 +5,10 @@ export declare class ResponseFacilityDto {
     longitude: number;
     latitude: number;
     address: string;
-    facility_type: string;
     contactname: string;
     contactphonenumber: string;
     email: string;
+    facility_type: string;
     isfacilityadmin: boolean;
     is_active: boolean;
     is_deleted: boolean;

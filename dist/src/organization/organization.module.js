@@ -17,11 +17,15 @@ const permissions_repository_1 = require("../permissions/permissions.repository"
 const jwt_1 = require("@nestjs/jwt");
 const user_module_1 = require("../user/user.module");
 const roles_module_1 = require("../roles/roles.module");
+const facility_module_1 = require("../facility/facility.module");
+const department_module_1 = require("../department/department.module");
+const device_module_1 = require("../device/device.module");
+const sensor_module_1 = require("../sensor/sensor.module");
 let OrganizationModule = class OrganizationModule {
 };
 OrganizationModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, user_module_1.UserModule, roles_module_1.RolesModule],
+        imports: [prisma_module_1.PrismaModule, user_module_1.UserModule, roles_module_1.RolesModule, facility_module_1.FacilityModule, department_module_1.DepartmentModule, device_module_1.DeviceModule, sensor_module_1.SensorModule],
         controllers: [organization_controller_1.OrganizationController],
         providers: [organization_service_1.OrganizationService, prisma_service_1.PrismaService, organization_repository_1.OrganizationRepository, permissions_repository_1.PermissionsRepository, jwt_1.JwtService]
     })

@@ -5,7 +5,14 @@ export class CreateFacilityDto {
     @IsOptional()
     @IsNumber()
     customerid: number;
-    
+
+    @IsOptional()
+    @IsNumber()
+    latitude: number;
+
+    @IsOptional()
+    @IsNumber()
+    longitude: number;
     @IsNotEmpty()
     @IsString()
     name: string;
@@ -29,19 +36,11 @@ export class CreateFacilityDto {
 
     @IsOptional()
     @IsString()
-    contactphonenumber: string;
-
-    @IsOptional()
-    @IsNumber()
-    longitude: number;
-
-    @IsOptional()
-    @IsNumber()
-    latitude: number;
+    facility_type: string;
 
     @IsOptional()
     @IsString()
-    facility_type: string;
+    contactphonenumber: string;
 }
 
 export class ModelFacilityDto {
@@ -53,8 +52,8 @@ export class ModelFacilityDto {
     contactname: string;
     contactphonenumber: string;
     email: string;
-    facility_type: string;
     isfacilityadmin: boolean;
+    facility_type: string;
     is_active: boolean;
     is_deleted: boolean;
     date_created: Date;

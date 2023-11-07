@@ -3,12 +3,16 @@ import { CreateOrganizationDto, ModelOrganizationDto } from './dto/request/creat
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OrganizationRepository } from './organization.repository';
-import { ApiResponseDto } from 'core/generics/api-response.dto';
+import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { ResponseOrganizationDto } from './dto/response/response-organization.dto';
 import {UserService} from "../user/user.service";
 import {CreateUserDto} from "../user/dto/request/create-user.dto";
 import {RolesService} from "../roles/roles.service";
 import {CreateOrganizationUserDto} from "./dto/request/create-organization-user.dto";
+import { FacilityService } from 'src/facility/facility.service';
+import { DepartmentService } from 'src/department/department.service';
+import { DeviceService } from 'src/device/device.service';
+import { SensorService } from 'src/sensor/sensor.service';
 
 
 @Injectable()
@@ -17,16 +21,21 @@ export class OrganizationService {
       private readonly organizationRepository: OrganizationRepository,
       private readonly userService:UserService,
       private readonly roleService:RolesService,
+      private readonly facilityService: FacilityService,
+      private readonly departmentService: DepartmentService,
+      private readonly deviceService: DeviceService,
+      private readonly sensorService: SensorService,
 
   ) { }
 
-  async create(createOrganizationDto: CreateOrganizationDto, userid: number) {
+  async create(createOrganizationDto: CreateOrganizationDto, token: Token) {
     try {
+      const { id } = token; 
       const organizationModel: ModelOrganizationDto = {
         ...createOrganizationDto,
         is_active: true,
-        created_by: userid,
-        updated_by: userid,
+        created_by: id,
+        updated_by: id,
         date_created: new Date(),
         date_updated: new Date()
       }
@@ -37,7 +46,7 @@ export class OrganizationService {
       // Creation of Organization Admin
       const userDto = new CreateUserDto()
       userDto.email = organization.email
-      const user = await this.userService.create(userDto)
+      const user = await this.userService.create(userDto, token)
       // Now Creation OF user Role
       const orgAdminId = await this.roleService.findRoleByName('OrganizationAdmin')
       await this.roleService.createUserRole({userid: user.data.userid, roleid: orgAdminId.roleid})
@@ -119,6 +128,15 @@ export class OrganizationService {
       if (!organization) {
         throw new NotFoundException(`Organization Not Found with id: ${id}`);
       }
+
+      await this.facilityService.removeByOrganizationId(id)
+
+      await this.departmentService.removeByOrganizationId(id)
+
+      await this.deviceService.removeByOrganizationId(id)
+
+      await this.sensorService.unAssignSensorOnOrganziationDeletion(id)
+
       const response: ApiResponseDto<ResponseOrganizationDto> = {
         statusCode: HttpStatus.OK,
         message: "Organization Deleted Successfully!",

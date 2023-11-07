@@ -1,9 +1,11 @@
-import {BadRequestException, HttpStatus, Injectable, NotImplementedException} from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, NotImplementedException, forwardRef} from '@nestjs/common';
 import {CreateSensorDto, SensorDto} from './dto/create-sensor.dto';
 import {UpdateSensorDto} from './dto/update-sensor.dto';
 import {SensorRepository} from "./sensor.repository";
 import {ApiResponseDto, Token} from "../../core/generics/api-response.dto";
 import {AwsService} from "../aws/aws.service";
+import {DeviceService} from "../device/device.service";
+import {tsTsxJsJsxRegex} from "ts-loader/dist/constants";
 
 
 @Injectable()
@@ -11,11 +13,16 @@ export class SensorService {
     constructor(
         private readonly sensorRepository: SensorRepository,
         private readonly awsService: AwsService,
+        @Inject(forwardRef(() => DeviceService)) private readonly deviceService: DeviceService,
     ) {
     }
 
     async assignSensor(userId: number, createSensorDto: CreateSensorDto) {
         try {
+            if(createSensorDto.deviceid && !(createSensorDto.customerid)){
+                const device = await this.deviceService.findOne(createSensorDto.deviceid)
+                createSensorDto.customerid = device.data.customerid
+            }
             let sensor
             const model = {
                 ...createSensorDto,
@@ -25,9 +32,10 @@ export class SensorService {
                 date_updated: new Date(),
                 assigned_by: userId
             }
+            // Find If sensor is there But not assigned to anything
             const existingSensor = await this.sensorRepository.findByAwsId(createSensorDto.aws_sensorid)
             if (existingSensor) {
-                // unassigned sensor with the same id exist in db then update it.
+                // Update un assign sensor and assign to the org or device
                 sensor = await this.sensorRepository.updateSensor(existingSensor.sensorid, model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
             } else {
@@ -92,41 +100,94 @@ export class SensorService {
                 const sensorType = await this.sensorRepository.createSensorType(sensorTypeModel)
                 if (!sensorType) throw new NotImplementedException("Sensor Type not Created")
             }
-
+          
             const response: ApiResponseDto<SensorDto> = {
-                statusCode: HttpStatus.OK,
-                message: "Sensor Assign Successfully",
-                data: sensor,
-                error: false
-            }
-            return response
-        } catch (error) {
-            throw error
-        }
-    }
+              statusCode: HttpStatus.OK,
+              message: "Sensor Assign Successfully",
+              data: sensor,
+              error: false
+          }
+          return response
+      } catch (error) {
+          throw error
+      }
+  }
 
-    async getAllAssignedSensor(token: Token) {
-        try {
-            const {rolename, customerId} = token;
-            let assignSensor: SensorDto[];
-            if (rolename === 'SuperAdmin') {
-                assignSensor = await this.sensorRepository.findAssignSensor()
-            } else {
-                assignSensor = await this.sensorRepository.findAssignSensorByOrganizationId(customerId)
-            }
-            const response: ApiResponseDto<SensorDto[]> = {
-                statusCode: HttpStatus.OK,
-                message: "Sensors found Successfully",
-                data: assignSensor,
-                error: false
-            }
-            return response
-        } catch (error) {
-            throw error
-        }
-    }
+  async unAssignSensorOnOrganziationDeletion(orgid: number) {
+    try {
+        const deletionResponse = await this.sensorRepository.unAssignSensorOnOrganizationDeletion(orgid)
+        if(!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
 
-    async getAllUnAssignedSensors(token: Token) {
+        const response:ApiResponseDto<null> ={
+          statusCode:HttpStatus.OK,
+          message:"Sensor UnAssigned Successfully",
+          data: null,
+          error:false
+        }
+        return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]) {
+    try {
+        const deletionResponse = await this.sensorRepository.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds)
+        if(!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
+
+        const response:ApiResponseDto<null> ={
+          statusCode:HttpStatus.OK,
+          message:"Sensor UnAssigned Successfully",
+          data: null,
+          error:false
+        }
+        return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async unAssignSensorOnDeviceDeletion(deviceid: number) {
+    try {
+        const deletionResponse = await this.sensorRepository.unAssignSensorOnDeviceDeletion(deviceid)
+        if(!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
+
+        const response:ApiResponseDto<null> ={
+          statusCode:HttpStatus.OK,
+          message:"Sensor UnAssigned Successfully",
+          data: null,
+          error:false
+        }
+        return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getAllAssignedSensor(token:Token) {
+   try{
+     const { rolename, customerId } = token;
+     let assignSensor:SensorDto[];
+     if(rolename === 'SuperAdmin'){
+       assignSensor = await this.sensorRepository.findAssignSensor()
+     }
+     else
+     {
+       assignSensor = await this.sensorRepository.findAssignSensorByOrganizationId(customerId)
+     }
+     const response:ApiResponseDto<SensorDto[]> ={
+       statusCode:HttpStatus.OK,
+       message:"Sensors found Successfully",
+       data:assignSensor,
+       error:false
+     }
+     return response
+   }catch (error) {
+     throw error
+   }
+  }
+
+  async getAllUnAssignedSensors(token: Token) {
         try {
             let assignedSensor: SensorDto[], subtracted: string[]
             const {rolename, customerId} = token;
@@ -200,6 +261,36 @@ export class SensorService {
             }
             return response
         } catch (error) {
+            throw error
+        }
+    }
+
+    async getSensorByDeviceId(devId:number){
+        try{
+            const sensor = await this.sensorRepository.findAssignSensorByDeviceId(devId)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        }catch (error) {
+            throw error
+        }
+    }
+
+    async getSensorByOrgId(orgId:number){
+        try{
+            const sensor = await this.sensorRepository.findAssignSensorByOrganizationId(orgId)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        }catch (error) {
             throw error
         }
     }

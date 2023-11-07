@@ -79,6 +79,21 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
     }[]>;
+    findDevicesByDepartmentIds(departmentIds: number[]): import(".prisma/client").Prisma.PrismaPromise<{
+        deviceid: number;
+        devicename: string;
+        departmentid: number;
+        devicetype: string;
+        manufacturer: string;
+        is_active: boolean;
+        date_created: Date;
+        date_updated: Date;
+        is_deleted: boolean;
+        facilityid: number;
+        customerid: number;
+        created_by: number;
+        updated_by: number;
+    }[]>;
     findOneDevice(id: number): import(".prisma/client").Prisma.Prisma__devicesClient<{
         deviceid: number;
         devicename: string;
@@ -124,4 +139,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    deleteDeviceByOrganizationId(orgid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
+    deleteDeviceByFacilityId(facilityid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
+    deleteDeviceByDepartmentId(departmentid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
 }

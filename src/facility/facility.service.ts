@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, NotFoundException, NotAcceptableException } from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, Inject, forwardRef } from '@nestjs/common';
 import { FacilityRepository } from './facility.repository';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { CreateFacilityDto, ModelFacilityDto } from './dto/request/create-facility.dto';
@@ -8,13 +8,20 @@ import { RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
 import { RolesService } from 'src/roles/roles.service';
 import { UserService } from "../user/user.service";
 import { CreateUserDto } from "../user/dto/request/create-user.dto";
+import { DepartmentService } from 'src/department/department.service';
+import { DeviceService } from 'src/device/device.service';
+import { SensorService } from 'src/sensor/sensor.service';
 
 @Injectable()
 export class FacilityService {
   constructor(
     private readonly facilityRepository: FacilityRepository,
-    private readonly userService: UserService,
+    @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
     private readonly roleService: RolesService,
+    private readonly departmentService: DepartmentService,
+    private readonly deviceService: DeviceService,
+    private readonly sensorService: SensorService
+
   ) { }
 
   async create(createFacilityDto: CreateFacilityDto, token: Token) {
@@ -54,7 +61,7 @@ export class FacilityService {
       const facility = await this.facilityRepository.createFacility(facilityModel);
       const userDto = new CreateUserDto()
       userDto.email = facility.email
-      const user = await this.userService.create(userDto)
+      const user = await this.userService.create(userDto, token)
       // Now Creation OF user Role
       const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin')
       await this.roleService.createUserRole({ userid: user.data.userid, roleid: facilityAdminId.roleid })
@@ -68,6 +75,26 @@ export class FacilityService {
       return response;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async createFacilityAdmin(userid: number, facilityid: number) {
+    try {
+      await this.facilityRepository.createFacilityAdmin({ 
+        userid: userid, 
+        facilityid: facilityid,
+        is_admin:true
+      })
+
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.CREATED,
+        message: "Facility Admin Created Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch(error) {
+      throw error
     }
   }
 
@@ -132,7 +159,34 @@ export class FacilityService {
   async remove(id: number) {
     try {
 
-      const facility = await this.facilityRepository.deleteFacility(id);
+      await this.facilityRepository.deleteFacility(id);
+
+      const departments = await this.departmentService.GetAllDepartmentIdsByFacilityId(id)
+      await this.departmentService.removeByFacilityId(id)
+      const departmentIds = departments.data.map(d => d.departmentid)
+      
+      const devices = await this.deviceService.findDevicesByDepartmentIds(departmentIds)
+      await this.deviceService.removeByFacilityId(id)
+      const deviceIds = devices.data.map(dev => dev.deviceid)
+
+      await this.sensorService.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds)
+
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Facility Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeByOrganizationId(orgid: number) {
+    try {
+
+      await this.facilityRepository.deleteFacilityByOrganizationId(orgid);
 
       const response: ApiResponseDto<null> = {
         statusCode: HttpStatus.OK,
@@ -149,9 +203,6 @@ export class FacilityService {
   async findAllFacilities(orgId: number) {
     try {
       const allFacilities = await this.facilityRepository.findAllFacilitiesOfOrgAdmin(orgId);
-      if (allFacilities.length == 0) {
-        throw new NotFoundException(`Facilities Not Found that are assigned to organization with id ${orgId}`);
-      }
       const response: ApiResponseDto<ResponseFacilityDto[]> = {
         statusCode: HttpStatus.OK,
         message: "Facilities Found Associated to Organization",

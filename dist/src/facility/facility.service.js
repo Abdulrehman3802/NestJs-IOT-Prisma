@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FacilityService = void 0;
 const common_1 = require("@nestjs/common");
@@ -15,11 +18,17 @@ const facility_repository_1 = require("./facility.repository");
 const roles_service_1 = require("../roles/roles.service");
 const user_service_1 = require("../user/user.service");
 const create_user_dto_1 = require("../user/dto/request/create-user.dto");
+const department_service_1 = require("../department/department.service");
+const device_service_1 = require("../device/device.service");
+const sensor_service_1 = require("../sensor/sensor.service");
 let FacilityService = class FacilityService {
-    constructor(facilityRepository, userService, roleService) {
+    constructor(facilityRepository, userService, roleService, departmentService, deviceService, sensorService) {
         this.facilityRepository = facilityRepository;
         this.userService = userService;
         this.roleService = roleService;
+        this.departmentService = departmentService;
+        this.deviceService = deviceService;
+        this.sensorService = sensorService;
     }
     async create(createFacilityDto, token) {
         try {
@@ -37,7 +46,7 @@ let FacilityService = class FacilityService {
             const facility = await this.facilityRepository.createFacility(facilityModel);
             const userDto = new create_user_dto_1.CreateUserDto();
             userDto.email = facility.email;
-            const user = await this.userService.create(userDto);
+            const user = await this.userService.create(userDto, token);
             const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin');
             await this.roleService.createUserRole({ userid: user.data.userid, roleid: facilityAdminId.roleid });
             await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid });
@@ -45,6 +54,25 @@ let FacilityService = class FacilityService {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: "Facility Created Successfully!",
                 data: facility,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async createFacilityAdmin(userid, facilityid) {
+        try {
+            await this.facilityRepository.createFacilityAdmin({
+                userid: userid,
+                facilityid: facilityid,
+                is_admin: true
+            });
+            const response = {
+                statusCode: common_1.HttpStatus.CREATED,
+                message: "Facility Admin Created Successfully!",
+                data: null,
                 error: false
             };
             return response;
@@ -110,7 +138,29 @@ let FacilityService = class FacilityService {
     }
     async remove(id) {
         try {
-            const facility = await this.facilityRepository.deleteFacility(id);
+            await this.facilityRepository.deleteFacility(id);
+            const departments = await this.departmentService.GetAllDepartmentIdsByFacilityId(id);
+            await this.departmentService.removeByFacilityId(id);
+            const departmentIds = departments.data.map(d => d.departmentid);
+            const devices = await this.deviceService.findDevicesByDepartmentIds(departmentIds);
+            await this.deviceService.removeByFacilityId(id);
+            const deviceIds = devices.data.map(dev => dev.deviceid);
+            await this.sensorService.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Facility Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async removeByOrganizationId(orgid) {
+        try {
+            await this.facilityRepository.deleteFacilityByOrganizationId(orgid);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Facility Deleted Successfully!",
@@ -126,9 +176,6 @@ let FacilityService = class FacilityService {
     async findAllFacilities(orgId) {
         try {
             const allFacilities = await this.facilityRepository.findAllFacilitiesOfOrgAdmin(orgId);
-            if (allFacilities.length == 0) {
-                throw new common_1.NotFoundException(`Facilities Not Found that are assigned to organization with id ${orgId}`);
-            }
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Facilities Found Associated to Organization",
@@ -144,9 +191,13 @@ let FacilityService = class FacilityService {
 };
 FacilityService = __decorate([
     (0, common_1.Injectable)(),
+    __param(1, (0, common_1.Inject)((0, common_1.forwardRef)(() => user_service_1.UserService))),
     __metadata("design:paramtypes", [facility_repository_1.FacilityRepository,
         user_service_1.UserService,
-        roles_service_1.RolesService])
+        roles_service_1.RolesService,
+        department_service_1.DepartmentService,
+        device_service_1.DeviceService,
+        sensor_service_1.SensorService])
 ], FacilityService);
 exports.FacilityService = FacilityService;
 //# sourceMappingURL=facility.service.js.map

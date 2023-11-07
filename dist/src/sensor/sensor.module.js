@@ -16,13 +16,15 @@ const permissions_repository_1 = require("../permissions/permissions.repository"
 const jwt_1 = require("@nestjs/jwt");
 const aws_module_1 = require("../aws/aws.module");
 const aws_service_1 = require("../aws/aws.service");
+const device_module_1 = require("../device/device.module");
 let SensorModule = class SensorModule {
 };
 SensorModule = __decorate([
     (0, common_1.Module)({
-        imports: [jwt_1.JwtModule, aws_module_1.AwsModule],
+        imports: [jwt_1.JwtModule, aws_module_1.AwsModule, (0, common_1.forwardRef)(() => device_module_1.DeviceModule)],
         controllers: [sensor_controller_1.SensorController],
-        providers: [sensor_service_1.SensorService, sensor_repository_1.SensorRepository, prisma_service_1.PrismaService, permissions_repository_1.PermissionsRepository, aws_service_1.AwsService]
+        providers: [sensor_service_1.SensorService, sensor_repository_1.SensorRepository, prisma_service_1.PrismaService, permissions_repository_1.PermissionsRepository, aws_service_1.AwsService],
+        exports: [sensor_service_1.SensorService]
     })
 ], SensorModule);
 exports.SensorModule = SensorModule;

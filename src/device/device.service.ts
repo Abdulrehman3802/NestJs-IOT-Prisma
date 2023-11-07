@@ -4,10 +4,14 @@ import { UpdateDeviceDto } from './dto/request/update-device.dto';
 import { DeviceRepository } from './device.repository';
 import { ResponseDeviceDto } from './dto/response/response-device.dto';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
+import { SensorService } from 'src/sensor/sensor.service';
 
 @Injectable()
 export class DeviceService {
-  constructor(private readonly deviceRepository: DeviceRepository) { }
+  constructor(
+    private readonly deviceRepository: DeviceRepository,
+    private readonly sensorService: SensorService
+    ) { }
 
   async create(createDeviceDto: CreateDeviceDto, token: Token) {
     try {
@@ -111,6 +115,22 @@ export class DeviceService {
     }
   }
 
+  async findDevicesByDepartmentIds(departmentIds: number[]) {
+    try {
+      const devices =  await this.deviceRepository.findDevicesByDepartmentIds(departmentIds);
+      
+      const response: ApiResponseDto<ResponseDeviceDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Devices Found Successfully!",
+        data: devices,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findOne(id: number) {
     try {
       const device = await this.deviceRepository.findOneDevice(id);
@@ -176,7 +196,10 @@ export class DeviceService {
 
   async remove(id: number) {
     try {
-      const device = await this.deviceRepository.deleteDevice(id);
+      await this.deviceRepository.deleteDevice(id);
+
+      await this.sensorService.unAssignSensorOnDeviceDeletion(id);
+
       const response: ApiResponseDto<null> = {
         statusCode: HttpStatus.OK,
         message: "Device Deleted Successfully!",
@@ -189,12 +212,58 @@ export class DeviceService {
     }
   }
 
+  async removeByOrganizationId(orgid: number) {
+    try {
+      await this.deviceRepository.deleteDeviceByOrganizationId(orgid);
+     
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Device Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeByFacilityId(facilityid: number) {
+    try {
+      await this.deviceRepository.deleteDeviceByFacilityId(facilityid);
+     
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Device Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeByDepartmentId(departmentid: number) {
+    try {
+      await this.deviceRepository.deleteDeviceByDepartmentId(departmentid);
+     
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Device Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
   async findAllDevices(depId: number) {
     try {
       const allDevices = await this.deviceRepository.findAllDevicesByDepartmentId(depId);
-      if (allDevices.length == 0) {
-        throw new NotFoundException(`Devices Not Found that are assigned to department with id ${depId}`);
-      }
       const response: ApiResponseDto<ResponseDeviceDto[]> = {
         statusCode: HttpStatus.OK,
         message: "Devices Found Associated to Department",

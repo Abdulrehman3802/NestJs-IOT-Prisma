@@ -15,8 +15,8 @@ export class OrganizationController {
   @Post()
   create(@Body() createOrganizationDto: CreateOrganizationDto,@Req() req: RequestWithUser) {
     // Extarcting userid from the request
-    const userid = req.token.id;
-    return this.organizationService.create(createOrganizationDto,userid);
+    const token = req.token;
+    return this.organizationService.create(createOrganizationDto,token);
   }
 
   @Permission(Category.ORGANIZATION, PermissionType.VIEW)

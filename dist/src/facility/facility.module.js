@@ -17,13 +17,17 @@ const jwt_1 = require("@nestjs/jwt");
 const permissions_repository_1 = require("../permissions/permissions.repository");
 const user_module_1 = require("../user/user.module");
 const roles_module_1 = require("../roles/roles.module");
+const department_module_1 = require("../department/department.module");
+const device_module_1 = require("../device/device.module");
+const sensor_module_1 = require("../sensor/sensor.module");
 let FacilityModule = class FacilityModule {
 };
 FacilityModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, user_module_1.UserModule, roles_module_1.RolesModule],
+        imports: [prisma_module_1.PrismaModule, (0, common_1.forwardRef)(() => user_module_1.UserModule), roles_module_1.RolesModule, department_module_1.DepartmentModule, device_module_1.DeviceModule, sensor_module_1.SensorModule],
         controllers: [facility_controller_1.FacilityController],
-        providers: [facility_service_1.FacilityService, prisma_service_1.PrismaService, facility_repository_1.FacilityRepository, permissions_repository_1.PermissionsRepository, jwt_1.JwtService]
+        providers: [facility_service_1.FacilityService, prisma_service_1.PrismaService, facility_repository_1.FacilityRepository, permissions_repository_1.PermissionsRepository, jwt_1.JwtService],
+        exports: [facility_service_1.FacilityService]
     })
 ], FacilityModule);
 exports.FacilityModule = FacilityModule;

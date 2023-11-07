@@ -1,14 +1,14 @@
 export declare class CreateFacilityDto {
     customerid: number;
+    latitude: number;
+    longitude: number;
     name: string;
     contactname: string;
     email: string;
     isfacilityadmin: boolean;
     address: string;
-    contactphonenumber: string;
-    longitude: number;
-    latitude: number;
     facility_type: string;
+    contactphonenumber: string;
 }
 export declare class ModelFacilityDto {
     customerid: number;
@@ -19,8 +19,8 @@ export declare class ModelFacilityDto {
     contactname: string;
     contactphonenumber: string;
     email: string;
-    facility_type: string;
     isfacilityadmin: boolean;
+    facility_type: string;
     is_active: boolean;
     is_deleted: boolean;
     date_created: Date;

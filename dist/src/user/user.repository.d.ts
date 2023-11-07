@@ -84,6 +84,52 @@ export declare class UserRepository {
         date_updated: Date;
         resettoken: string;
     }[]>;
+    findAllFacilityAdmins(): Promise<({
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
+    findAllDepartmentAdmins(): Promise<({
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     deleteUser(id: number): Promise<{
         userid: number;
         firstname: string;

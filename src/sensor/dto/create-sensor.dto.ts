@@ -5,7 +5,7 @@ export class CreateSensorDto {
     @IsOptional()
     deviceid: number
     @IsNumber()
-    @IsNotEmpty()
+    @IsOptional()
     customerid: number
     @IsString()
     @IsNotEmpty()

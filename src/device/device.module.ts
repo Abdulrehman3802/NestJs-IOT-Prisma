@@ -6,10 +6,12 @@ import { PrismaService } from "../prisma/prisma.service";
 import { DeviceRepository } from './device.repository';
 import { PermissionsRepository } from 'src/permissions/permissions.repository';
 import { JwtService } from '@nestjs/jwt';
+import { SensorModule } from 'src/sensor/sensor.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, SensorModule],
   controllers: [DeviceController],
-  providers: [DeviceService, PrismaService, DeviceRepository, PermissionsRepository, JwtService]
+  providers: [DeviceService, PrismaService, DeviceRepository, PermissionsRepository, JwtService],
+  exports:[DeviceService]
 })
 export class DeviceModule { }

@@ -21,6 +21,39 @@ let SensorRepository = class SensorRepository {
             data: model
         });
     }
+    unAssignSensorOnOrganizationDeletion(orgid) {
+        return this.prismaService.sensors.updateMany({
+            where: {
+                customerid: orgid
+            },
+            data: {
+                deviceid: null,
+                customerid: null
+            }
+        });
+    }
+    unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds) {
+        return this.prismaService.sensors.updateMany({
+            where: {
+                deviceid: {
+                    in: deviceIds
+                }
+            },
+            data: {
+                deviceid: null
+            }
+        });
+    }
+    unAssignSensorOnDeviceDeletion(deviceid) {
+        return this.prismaService.sensors.updateMany({
+            where: {
+                deviceid: deviceid
+            },
+            data: {
+                deviceid: null
+            }
+        });
+    }
     createSensorType(model) {
         return this.prismaService.sensortypes.createMany({
             data: model
@@ -67,6 +100,16 @@ let SensorRepository = class SensorRepository {
             include: {
                 customers: true
             }
+        });
+    }
+    findAssignSensorByDeviceId(devId) {
+        return this.prismaService.sensors.findMany({
+            where: {
+                deviceid: devId,
+                assigned_by: { not: null },
+                is_deleted: false,
+                is_active: true
+            },
         });
     }
     updateSensor(id, updateSensorDto) {

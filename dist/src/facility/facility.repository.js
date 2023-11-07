@@ -26,6 +26,11 @@ let FacilityRepository = class FacilityRepository {
             data: model,
         });
     }
+    createFacilityAdmin(model) {
+        return this.prismaService.facilityusers.create({
+            data: model,
+        });
+    }
     findAllFacilities() {
         return this.prismaService.facilities.findMany({
             where: {
@@ -63,10 +68,21 @@ let FacilityRepository = class FacilityRepository {
             data: Object.assign(Object.assign({}, body), { date_updated: new Date() }),
         });
     }
-    deleteFacility(id) {
+    async deleteFacility(id) {
         return this.prismaService.facilities.update({
             where: {
                 facilityid: id,
+            },
+            data: {
+                is_active: false,
+                is_deleted: true
+            }
+        });
+    }
+    async deleteFacilityByOrganizationId(orgid) {
+        return this.prismaService.facilities.updateMany({
+            where: {
+                customerid: orgid,
             },
             data: {
                 is_active: false,

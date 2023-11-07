@@ -1,4 +1,4 @@
-import {IsString, IsOptional, IsArray, IsEmail, IsNotEmpty} from 'class-validator';
+import {IsString, IsOptional, IsArray, IsEmail, IsNotEmpty, IsNumber} from 'class-validator';
 
 export class CreateUserDto {
     @IsString()
@@ -20,6 +20,56 @@ export class CreateUserDto {
     @IsOptional()
     @IsString()
     resettoken:string
+}
+
+export class CreateFacilityAdminDto {
+    @IsString()
+    firstname: string;
+    @IsString()
+    lastname: string;
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+    @IsString()
+    @IsOptional()
+    address: string;
+    @IsString()
+    @IsOptional()
+    passwordhash: string;
+    @IsOptional()
+    @IsString()
+    phonenumber: string;
+    @IsOptional()
+    @IsString()
+    resettoken:string
+    @IsNumber()
+    @IsNotEmpty()
+    facilityid: number;
+}
+
+export class CreateDepartmentAdminDto {
+    @IsString()
+    firstname: string;
+    @IsString()
+    lastname: string;
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+    @IsString()
+    @IsOptional()
+    address: string;
+    @IsString()
+    @IsOptional()
+    passwordhash: string;
+    @IsOptional()
+    @IsString()
+    phonenumber: string;
+    @IsOptional()
+    @IsString()
+    resettoken:string
+    @IsNumber()
+    @IsNotEmpty()
+    departmentid: number;
 }
 
 export class ModelUserDto {

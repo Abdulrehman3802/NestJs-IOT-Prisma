@@ -25,8 +25,8 @@ let OrganizationController = class OrganizationController {
         this.organizationService = organizationService;
     }
     create(createOrganizationDto, req) {
-        const userid = req.token.id;
-        return this.organizationService.create(createOrganizationDto, userid);
+        const token = req.token;
+        return this.organizationService.create(createOrganizationDto, token);
     }
     findAll() {
         return this.organizationService.findAll();

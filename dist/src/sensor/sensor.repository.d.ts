@@ -14,6 +14,9 @@ export declare class SensorRepository {
         date_updated: Date;
         assigned_by: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    unAssignSensorOnOrganizationDeletion(orgid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
+    unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
+    unAssignSensorOnDeviceDeletion(deviceid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     createSensorType(model: SensorTypeModelDTO[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     findUnAssignedSensor(): import(".prisma/client").Prisma.PrismaPromise<{
         sensorid: number;
@@ -95,6 +98,17 @@ export declare class SensorRepository {
         date_updated: Date;
         assigned_by: number;
     })[]>;
+    findAssignSensorByDeviceId(devId: number): import(".prisma/client").Prisma.PrismaPromise<{
+        sensorid: number;
+        deviceid: number;
+        is_active: boolean;
+        customerid: number;
+        is_deleted: boolean;
+        aws_sensorid: string;
+        date_created: Date;
+        date_updated: Date;
+        assigned_by: number;
+    }[]>;
     updateSensor(id: number, updateSensorDto: SensorDto): import(".prisma/client").Prisma.Prisma__sensorsClient<{
         sensorid: number;
         deviceid: number;
