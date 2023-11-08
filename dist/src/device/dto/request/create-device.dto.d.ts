@@ -1,5 +1,6 @@
 export declare class CreateDeviceDto {
     devicename: string;
+    email: string;
     departmentid: number;
     facilityid: number;
     customerid: number;
@@ -13,6 +14,7 @@ export declare class ModelDeviceDto {
     customerid: number;
     devicetype: string;
     manufacturer: string;
+    email: string;
     is_active: boolean;
     date_created: Date;
     date_updated: Date;

@@ -9,6 +9,8 @@ export declare class ResponseFacilityDto {
     contactphonenumber: string;
     email: string;
     facility_type: string;
+    timezone: string;
+    currency: string;
     isfacilityadmin: boolean;
     is_active: boolean;
     is_deleted: boolean;

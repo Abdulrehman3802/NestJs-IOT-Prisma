@@ -6,6 +6,11 @@ export class CreateDeviceDto {
     @IsNotEmpty()
     devicename: string;
 
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    email:string;
+
     @IsNumber()
     @IsOptional()
     departmentid: number;
@@ -34,6 +39,7 @@ export class ModelDeviceDto {
     customerid: number;
     devicetype: string;
     manufacturer: string;
+    email:string
     is_active: boolean;
     date_created: Date;
     date_updated: Date;

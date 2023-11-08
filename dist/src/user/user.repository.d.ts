@@ -107,6 +107,8 @@ export declare class UserRepository {
             site_manager: string;
             longitude: number;
             latitude: number;
+            timezone: string;
+            currency: string;
         };
         users: {
             userid: number;

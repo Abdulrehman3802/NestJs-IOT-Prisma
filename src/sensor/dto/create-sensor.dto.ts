@@ -10,6 +10,9 @@ export class CreateSensorDto {
     @IsString()
     @IsNotEmpty()
     aws_sensorid: string
+    @IsString()
+    @IsNotEmpty()
+    sensorname: string
 
 }
 
@@ -23,6 +26,7 @@ export class SensorDto{
     date_created  :Date
     date_updated  :Date
     assigned_by:number
+    sensorname: string
 }
 
 export class SensorTypeModelDTO{

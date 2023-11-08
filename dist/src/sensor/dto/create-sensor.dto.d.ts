@@ -2,6 +2,7 @@ export declare class CreateSensorDto {
     deviceid: number;
     customerid: number;
     aws_sensorid: string;
+    sensorname: string;
 }
 export declare class SensorDto {
     deviceid: number;
@@ -12,6 +13,7 @@ export declare class SensorDto {
     date_created: Date;
     date_updated: Date;
     assigned_by: number;
+    sensorname: string;
 }
 export declare class SensorTypeModelDTO {
     sensortypename: string;

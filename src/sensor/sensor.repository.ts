@@ -109,8 +109,16 @@ export class SensorRepository{
                 is_deleted: false,
                 is_active: true
             },
+            include:{
+                devices:{
+                    include:{
+                        departments:true
+                    }
+                },
+            }
         });
     }
+
     updateSensor(id: number, updateSensorDto: SensorDto) {
         return this.prismaService.sensors.update({
             where:{

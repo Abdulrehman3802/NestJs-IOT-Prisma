@@ -27,6 +27,8 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
+        timezone: string;
+        currency: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     createFacilityUser(model: CreateFacilityUserModelDto): import(".prisma/client").Prisma.Prisma__facilityusersClient<{
         facilityuserid: number;
@@ -62,6 +64,8 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
+        timezone: string;
+        currency: string;
     }[]>;
     findAllFacilitiesOfOrgAdmin(orgId: number): import(".prisma/client").Prisma.PrismaPromise<{
         facilityid: number;
@@ -85,6 +89,8 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
+        timezone: string;
+        currency: string;
     }[]>;
     findFacilityByUserId(userId: number): import(".prisma/client").Prisma.Prisma__facilityusersClient<{
         facilityuserid: number;
@@ -114,6 +120,8 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
+        timezone: string;
+        currency: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     updateFacility(id: number, body: UpdateFacilityDto): import(".prisma/client").Prisma.Prisma__facilitiesClient<{
         facilityid: number;
@@ -137,6 +145,8 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
+        timezone: string;
+        currency: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     deleteFacility(id: number): Promise<{
         facilityid: number;
@@ -160,6 +170,8 @@ export declare class FacilityRepository {
         site_manager: string;
         longitude: number;
         latitude: number;
+        timezone: string;
+        currency: string;
     }>;
     deleteFacilityByOrganizationId(orgid: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }

@@ -13,6 +13,7 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
+        sensorname: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     unAssignSensorOnOrganizationDeletion(orgid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
@@ -28,6 +29,7 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
+        sensorname: string;
     }[]>;
     findByAwsId(awsId: string): import(".prisma/client").Prisma.Prisma__sensorsClient<{
         sensorid: number;
@@ -39,6 +41,7 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
+        sensorname: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     findAssignSensor(): import(".prisma/client").Prisma.PrismaPromise<({
         customers: {
@@ -68,6 +71,7 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
+        sensorname: string;
     })[]>;
     findAssignSensorByOrganizationId(orgId: number): import(".prisma/client").Prisma.PrismaPromise<({
         customers: {
@@ -97,8 +101,41 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
+        sensorname: string;
     })[]>;
-    findAssignSensorByDeviceId(devId: number): import(".prisma/client").Prisma.PrismaPromise<{
+    findAssignSensorByDeviceId(devId: number): import(".prisma/client").Prisma.PrismaPromise<({
+        devices: {
+            departments: {
+                departmentid: number;
+                departmentname: string;
+                customerid: number;
+                is_active: boolean;
+                date_created: Date;
+                date_updated: Date;
+                is_deleted: boolean;
+                facilityid: number;
+                created_by: number;
+                updated_by: number;
+                email: string;
+                description: string;
+            };
+        } & {
+            deviceid: number;
+            devicename: string;
+            departmentid: number;
+            devicetype: string;
+            manufacturer: string;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            customerid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+        };
+    } & {
         sensorid: number;
         deviceid: number;
         is_active: boolean;
@@ -108,7 +145,8 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
-    }[]>;
+        sensorname: string;
+    })[]>;
     updateSensor(id: number, updateSensorDto: SensorDto): import(".prisma/client").Prisma.Prisma__sensorsClient<{
         sensorid: number;
         deviceid: number;
@@ -119,6 +157,7 @@ export declare class SensorRepository {
         date_created: Date;
         date_updated: Date;
         assigned_by: number;
+        sensorname: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     remove(id: number): string;
 }

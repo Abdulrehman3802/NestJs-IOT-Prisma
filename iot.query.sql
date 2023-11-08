@@ -228,3 +228,15 @@ ALTER TABLE IF EXISTS "IoT".facilities
     ADD COLUMN latitude integer;
 --------------------------------------------------------------
 ALTER TABLE IF EXISTS "IoT".departments DROP COLUMN IF EXISTS location;
+
+----------------------------------------------------------------
+-- 8/11/23 sensorname Added in table
+ALTER TABLE IF EXISTS "IoT".sensors
+    ADD COLUMN sensorname character varying NOT NULL;
+
+-----------------------Facility------------------------------
+-- Add fields for facility
+ALTER TABLE IF EXISTS "IoT".facilities
+    ADD COLUMN timezone character varying(100);
+    ALTER TABLE IF EXISTS "IoT".facilities
+        ADD COLUMN currency character varying(100);

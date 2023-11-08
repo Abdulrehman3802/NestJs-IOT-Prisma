@@ -110,6 +110,13 @@ let SensorRepository = class SensorRepository {
                 is_deleted: false,
                 is_active: true
             },
+            include: {
+                devices: {
+                    include: {
+                        departments: true
+                    }
+                },
+            }
         });
     }
     updateSensor(id, updateSensorDto) {

@@ -36,6 +36,14 @@ export class CreateFacilityDto {
 
     @IsOptional()
     @IsString()
+    timezone: string;
+
+    @IsOptional()
+    @IsString()
+    currency: string;
+
+    @IsOptional()
+    @IsString()
     facility_type: string;
 
     @IsOptional()
@@ -52,6 +60,8 @@ export class ModelFacilityDto {
     contactname: string;
     contactphonenumber: string;
     email: string;
+    timezone: string;
+    currency: string;
     isfacilityadmin: boolean;
     facility_type: string;
     is_active: boolean;

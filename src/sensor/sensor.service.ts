@@ -6,6 +6,7 @@ import {ApiResponseDto, Token} from "../../core/generics/api-response.dto";
 import {AwsService} from "../aws/aws.service";
 import {DeviceService} from "../device/device.service";
 import {tsTsxJsJsxRegex} from "ts-loader/dist/constants";
+import {DepartmentService} from "../department/department.service";
 
 
 @Injectable()

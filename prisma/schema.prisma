@@ -84,6 +84,7 @@ model devices {
   customerid                      Int
   created_by                      Int
   updated_by                      Int
+  email                           String                  @db.VarChar(100)
   alertnotifications              alertnotifications[]
   devicedashboard                 devicedashboard[]
   users_devices_created_byTousers users                   @relation("devices_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "devices_createdby_fkey")
@@ -91,6 +92,7 @@ model devices {
   departments                     departments             @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction)
   facilities                      facilities              @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
   users_devices_updated_byTousers users                   @relation("devices_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "devices_updatedby_fkey")
+  deviceusers                     deviceusers[]
   readings                        readings[]
   sensors                         sensors[]
   staffdeviceassignment           staffdeviceassignment[]
@@ -163,6 +165,7 @@ model sensors {
   date_created            DateTime?                 @default(now()) @db.Timestamp(6)
   date_updated            DateTime?                 @default(now()) @db.Timestamp(6)
   assigned_by             Int?
+  sensorname              String?                   @db.VarChar
   alerts                  alerts[]
   readings                readings[]
   sensorgatewayassignment sensorgatewayassignment[]
@@ -273,13 +276,15 @@ model facilities {
   customerid                         Int?
   created_by                         Int
   updated_by                         Int
-  longitude                          Int?
-  latitude                           Int?
   facility_type                      String?             @db.VarChar(100)
   street                             String?             @db.VarChar(100)
   city                               String?             @db.VarChar(100)
   postcode                           Int?
-  site_manager                       String?             @db.VarChar(100)
+  site_manager                       String?             @db.VarChar
+  longitude                          Int?
+  latitude                           Int?
+  timezone                           String?             @db.VarChar(100)
+  currency                           String?             @db.VarChar(100)
   departments                        departments[]
   devices                            devices[]
   users_facilities_created_byTousers users               @relation("facilities_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_createdby_fkey")
@@ -328,6 +333,7 @@ model users {
   departmentusers                           departmentusers[]
   devices_devices_created_byTousers         devices[]           @relation("devices_created_byTousers")
   devices_devices_updated_byTousers         devices[]           @relation("devices_updated_byTousers")
+  deviceusers                               deviceusers[]
   facilities_facilities_created_byTousers   facilities[]        @relation("facilities_created_byTousers")
   facilities_facilities_updated_byTousers   facilities[]        @relation("facilities_updated_byTousers")
   facilityusers                             facilityusers[]
@@ -374,6 +380,15 @@ model organizationusers {
   is_admin           Boolean?
   customers          customers? @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
   users              users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model deviceusers {
+  deviceuserid Int      @id @default(autoincrement())
+  deviceid     Int?
+  userid       Int?
+  is_admin     Boolean?
+  devices      devices? @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
+  users        users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model departmentdashboard {

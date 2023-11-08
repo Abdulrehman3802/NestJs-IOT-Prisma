@@ -7,6 +7,8 @@ export declare class CreateFacilityDto {
     email: string;
     isfacilityadmin: boolean;
     address: string;
+    timezone: string;
+    currency: string;
     facility_type: string;
     contactphonenumber: string;
 }
@@ -19,6 +21,8 @@ export declare class ModelFacilityDto {
     contactname: string;
     contactphonenumber: string;
     email: string;
+    timezone: string;
+    currency: string;
     isfacilityadmin: boolean;
     facility_type: string;
     is_active: boolean;
