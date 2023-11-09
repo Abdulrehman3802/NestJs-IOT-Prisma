@@ -1,5 +1,5 @@
 import {ConflictException, HttpStatus, Injectable, NotFoundException, NotImplementedException} from '@nestjs/common';
-import {CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto} from './dto/request/create-user.dto';
+import {CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateStaffUserDto} from './dto/request/create-user.dto';
 import {UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto} from './dto/request/update-user.dto';
 import {UserRepository} from "./user.repository";
 import {ApiResponseDto, Token} from "../../core/generics/api-response.dto";
@@ -12,6 +12,7 @@ import { FacilityService } from 'src/facility/facility.service';
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
 import { deleteQueryDepartment, deleteQueryDevice, deleteQueryFacility } from './dto/request/user-queries-dto';
+import { AssignRoleDto } from 'src/roles/dto/Request/assigne-role.dto';
 
 // import {usersCreateInput} from '../prisma/prisma.service'
 
@@ -168,6 +169,79 @@ export class UserService {
   //#region Staff Related APIs
 
   //#region Staff CRUD - C
+  async createStaffUser(createStaffUserDto: CreateStaffUserDto, token: Token) {
+    try{
+      const { id } = token
+      const { firstname, address, email, roleid, lastname, phonenumber } = createStaffUserDto
+      const existingUser = await this.userRepository.findUserByEmail(createStaffUserDto.email)
+      if(existingUser){
+        throw new ConflictException("User already exist")
+      }
+      const password = await this.passwordGenerator()
+      // const password = createUserDto.passwordhash
+      const salt = await bcrypt.genSalt()
+      const hashedPassword = await bcrypt.hash(password,salt)
+      const model = {
+        firstname:firstname,
+        lastname: lastname,
+        address: address,
+        email: email,
+        phonenumber:phonenumber,
+        passwordhash: hashedPassword,
+        is_active: true,
+        is_deleted: false,
+        createdby: id,
+        updatedby: id,
+      date_created: new Date(),
+        date_updated: new Date()
+      }
+      const user = await this.userRepository.createUser(model)
+      if(!user){
+        throw new NotImplementedException("Cannot Create User")
+      }
+      const roleDto: AssignRoleDto = {
+          userid: user.userid.toString(),
+          roleid: roleid.toString()
+      }
+
+      await this.roleService.assignRoletoUser(roleDto)
+      
+      // if(rolename == 'OrganizationAdmin') {
+      //   const orgAdminId = await this.roleService.findRoleByName('OrganizationAdmin')
+      //   await this.roleService.createUserRole({userid: user.userid, roleid: orgAdminId.roleid})
+      // } else if(rolename == 'FacilityAdmin') {
+      //   const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin')
+      //   await this.roleService.createUserRole({ userid: user.userid, roleid: facilityAdminId.roleid })
+      // } else if(rolename == 'DepartmentAdmin') {
+      //   const depAdminId = await this.roleService.findRoleByName('DepartmentAdmin')
+      //   await this.roleService.createUserRole({ userid: user.userid, roleid: depAdminId.roleid })
+      // } else if(rolename == 'DeviceAdmin') {
+      //   const deviceAdminId = await this.roleService.findRoleByName('DeviceAdmin')
+      //   await this.roleService.createUserRole({ userid: user.userid, roleid: deviceAdminId.roleid })
+      // } else if(rolename == 'FacilityUser') {      
+      //   const facilityUserId = await this.roleService.findRoleByName('FacilityUser')
+      //   await this.roleService.createUserRole({ userid: user.userid, roleid: facilityUserId.roleid })      
+      // } else if(rolename == 'DepartmentUser') {      
+      //   const facilityUserId = await this.roleService.findRoleByName('DepartmentUser')
+      //   await this.roleService.createUserRole({ userid: user.userid, roleid: facilityUserId.roleid })      
+      // }
+
+       // const email = await this.emailService.sendEmail('Welcome to NazTEC\'s Online System Access!','email.hbs',user.email, {userName:`${user.firstname} ${user.lastname}`,userPassword:password,userEmail:user.email})
+      // if(email.rejected.length > 0){
+      //   throw new NotImplementedException("Cannot Send email to user")
+      // }
+      const response:ApiResponseDto<ResponseUserDto> = {
+        statusCode:HttpStatus.OK,
+          message:"User Created Successfully",
+        data:user,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
   async createFacilityStaff(createFacilityAdminDto: CreateFacilityAdminDto, token: Token) {
     try {
       const { id } = token;
@@ -211,7 +285,7 @@ export class UserService {
 
         const response:ApiResponseDto<ResponseUserDto> = {
           statusCode:HttpStatus.OK,
-            message: is_admin ? "Facility Admin Created Successfully" : "Facility User Created Successfully",
+          message: is_admin ? "Facility Admin Created Successfully" : "Facility User Created Successfully",
           data:user,
           error:false
         }

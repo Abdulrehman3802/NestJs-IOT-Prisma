@@ -40,6 +40,16 @@ export declare class CreateDeviceAdminDto {
     deviceid: number;
     is_admin: boolean;
 }
+export declare class CreateStaffUserDto {
+    firstname: string;
+    lastname: string;
+    email: string;
+    address: string;
+    passwordhash: string;
+    phonenumber: string;
+    resettoken: string;
+    roleid: number;
+}
 export declare class ModelUserDto {
     firstname: string;
     lastname: string;

@@ -106,6 +106,31 @@ export class CreateDeviceAdminDto {
     is_admin: boolean;
 }
 
+export class CreateStaffUserDto {
+    @IsString()
+    firstname: string;
+    @IsString()
+    lastname: string;
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+    @IsString()
+    @IsOptional()
+    address: string;
+    @IsString()
+    @IsOptional()
+    passwordhash: string;
+    @IsOptional()
+    @IsString()
+    phonenumber: string;
+    @IsOptional()
+    @IsString()
+    resettoken:string
+    @IsNumber()
+    @IsNotEmpty()
+    roleid: number;
+}
+
 export class ModelUserDto {
     firstname: string;
     lastname: string;

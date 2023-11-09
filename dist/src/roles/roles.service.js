@@ -74,7 +74,8 @@ let RolesService = class RolesService {
     async findAll() {
         try {
             const allRoles = await this.rolesRepository.findAll();
-            const responseDtoArray = allRoles.map((role) => ({
+            const filteredRoles = allRoles.filter((role) => role.name !== 'SuperAdmin' && role.name !== 'OrganizationAdmin');
+            const responseDtoArray = filteredRoles.map((role) => ({
                 roleid: role.roleid,
                 name: role.name,
                 is_active: role.is_active,

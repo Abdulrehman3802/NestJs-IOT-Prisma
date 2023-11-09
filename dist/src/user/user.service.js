@@ -125,6 +125,52 @@ let UserService = class UserService {
     remove(id) {
         return `This action removes a #${id} user`;
     }
+    async createStaffUser(createStaffUserDto, token) {
+        try {
+            const { id } = token;
+            const { firstname, address, email, roleid, lastname, phonenumber } = createStaffUserDto;
+            const existingUser = await this.userRepository.findUserByEmail(createStaffUserDto.email);
+            if (existingUser) {
+                throw new common_1.ConflictException("User already exist");
+            }
+            const password = await this.passwordGenerator();
+            const salt = await bcrypt.genSalt();
+            const hashedPassword = await bcrypt.hash(password, salt);
+            const model = {
+                firstname: firstname,
+                lastname: lastname,
+                address: address,
+                email: email,
+                phonenumber: phonenumber,
+                passwordhash: hashedPassword,
+                is_active: true,
+                is_deleted: false,
+                createdby: id,
+                updatedby: id,
+                date_created: new Date(),
+                date_updated: new Date()
+            };
+            const user = await this.userRepository.createUser(model);
+            if (!user) {
+                throw new common_1.NotImplementedException("Cannot Create User");
+            }
+            const roleDto = {
+                userid: user.userid.toString(),
+                roleid: roleid.toString()
+            };
+            await this.roleService.assignRoletoUser(roleDto);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "User Created Successfully",
+                data: user,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async createFacilityStaff(createFacilityAdminDto, token) {
         try {
             const { id } = token;

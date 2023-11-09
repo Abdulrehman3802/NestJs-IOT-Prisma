@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateUserDto} from './dto/request/create-user.dto';
+import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateStaffUserDto, CreateUserDto} from './dto/request/create-user.dto';
 import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto } from './dto/request/update-user.dto';
 import { JwtAuthGuard, RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
 import { Permission } from 'core/generics/Guards/PermissionDecorator';
@@ -40,6 +40,11 @@ export class UserController {
     return this.userService.findUnAssignedUsers();
   }
 
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('findAdmins')
+  findAllAdmins(@Query() query: findQuery) {
+    return this.userService.findAdmins(query.name);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
@@ -65,6 +70,16 @@ export class UserController {
   //#region Staff
 
   //#region Staff CRUD - C
+  @Permission(Category.USER, PermissionType.CREATE)
+  @Post('/create/createUserStaff')
+  createUserStaff(
+    @Req() req: RequestWithUser,
+    @Body() createStaffUserDto: CreateStaffUserDto
+    ) {
+    const token = req.token
+    return this.userService.createStaffUser(createStaffUserDto, token);
+  }
+
   @Permission(Category.USER, PermissionType.CREATE)
   @Post('/create/facilityAdmin')
   createFacilityStaff(
@@ -97,11 +112,7 @@ export class UserController {
   //#endregion 
   
   //#region Staff CRUD - R
-  @Permission(Category.USER, PermissionType.CREATE)
-  @Get('findAdmins')
-  findAllAdmins(@Query() query: findQuery) {
-    return this.userService.findAdmins(query.name);
-  }
+ 
   //#endregion
 
   //#region Staff CRUD - U

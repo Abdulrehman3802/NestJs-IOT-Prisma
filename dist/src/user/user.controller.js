@@ -35,6 +35,9 @@ let UserController = class UserController {
     findUnAssignedUsers() {
         return this.userService.findUnAssignedUsers();
     }
+    findAllAdmins(query) {
+        return this.userService.findAdmins(query.name);
+    }
     findOne(id) {
         return this.userService.findOne(+id);
     }
@@ -43,6 +46,10 @@ let UserController = class UserController {
     }
     remove(id) {
         return this.userService.remove(+id);
+    }
+    createUserStaff(req, createStaffUserDto) {
+        const token = req.token;
+        return this.userService.createStaffUser(createStaffUserDto, token);
     }
     createFacilityStaff(req, createFacilityAdminDto) {
         const token = req.token;
@@ -55,9 +62,6 @@ let UserController = class UserController {
     createDeviceStaff(req, createDeviceAdminDto) {
         const token = req.token;
         return this.userService.createDeviceStaff(createDeviceAdminDto, token);
-    }
-    findAllAdmins(query) {
-        return this.userService.findAdmins(query.name);
     }
     updateFacilityStaff(updateFacilityDto) {
         return this.userService.updateFacilityStaff(updateFacilityDto);
@@ -101,6 +105,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findUnAssignedUsers", null);
 __decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('findAdmins'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllAdmins", null);
+__decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -122,6 +134,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "remove", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.CREATE),
+    (0, common_1.Post)('/create/createUserStaff'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, create_user_dto_1.CreateStaffUserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "createUserStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.CREATE),
     (0, common_1.Post)('/create/facilityAdmin'),
@@ -149,14 +170,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, create_user_dto_1.CreateDeviceAdminDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "createDeviceStaff", null);
-__decorate([
-    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.CREATE),
-    (0, common_1.Get)('findAdmins'),
-    __param(0, (0, common_1.Query)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_queries_dto_1.findQuery]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "findAllAdmins", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
     (0, common_1.Patch)('/updateFacilityStaff'),

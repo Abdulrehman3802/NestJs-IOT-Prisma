@@ -1,4 +1,4 @@
-import { CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto } from './dto/request/create-user.dto';
+import { CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateStaffUserDto } from './dto/request/create-user.dto';
 import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto } from './dto/request/update-user.dto';
 import { UserRepository } from "./user.repository";
 import { ApiResponseDto, Token } from "../../core/generics/api-response.dto";
@@ -25,6 +25,7 @@ export declare class UserService {
     findOne(id: number): Promise<ApiResponseDto<ResponseUserDto>>;
     update(id: number, updateUserDto: UpdateUserDto): string;
     remove(id: number): string;
+    createStaffUser(createStaffUserDto: CreateStaffUserDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createFacilityStaff(createFacilityAdminDto: CreateFacilityAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDepartmentStaff(createDepartmentAdminDto: CreateDepartmentAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDeviceStaff(createDeviceAdminDto: CreateDeviceAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;

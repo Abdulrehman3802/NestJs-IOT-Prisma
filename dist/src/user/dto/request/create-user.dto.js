@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModelUserDto = exports.CreateDeviceAdminDto = exports.CreateDepartmentAdminDto = exports.CreateFacilityAdminDto = exports.CreateUserDto = void 0;
+exports.ModelUserDto = exports.CreateStaffUserDto = exports.CreateDeviceAdminDto = exports.CreateDepartmentAdminDto = exports.CreateFacilityAdminDto = exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
 }
@@ -185,6 +185,47 @@ __decorate([
     __metadata("design:type", Boolean)
 ], CreateDeviceAdminDto.prototype, "is_admin", void 0);
 exports.CreateDeviceAdminDto = CreateDeviceAdminDto;
+class CreateStaffUserDto {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "firstname", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "lastname", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "address", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "passwordhash", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "phonenumber", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateStaffUserDto.prototype, "resettoken", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateStaffUserDto.prototype, "roleid", void 0);
+exports.CreateStaffUserDto = CreateStaffUserDto;
 class ModelUserDto {
 }
 exports.ModelUserDto = ModelUserDto;
