@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findQuery = exports.ModelUserDto = exports.CreateDeviceAdminDto = exports.CreateDepartmentAdminDto = exports.CreateFacilityAdminDto = exports.CreateUserDto = void 0;
+exports.ModelUserDto = exports.CreateDeviceAdminDto = exports.CreateDepartmentAdminDto = exports.CreateFacilityAdminDto = exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
 }
@@ -188,7 +188,4 @@ exports.CreateDeviceAdminDto = CreateDeviceAdminDto;
 class ModelUserDto {
 }
 exports.ModelUserDto = ModelUserDto;
-class findQuery {
-}
-exports.findQuery = findQuery;
 //# sourceMappingURL=create-user.dto.js.map

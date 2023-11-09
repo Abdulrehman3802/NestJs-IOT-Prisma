@@ -1,4 +1,4 @@
-import {IsString, IsOptional, IsArray, IsEmail, IsNotEmpty, IsNumber, IsBoolean} from 'class-validator';
+import {IsString, IsOptional, IsEmail, IsNotEmpty, IsNumber, IsBoolean} from 'class-validator';
 
 export class CreateUserDto {
     @IsString()
@@ -117,9 +117,5 @@ export class ModelUserDto {
     is_deleted: boolean;
     date_created: Date;
     date_updated: Date;
-}
-
-export class findQuery {
-    name: string;
 }
 

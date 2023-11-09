@@ -52,6 +52,3 @@ export declare class ModelUserDto {
     date_created: Date;
     date_updated: Date;
 }
-export declare class findQuery {
-    name: string;
-}

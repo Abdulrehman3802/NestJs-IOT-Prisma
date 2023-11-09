@@ -71,6 +71,36 @@ let UserService = class UserService {
             throw error;
         }
     }
+    async findUnAssignedUsers() {
+        try {
+            let users = await this.userRepository.findAllUserForStaff();
+            const organizationStaff = await this.userRepository.findAllOrganizationStaff();
+            const facilityStaff = await this.userRepository.findAllFacilityStaff();
+            const departmentStaff = await this.userRepository.findAllDepartmentStaff();
+            const deviceStaff = await this.userRepository.findAllDeviceStaff();
+            let excludedObjects = [];
+            for (let user of users) {
+                let userId = user.userid;
+                if (organizationStaff.some((staff) => staff.userid === userId) ||
+                    facilityStaff.some((staff) => staff.userid === userId) ||
+                    departmentStaff.some((staff) => staff.userid === userId) ||
+                    deviceStaff.some((staff) => staff.userid === userId)) {
+                    excludedObjects.push(user);
+                }
+            }
+            const finalArray = users.filter((user) => !excludedObjects.includes(user));
+            const response = {
+                statusCode: common_1.HttpStatus.FOUND,
+                message: "User Found Successfully",
+                data: finalArray,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async findOne(id) {
         try {
             const user = await this.userRepository.findUser(id);
@@ -329,6 +359,57 @@ let UserService = class UserService {
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Device Staff Updated Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async deleteFacilityStaff(query) {
+        try {
+            const { userid, facilityid } = query;
+            const recordToRemove = await this.userRepository.findFacilityStaff(Number(userid), Number(facilityid));
+            await this.userRepository.unAssignStaffFromFacility(recordToRemove.facilityuserid);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Facility Staff Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async deleteDepartmentStaff(query) {
+        try {
+            const { userid, departmentid } = query;
+            const recordToRemove = await this.userRepository.findDepartmentStaff(Number(userid), Number(departmentid));
+            await this.userRepository.unAssignStaffFromDepartment(recordToRemove.departmentuserid);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Department Staff Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async deleteDeviceStaff(query) {
+        try {
+            const { userid, deviceid } = query;
+            const recordToRemove = await this.userRepository.findDeviceStaff(Number(userid), Number(deviceid));
+            await this.userRepository.unAssignStaffFromDevice(recordToRemove.deviceuserid);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Device Staff Deleted Successfully!",
                 data: null,
                 error: false
             };

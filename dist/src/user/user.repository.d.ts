@@ -84,6 +84,70 @@ export declare class UserRepository {
         date_updated: Date;
         resettoken: string;
     }[]>;
+    findAllUserForStaff(): Promise<({
+        userroles: ({
+            roles: {
+                name: string;
+            };
+        } & {
+            userroleid: number;
+            roleid: number;
+            userid: number;
+        })[];
+    } & {
+        userid: number;
+        firstname: string;
+        lastname: string;
+        email: string;
+        address: string;
+        passwordhash: string;
+        phonenumber: string;
+        createdby: number;
+        updatedby: number;
+        is_active: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        resettoken: string;
+    })[]>;
+    updateUser(id: number, body: UpdateUserDto): Promise<{
+        userid: number;
+        firstname: string;
+        lastname: string;
+        email: string;
+        address: string;
+        passwordhash: string;
+        phonenumber: string;
+        createdby: number;
+        updatedby: number;
+        is_active: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        resettoken: string;
+    }>;
+    deleteUser(id: number): Promise<{
+        userid: number;
+        firstname: string;
+        lastname: string;
+        email: string;
+        address: string;
+        passwordhash: string;
+        phonenumber: string;
+        createdby: number;
+        updatedby: number;
+        is_active: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        resettoken: string;
+    }>;
+    findAllOrganizationStaff(): Promise<{
+        organizationuserid: number;
+        customerid: number;
+        userid: number;
+        is_admin: boolean;
+    }[]>;
     findAllFacilityAdmins(): Promise<({
         facilities: {
             facilityid: number;
@@ -132,6 +196,12 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
+    findAllFacilityStaff(): Promise<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }[]>;
     findAllDepartmentAdmins(): Promise<({
         departments: {
             departmentid: number;
@@ -169,7 +239,29 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
+    findAllDepartmentStaff(): Promise<{
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    }[]>;
     findAllDeviceAdmins(): Promise<({
+        devices: {
+            deviceid: number;
+            devicename: string;
+            departmentid: number;
+            devicetype: string;
+            manufacturer: string;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            customerid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+        };
         users: {
             userid: number;
             firstname: string;
@@ -192,51 +284,13 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
-    deleteUser(id: number): Promise<{
+    findAllDeviceStaff(): Promise<{
+        deviceuserid: number;
+        deviceid: number;
         userid: number;
-        firstname: string;
-        lastname: string;
-        email: string;
-        address: string;
-        passwordhash: string;
-        phonenumber: string;
-        createdby: number;
-        updatedby: number;
-        is_active: boolean;
-        is_deleted: boolean;
-        date_created: Date;
-        date_updated: Date;
-        resettoken: string;
-    }>;
-    updateUser(id: number, body: UpdateUserDto): Promise<{
-        userid: number;
-        firstname: string;
-        lastname: string;
-        email: string;
-        address: string;
-        passwordhash: string;
-        phonenumber: string;
-        createdby: number;
-        updatedby: number;
-        is_active: boolean;
-        is_deleted: boolean;
-        date_created: Date;
-        date_updated: Date;
-        resettoken: string;
-    }>;
+        is_admin: boolean;
+    }[]>;
     findFacilityStaff(userid: number, facilityid: number): Promise<{
-        facilityuserid: number;
-        facilityid: number;
-        userid: number;
-        is_admin: boolean;
-    }>;
-    unAssignStaffFromFacility(facilityuserid: number): Promise<{
-        facilityuserid: number;
-        facilityid: number;
-        userid: number;
-        is_admin: boolean;
-    }>;
-    makeFacilityAdminOrUser(facilityuserid: number, is_admin: boolean): Promise<{
         facilityuserid: number;
         facilityid: number;
         userid: number;
@@ -248,15 +302,27 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     }>;
-    unAssignStaffFromDepartment(departmentuserid: number): Promise<{
-        departmentuserid: number;
-        departmentid: number;
-        userid: number;
-        is_admin: boolean;
-    }>;
     findDeviceStaff(userid: number, deviceid: number): Promise<{
         deviceuserid: number;
         deviceid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    makeFacilityAdminOrUser(facilityuserid: number, is_admin: boolean): Promise<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    unAssignStaffFromFacility(facilityuserid: number): Promise<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    unAssignStaffFromDepartment(departmentuserid: number): Promise<{
+        departmentuserid: number;
+        departmentid: number;
         userid: number;
         is_admin: boolean;
     }>;

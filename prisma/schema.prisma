@@ -20,29 +20,6 @@ model alertnotifications {
   staff                  staff     @relation(fields: [staffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model alerts {
-  alertid                            Int               @id @default(autoincrement())
-  sensorid                           Int
-  alerttype                          String            @db.VarChar(50)
-  readingvalue                       Decimal           @db.Decimal(10, 2)
-  timestamp                          DateTime?         @db.Timestamp(6)
-  acknowledgedby                     Int?
-  escalatedto                        Int?
-  isgatewayfailurealert              Boolean?
-  staff_alerts_acknowledgedbyTostaff staff?            @relation("alerts_acknowledgedbyTostaff", fields: [acknowledgedby], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
-  staff_alerts_escalatedtoTostaff    staff?            @relation("alerts_escalatedtoTostaff", fields: [escalatedto], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
-  sensors                            sensors           @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
-  alertstatus                        alertstatus?
-  escalationstatus                   escalationstatus?
-}
-
-model alertstatus {
-  alertid         Int       @id @default(autoincrement())
-  status          String?   @db.VarChar(50)
-  statustimestamp DateTime? @db.Timestamp(6)
-  alerts          alerts    @relation(fields: [alertid], references: [alertid], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model customers {
   customerid                        Int                     @id @default(autoincrement())
   customername                      String                  @db.VarChar(100)
@@ -70,13 +47,6 @@ model customers {
   sensors                           sensors[]
 }
 
-model departmentdashboard {
-  departmentdashboardid Int         @id @default(autoincrement())
-  departmentid          Int
-  isCard                Boolean?
-  departments           departments @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model departments {
   departmentid                        Int                   @id @default(autoincrement())
   departmentname                      String                @db.VarChar(100)
@@ -98,22 +68,6 @@ model departments {
   departmentusers                     departmentusers[]
   devices                             devices[]
   staff                               staff[]
-}
-
-model departmentusers {
-  departmentuserid Int          @id @default(autoincrement())
-  departmentid     Int?
-  userid           Int?
-  is_admin         Boolean?
-  departments      departments? @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction)
-  users            users?       @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model devicedashboard {
-  devicedashboardid Int      @id @default(autoincrement())
-  deviceid          Int
-  isCard            Boolean?
-  devices           devices  @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model devices {
@@ -144,79 +98,11 @@ model devices {
   staffdeviceassignment           staffdeviceassignment[]
 }
 
-model deviceusers {
-  deviceuserid Int      @id @default(autoincrement())
-  deviceid     Int?
-  userid       Int?
-  is_admin     Boolean?
-  devices      devices? @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
-  users        users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model escalationlevels {
   levelid          Int                @id @default(autoincrement())
   levelname        String?            @db.VarChar(50)
   description      String?
   escalationstatus escalationstatus[]
-}
-
-model escalationstatus {
-  alertid                 Int               @id @default(autoincrement())
-  levelid                 Int?
-  staffid                 Int?
-  lastescalationtimestamp DateTime?         @db.Timestamp(6)
-  alerts                  alerts            @relation(fields: [alertid], references: [alertid], onDelete: NoAction, onUpdate: NoAction)
-  escalationlevels        escalationlevels? @relation(fields: [levelid], references: [levelid], onDelete: NoAction, onUpdate: NoAction)
-  staff                   staff?            @relation(fields: [staffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model facilities {
-  facilityid                         Int                 @id @default(autoincrement())
-  name                               String?             @db.VarChar(255)
-  address                            String?             @db.VarChar(255)
-  contactname                        String?             @db.VarChar(255)
-  contactphonenumber                 String?             @db.VarChar(255)
-  email                              String?             @db.VarChar(255)
-  isfacilityadmin                    Boolean?
-  is_active                          Boolean?            @default(true)
-  is_deleted                         Boolean?            @default(false)
-  date_created                       DateTime?           @default(now()) @db.Timestamptz(6)
-  date_updated                       DateTime?           @default(now()) @db.Timestamptz(6)
-  customerid                         Int?
-  created_by                         Int
-  updated_by                         Int
-  facility_type                      String?             @db.VarChar(100)
-  street                             String?             @db.VarChar(100)
-  city                               String?             @db.VarChar(100)
-  postcode                           Int?
-  site_manager                       String?             @db.VarChar
-  longitude                          Int?
-  latitude                           Int?
-  timezone                           String?             @db.VarChar(100)
-  currency                           String?             @db.VarChar(100)
-  departments                        departments[]
-  devices                            devices[]
-  users_facilities_created_byTousers users               @relation("facilities_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_createdby_fkey")
-  customers                          customers?          @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
-  users_facilities_updated_byTousers users               @relation("facilities_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_updatedby_fkey")
-  facilitydashboard                  facilitydashboard[]
-  facilityusers                      facilityusers[]
-}
-
-model facilitydashboard {
-  facilitydashboardid Int        @id @default(autoincrement())
-  facilityid          Int
-  isCard              Boolean?
-  facilities          facilities @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model facilityusers {
-  facilityuserid Int         @id @default(autoincrement())
-  facilityid     Int?
-  userid         Int?
-  is_admin       Boolean?
-  facilities     facilities? @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
-  users          users?      @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model gatewayfailures {
@@ -246,22 +132,6 @@ model gateways {
   sensorgatewayassignment          sensorgatewayassignment[]
 }
 
-model organizationdashboard {
-  orgdashboardid Int       @id @default(autoincrement())
-  customerid     Int
-  isCard         Boolean?
-  customers      customers @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction, map: "dashboard_customerid_fkey")
-}
-
-model organizationusers {
-  organizationuserid Int        @id @default(autoincrement())
-  customerid         Int?
-  userid             Int?
-  is_admin           Boolean?
-  customers          customers? @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
-  users              users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model readings {
   readingid         Int      @id @default(autoincrement())
   sensorid          Int
@@ -275,14 +145,6 @@ model readings {
   sensors           sensors  @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model rolepermissions {
-  rolepermissionid Int     @id @default(autoincrement())
-  roleid           Int?
-  permissiontype   String? @db.VarChar(255)
-  permissionvalue  String? @db.VarChar(255)
-  roles            roles?  @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model roles {
   roleid          Int               @id @default(autoincrement())
   name            String?           @db.VarChar(255)
@@ -291,15 +153,6 @@ model roles {
   is_deleted      Boolean?          @default(false)
   rolepermissions rolepermissions[]
   userroles       userroles[]
-}
-
-model sensorgatewayassignment {
-  sensorid  Int      @default(autoincrement())
-  gatewayid Int
-  gateways  gateways @relation(fields: [gatewayid], references: [gatewayid], onDelete: NoAction, onUpdate: NoAction)
-  sensors   sensors  @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
-
-  @@id([sensorid, gatewayid])
 }
 
 model sensors {
@@ -312,7 +165,7 @@ model sensors {
   date_created            DateTime?                 @default(now()) @db.Timestamp(6)
   date_updated            DateTime?                 @default(now()) @db.Timestamp(6)
   assigned_by             Int?
-  sensorname              String?                   @db.VarChar
+  sensorname              String                    @db.VarChar
   alerts                  alerts[]
   readings                readings[]
   sensorgatewayassignment sensorgatewayassignment[]
@@ -375,12 +228,87 @@ model staffdeviceassignment {
   staff        staff?   @relation(fields: [staffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model userroles {
-  userroleid Int   @id @default(autoincrement())
-  roleid     Int
-  userid     Int
-  roles      roles @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
-  users      users @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+model alerts {
+  alertid                            Int               @id @default(autoincrement())
+  sensorid                           Int
+  alerttype                          String            @db.VarChar(50)
+  readingvalue                       Decimal           @db.Decimal(10, 2)
+  timestamp                          DateTime?         @db.Timestamp(6)
+  acknowledgedby                     Int?
+  escalatedto                        Int?
+  isgatewayfailurealert              Boolean?
+  staff_alerts_acknowledgedbyTostaff staff?            @relation("alerts_acknowledgedbyTostaff", fields: [acknowledgedby], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  staff_alerts_escalatedtoTostaff    staff?            @relation("alerts_escalatedtoTostaff", fields: [escalatedto], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  sensors                            sensors           @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
+  alertstatus                        alertstatus?
+  escalationstatus                   escalationstatus?
+}
+
+model alertstatus {
+  alertid         Int       @id @default(autoincrement())
+  status          String?   @db.VarChar(50)
+  statustimestamp DateTime? @db.Timestamp(6)
+  alerts          alerts    @relation(fields: [alertid], references: [alertid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model escalationstatus {
+  alertid                 Int               @id @default(autoincrement())
+  levelid                 Int?
+  staffid                 Int?
+  lastescalationtimestamp DateTime?         @db.Timestamp(6)
+  alerts                  alerts            @relation(fields: [alertid], references: [alertid], onDelete: NoAction, onUpdate: NoAction)
+  escalationlevels        escalationlevels? @relation(fields: [levelid], references: [levelid], onDelete: NoAction, onUpdate: NoAction)
+  staff                   staff?            @relation(fields: [staffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model facilities {
+  facilityid                         Int                 @id @default(autoincrement())
+  name                               String?             @db.VarChar(255)
+  address                            String?             @db.VarChar(255)
+  contactname                        String?             @db.VarChar(255)
+  contactphonenumber                 String?             @db.VarChar(255)
+  email                              String?             @db.VarChar(255)
+  isfacilityadmin                    Boolean?
+  is_active                          Boolean?            @default(true)
+  is_deleted                         Boolean?            @default(false)
+  date_created                       DateTime?           @default(now()) @db.Timestamptz(6)
+  date_updated                       DateTime?           @default(now()) @db.Timestamptz(6)
+  customerid                         Int?
+  created_by                         Int
+  updated_by                         Int
+  longitude                          Int?
+  latitude                           Int?
+  facility_type                      String?             @db.VarChar(100)
+  street                             String?             @db.VarChar(100)
+  city                               String?             @db.VarChar(100)
+  postcode                           Int?
+  site_manager                       String?             @db.VarChar(100)
+  timezone                           String?             @db.VarChar(100)
+  currency                           String?             @db.VarChar(100)
+  departments                        departments[]
+  devices                            devices[]
+  users_facilities_created_byTousers users               @relation("facilities_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_createdby_fkey")
+  customers                          customers?          @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
+  users_facilities_updated_byTousers users               @relation("facilities_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_updatedby_fkey")
+  facilitydashboard                  facilitydashboard[]
+  facilityusers                      facilityusers[]
+}
+
+model rolepermissions {
+  rolepermissionid Int     @id @default(autoincrement())
+  roleid           Int?
+  permissiontype   String? @db.VarChar(255)
+  permissionvalue  String? @db.VarChar(255)
+  roles            roles?  @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model sensorgatewayassignment {
+  sensorid  Int      @default(autoincrement())
+  gatewayid Int
+  gateways  gateways @relation(fields: [gatewayid], references: [gatewayid], onDelete: NoAction, onUpdate: NoAction)
+  sensors   sensors  @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([sensorid, gatewayid])
 }
 
 model users {
@@ -417,4 +345,76 @@ model users {
   staff_staff_created_byTousers             staff[]             @relation("staff_created_byTousers")
   staff_staff_updated_byTousers             staff[]             @relation("staff_updated_byTousers")
   userroles                                 userroles[]
+}
+
+model userroles {
+  userroleid Int   @id @default(autoincrement())
+  roleid     Int
+  userid     Int
+  roles      roles @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
+  users      users @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model departmentusers {
+  departmentuserid Int          @id @default(autoincrement())
+  departmentid     Int?
+  userid           Int?
+  is_admin         Boolean?
+  departments      departments? @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction)
+  users            users?       @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model facilityusers {
+  facilityuserid Int         @id @default(autoincrement())
+  facilityid     Int?
+  userid         Int?
+  is_admin       Boolean?
+  facilities     facilities? @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
+  users          users?      @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model organizationusers {
+  organizationuserid Int        @id @default(autoincrement())
+  customerid         Int?
+  userid             Int?
+  is_admin           Boolean?
+  customers          customers? @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
+  users              users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model deviceusers {
+  deviceuserid Int      @id @default(autoincrement())
+  deviceid     Int?
+  userid       Int?
+  is_admin     Boolean?
+  devices      devices? @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
+  users        users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model departmentdashboard {
+  departmentdashboardid Int         @id @default(autoincrement())
+  departmentid          Int
+  isCard                Boolean?
+  departments           departments @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model devicedashboard {
+  devicedashboardid Int      @id @default(autoincrement())
+  deviceid          Int
+  isCard            Boolean?
+  devices           devices  @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model facilitydashboard {
+  facilitydashboardid Int        @id @default(autoincrement())
+  facilityid          Int
+  isCard              Boolean?
+  facilities          facilities @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model organizationdashboard {
+  orgdashboardid Int       @id @default(autoincrement())
+  customerid     Int
+  isCard         Boolean?
+  customers      customers @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction, map: "dashboard_customerid_fkey")
 }

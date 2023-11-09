@@ -1,16 +1,22 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateUserDto, findQuery } from './dto/request/create-user.dto';
+import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateUserDto} from './dto/request/create-user.dto';
 import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto } from './dto/request/update-user.dto';
 import { JwtAuthGuard, RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
 import { Permission } from 'core/generics/Guards/PermissionDecorator';
 import { Category, PermissionType } from 'core/generics/Enums/GeneralEnums';
+import { deleteQueryDepartment, deleteQueryDevice, deleteQueryFacility, findQuery } from './dto/request/user-queries-dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
+  //#region Constructor
   constructor(private readonly userService: UserService) {}
+  //#endregion
 
+  //#region User
+
+  //#region User CRUD - C
   @Permission(Category.USER, PermissionType.CREATE)
   @Post('/create')
   create(
@@ -20,10 +26,48 @@ export class UserController {
       const token = req.token
     return this.userService.create(createUserDto, token);
   }
-  
+    //#endregion
+
+  //#region User CRUD - R
+  @Get()
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('unassignedUsers')
+  findUnAssignedUsers() {
+    return this.userService.findUnAssignedUsers();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
+  }
+  //#endregion
+
+  //#region User CRUD - U  
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+id, updateUserDto);
+  }
+  //#endregion
+
+  //#region User CRUD - D
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.userService.remove(+id);
+  }
+  //#endregion 
+
+  //#endregion
+
+  //#region Staff
+
+  //#region Staff CRUD - C
   @Permission(Category.USER, PermissionType.CREATE)
   @Post('/create/facilityAdmin')
-  createFacilityAdmin(
+  createFacilityStaff(
     @Req() req: RequestWithUser,
     @Body() createFacilityAdminDto: CreateFacilityAdminDto
     ) {
@@ -50,7 +94,17 @@ export class UserController {
     const token = req.token
     return this.userService.createDeviceStaff(createDeviceAdminDto, token);
   }
+  //#endregion 
+  
+  //#region Staff CRUD - R
+  @Permission(Category.USER, PermissionType.CREATE)
+  @Get('findAdmins')
+  findAllAdmins(@Query() query: findQuery) {
+    return this.userService.findAdmins(query.name);
+  }
+  //#endregion
 
+  //#region Staff CRUD - U
   @Permission(Category.USER, PermissionType.UPDATE)
   @Patch('/updateFacilityStaff')
   updateFacilityStaff(@Body() updateFacilityDto: UpdateFacilityAdminDto) {
@@ -68,29 +122,27 @@ export class UserController {
   updateDeviceStaff(@Body() updateDeviceDto: UpdateDeviceAdminDto) {
     return this.userService.updateDeviceStaff(updateDeviceDto);
   }
+  //#endregion
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  //#region Staff CRUD - D
+  @Permission(Category.USER, PermissionType.DELETE)
+  @Delete('/deleteFacilityStaff')
+  deleteFacilityStaff(@Query() query: deleteQueryFacility) {
+    return this.userService.deleteFacilityStaff(query);
   }
 
-  @Get('findAdmins')
-  findAllAdmins(@Query() query: findQuery) {
-    return this.userService.findAdmins(query.name);
+  @Permission(Category.USER, PermissionType.DELETE)
+  @Delete('/deleteDepartmentStaff')
+  deleteDepartmentStaff(@Query() query: deleteQueryDepartment) {
+    return this.userService.deleteDepartmentStaff(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Permission(Category.USER, PermissionType.DELETE)
+  @Delete('/deleteDeviceStaff')
+  deleteDeviceStaff(@Query() query: deleteQueryDevice) {
+    return this.userService.deleteDeviceStaff(query);
   }
+  //#endregion
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
+  //#endregion
 }

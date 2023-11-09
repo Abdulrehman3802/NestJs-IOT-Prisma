@@ -11,11 +11,13 @@ import { RolesService } from 'src/roles/roles.service';
 import { FacilityService } from 'src/facility/facility.service';
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
+import { deleteQueryDepartment, deleteQueryDevice, deleteQueryFacility } from './dto/request/user-queries-dto';
 
 // import {usersCreateInput} from '../prisma/prisma.service'
 
 @Injectable()
 export class UserService {
+  //#region Constructor
   constructor(
       private readonly userRepository:UserRepository,
       private readonly configService:ConfigService,
@@ -26,6 +28,11 @@ export class UserService {
       private readonly emailService:EmailService
   ) {
   }
+  //#endregion
+
+  //#region User
+
+  //#region User CRUD - C
   async create(createUserDto: CreateUserDto, token: Token) {
     try{
       const { id } = token
@@ -66,7 +73,9 @@ export class UserService {
       throw error
     }
   }
+  //#endregion
 
+  //#region User CRUD - R
   async findAll() {
     try{
       const users = await this.userRepository.findAllUser()
@@ -74,6 +83,47 @@ export class UserService {
         statusCode:HttpStatus.FOUND,
         message:"User Found Successfully",
         data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
+  async findUnAssignedUsers() {
+    try{
+      let users = await this.userRepository.findAllUserForStaff()
+
+      const organizationStaff = await this.userRepository.findAllOrganizationStaff()
+ 
+      const facilityStaff = await this.userRepository.findAllFacilityStaff()
+
+      const departmentStaff = await this.userRepository.findAllDepartmentStaff()
+
+      const deviceStaff = await this.userRepository.findAllDeviceStaff()
+
+      let excludedObjects = [];
+
+    for (let user of users) {
+      let userId = user.userid;
+
+      if (
+        organizationStaff.some((staff) => staff.userid === userId) ||
+        facilityStaff.some((staff) => staff.userid === userId) ||
+        departmentStaff.some((staff) => staff.userid === userId) ||
+        deviceStaff.some((staff) => staff.userid === userId)
+      ) {
+        excludedObjects.push(user);
+      }
+    }
+
+    const finalArray = users.filter((user) => !excludedObjects.includes(user));
+
+      const response:ApiResponseDto<ResponseUserDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"User Found Successfully",
+        data: finalArray,
         error:false
       }
       return response
@@ -99,16 +149,25 @@ export class UserService {
       throw error
     }
   }
+  //#endregion
 
+  //#region User CRUD - U
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
+  //#endregion
 
+  //#region User CRUD - D 
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+  //#endregion 
 
-  // Staff Related APIs
+  //#endregion
+
+  //#region Staff Related APIs
+
+  //#region Staff CRUD - C
   async createFacilityStaff(createFacilityAdminDto: CreateFacilityAdminDto, token: Token) {
     try {
       const { id } = token;
@@ -261,6 +320,9 @@ export class UserService {
     }
   }
 
+  //#endregion
+
+  //#region Staff CRUD - R
   async findAdmins(query: string) {
     try{
       let users: ResponseAdminDto[];
@@ -284,7 +346,9 @@ export class UserService {
       throw error
     }
   }
-
+  //#endregion
+  
+  //#region Staff CRUD - U 
   async updateFacilityStaff(updateFacilityAdminDto: UpdateFacilityAdminDto) {
     try{
       const { userid, address, facilityid, firstname, lastname, is_admin, phonenumber } = updateFacilityAdminDto
@@ -374,6 +438,67 @@ export class UserService {
       throw error;
     }
   }
+  //#endregion 
+
+  //#region Staff CRUD - D
+  async deleteFacilityStaff(query: deleteQueryFacility) {
+    try{
+      const { userid, facilityid} = query
+
+      const recordToRemove = await this.userRepository.findFacilityStaff(Number(userid), Number(facilityid));
+      await this.userRepository.unAssignStaffFromFacility(recordToRemove.facilityuserid);
+      
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Facility Staff Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteDepartmentStaff(query: deleteQueryDepartment) {
+    try{
+      const { userid, departmentid } = query
+      const recordToRemove = await this.userRepository.findDepartmentStaff(Number(userid), Number(departmentid));
+      await this.userRepository.unAssignStaffFromDepartment(recordToRemove.departmentuserid);
+      
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Department Staff Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteDeviceStaff(query: deleteQueryDevice) {
+    try{
+      const { userid, deviceid } = query
+      const recordToRemove = await this.userRepository.findDeviceStaff(Number(userid), Number(deviceid));
+      await this.userRepository.unAssignStaffFromDevice(recordToRemove.deviceuserid);
+      
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "Device Staff Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+  //#endregion
+
+  //#endregion
+
   // This is a function for generating password used when super admin created and guard are done.
   async passwordGenerator (){
     let length = 12,

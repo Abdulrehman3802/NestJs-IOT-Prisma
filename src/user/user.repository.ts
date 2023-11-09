@@ -5,15 +5,24 @@ import { ModelUserDto} from "./dto/request/create-user.dto";
 
 @Injectable()
 export class UserRepository{
+    //#region Constructor
     constructor(private readonly prismaService:PrismaService) {
     }
+    //#endregion
+
+    //#region User 
+
+    //#region User CRUD - C
     // Creation of user
     async createUser(model:ModelUserDto){
         return this.prismaService.users.create({
             data:model
         })
     }
-// Find One user using id
+    //#endregion
+
+    //#region User CRUD - R
+    // Find One user using id
     async findUser(id:number){
         return this.prismaService.users.findFirst({
             where:{
@@ -32,7 +41,7 @@ export class UserRepository{
             }
         })
     }
-// find user by reset toke for resetting password
+    // find user by reset toke for resetting password
     async findUserByToken(token:string){
         return this.prismaService.users.findFirst({
             where:{
@@ -48,6 +57,63 @@ export class UserRepository{
                 is_deleted:false
             }
         })
+    }
+
+    async findAllUserForStaff(){
+        return this.prismaService.users.findMany({
+            where:{
+                is_deleted:false
+            },
+            include: {   
+                userroles: {
+                    include: {
+                        roles: {
+                            select: {
+                                name: true,
+                            }
+                        }
+                    }
+                }
+            },
+        })
+    }
+    //#endregion
+
+    //#region User CRUD - U
+    // Update user password , reset token etc.
+    async updateUser(id:number,body:UpdateUserDto){
+        return this.prismaService.users.update({
+            where:{
+                userid:id,
+            },
+            data:{
+                ...body,
+                date_updated: new Date()
+            },
+
+        })
+    }
+    //#endregion
+
+    //#region User CRUD - D
+    // For deleting user not use till
+    async deleteUser(id:number){
+        return this.prismaService.users.delete({
+            where:{
+                userid:id
+            }
+        })
+    }
+    //#endregion
+
+    //#endregion
+
+    //#region Staff
+
+    //#region Staff CRUD - R
+
+    async findAllOrganizationStaff(){
+        return this.prismaService.organizationusers.findMany()
     }
 
     async findAllFacilityAdmins(){
@@ -72,6 +138,10 @@ export class UserRepository{
         })
     }
 
+    async findAllFacilityStaff(){
+        return this.prismaService.facilityusers.findMany()
+    }
+
     async findAllDepartmentAdmins(){
         return this.prismaService.departmentusers.findMany({
             where:{
@@ -94,6 +164,10 @@ export class UserRepository{
         })
     }
 
+    async findAllDepartmentStaff(){
+        return this.prismaService.departmentusers.findMany()
+    }
+
     async findAllDeviceAdmins(){
         return this.prismaService.deviceusers.findMany({
             where:{
@@ -105,58 +179,27 @@ export class UserRepository{
                       is_deleted: false,
                       is_active: true
                     }
-                  }
+                  },
+                devices: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
             }
         })
     }
 
-// For deleting user not use till
-    async deleteUser(id:number){
-        return this.prismaService.users.delete({
-            where:{
-                userid:id
-            }
-        })
-    }
-// Update user password , reset token etc.
-    async updateUser(id:number,body:UpdateUserDto){
-        return this.prismaService.users.update({
-            where:{
-                userid:id,
-            },
-            data:{
-                ...body,
-                date_updated: new Date()
-            },
-
-        })
+    async findAllDeviceStaff(){
+        return this.prismaService.deviceusers.findMany()
     }
 
-    async findFacilityStaff(userid: number, facilityid: number) {
+    async findFacilityStaff(userid: number, facilityid: number) {      
         return this.prismaService.facilityusers.findFirstOrThrow({
             where: {
                 userid: userid,
-                facilityid: facilityid,
+                facilityid: facilityid
             },
-        });
-    }
-
-    async unAssignStaffFromFacility(facilityuserid: number){
-        return this.prismaService.facilityusers.delete({
-            where: {
-                facilityuserid: facilityuserid,
-            },
-        });
-    }
-
-    async makeFacilityAdminOrUser(facilityuserid: number, is_admin: boolean){
-        return this.prismaService.facilityusers.update({
-            where: {
-                facilityuserid: facilityuserid,
-            },
-            data: {
-                is_admin: is_admin
-            }
         });
     }
 
@@ -169,19 +212,43 @@ export class UserRepository{
         });
     }
 
-    async unAssignStaffFromDepartment(departmentuserid: number){
-        return this.prismaService.departmentusers.delete({
-            where: {
-                departmentuserid: departmentuserid,
-            },
-        });
-    }
-
     async findDeviceStaff(userid: number, deviceid: number) {
         return this.prismaService.deviceusers.findFirstOrThrow({
             where: {
                 userid: userid,
                 deviceid: deviceid,
+            },
+        });
+    }
+    //#endregion
+
+    // No use case right now
+    //#region Staff CRUD - U
+    async makeFacilityAdminOrUser(facilityuserid: number, is_admin: boolean){
+        return this.prismaService.facilityusers.update({
+            where: {
+                facilityuserid: facilityuserid,
+            },
+            data: {
+                is_admin: is_admin
+            }
+        });
+    }
+    //#endregion
+
+    //#region Staff CRUD - D
+    async unAssignStaffFromFacility(facilityuserid: number){
+        return this.prismaService.facilityusers.delete({
+            where: {
+                facilityuserid: facilityuserid,
+            },
+        });
+    }
+
+    async unAssignStaffFromDepartment(departmentuserid: number){
+        return this.prismaService.departmentusers.delete({
+            where: {
+                departmentuserid: departmentuserid,
             },
         });
     }
@@ -193,4 +260,7 @@ export class UserRepository{
             },
         });
     }
+    //#endregion
+
+    //#endregion
 }

@@ -9,6 +9,7 @@ import { RolesService } from 'src/roles/roles.service';
 import { FacilityService } from 'src/facility/facility.service';
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
+import { deleteQueryDepartment, deleteQueryDevice, deleteQueryFacility } from './dto/request/user-queries-dto';
 export declare class UserService {
     private readonly userRepository;
     private readonly configService;
@@ -20,6 +21,7 @@ export declare class UserService {
     constructor(userRepository: UserRepository, configService: ConfigService, roleService: RolesService, facilityService: FacilityService, departmentService: DepartmentService, deviceService: DeviceService, emailService: EmailService);
     create(createUserDto: CreateUserDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     findAll(): Promise<ApiResponseDto<ResponseUserDto[]>>;
+    findUnAssignedUsers(): Promise<ApiResponseDto<ResponseUserDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseUserDto>>;
     update(id: number, updateUserDto: UpdateUserDto): string;
     remove(id: number): string;
@@ -30,5 +32,8 @@ export declare class UserService {
     updateFacilityStaff(updateFacilityAdminDto: UpdateFacilityAdminDto): Promise<ApiResponseDto<null>>;
     updateDepartmentStaff(updateDepartmentAdminDto: UpdateDepartmentAdminDto): Promise<ApiResponseDto<null>>;
     updateDeviceStaff(updateDeviceAdminDto: UpdateDeviceAdminDto): Promise<ApiResponseDto<null>>;
+    deleteFacilityStaff(query: deleteQueryFacility): Promise<ApiResponseDto<null>>;
+    deleteDepartmentStaff(query: deleteQueryDepartment): Promise<ApiResponseDto<null>>;
+    deleteDeviceStaff(query: deleteQueryDevice): Promise<ApiResponseDto<null>>;
     passwordGenerator(): Promise<string>;
 }
