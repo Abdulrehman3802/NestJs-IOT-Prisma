@@ -21,50 +21,48 @@ model alertnotifications {
 }
 
 model customers {
-  customerid                        Int                     @id @default(autoincrement())
-  customername                      String                  @db.VarChar(100)
-  contactperson                     String                  @db.VarChar(100)
-  email                             String                  @db.VarChar(100)
-  phone                             String                  @db.VarChar(20)
-  address                           String                  @db.VarChar(100)
-  city                              String                  @db.VarChar(100)
-  is_active                         Boolean?                @default(true)
-  date_created                      DateTime?               @default(now()) @db.Timestamp(6)
-  date_updated                      DateTime?               @default(now()) @db.Timestamp(6)
-  is_deleted                        Boolean?                @default(false)
+  customerid                        Int                 @id @default(autoincrement())
+  customername                      String              @db.VarChar(100)
+  contactperson                     String              @db.VarChar(100)
+  email                             String              @db.VarChar(100)
+  phone                             String              @db.VarChar(20)
+  address                           String              @db.VarChar(100)
+  city                              String              @db.VarChar(100)
+  is_active                         Boolean?            @default(true)
+  date_created                      DateTime?           @default(now()) @db.Timestamp(6)
+  date_updated                      DateTime?           @default(now()) @db.Timestamp(6)
+  is_deleted                        Boolean?            @default(false)
   created_by                        Int
   updated_by                        Int
-  street                            String?                 @db.VarChar(100)
+  street                            String?             @db.VarChar(100)
   postcode                          Int?
-  users_customers_created_byTousers users                   @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
-  users_customers_updated_byTousers users                   @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
+  users_customers_created_byTousers users               @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
+  users_customers_updated_byTousers users               @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
   departments                       departments[]
   devices                           devices[]
   facilities                        facilities[]
   gateways                          gateways[]
-  organizationdashboard             organizationdashboard[]
   organizationusers                 organizationusers[]
   sensors                           sensors[]
 }
 
 model departments {
-  departmentid                        Int                   @id @default(autoincrement())
-  departmentname                      String                @db.VarChar(100)
+  departmentid                        Int               @id @default(autoincrement())
+  departmentname                      String            @db.VarChar(100)
   customerid                          Int
-  is_active                           Boolean?              @default(true)
-  date_created                        DateTime              @default(now()) @db.Timestamp(6)
-  date_updated                        DateTime?             @default(now()) @db.Timestamp(6)
-  is_deleted                          Boolean?              @default(false)
+  is_active                           Boolean?          @default(true)
+  date_created                        DateTime          @default(now()) @db.Timestamp(6)
+  date_updated                        DateTime?         @default(now()) @db.Timestamp(6)
+  is_deleted                          Boolean?          @default(false)
   facilityid                          Int
   created_by                          Int
   updated_by                          Int
-  email                               String                @db.VarChar(100)
-  description                         String?               @db.VarChar(100)
-  departmentdashboard                 departmentdashboard[]
-  users_departments_created_byTousers users                 @relation("departments_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_createdby_fkey")
-  customers                           customers             @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
-  facilities                          facilities            @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
-  users_departments_updated_byTousers users                 @relation("departments_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_updatedby_fkey")
+  email                               String            @db.VarChar(100)
+  description                         String?           @db.VarChar(100)
+  users_departments_created_byTousers users             @relation("departments_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_createdby_fkey")
+  customers                           customers         @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
+  facilities                          facilities        @relation(fields: [facilityid], references: [facilityid], onDelete: NoAction, onUpdate: NoAction)
+  users_departments_updated_byTousers users             @relation("departments_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_updatedby_fkey")
   departmentusers                     departmentusers[]
   devices                             devices[]
   staff                               staff[]
@@ -86,7 +84,6 @@ model devices {
   updated_by                      Int
   email                           String                  @db.VarChar(100)
   alertnotifications              alertnotifications[]
-  devicedashboard                 devicedashboard[]
   users_devices_created_byTousers users                   @relation("devices_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "devices_createdby_fkey")
   customers                       customers               @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
   departments                     departments             @relation(fields: [departmentid], references: [departmentid], onDelete: NoAction, onUpdate: NoAction)
@@ -262,17 +259,17 @@ model escalationstatus {
 }
 
 model facilities {
-  facilityid                         Int                 @id @default(autoincrement())
-  name                               String?             @db.VarChar(255)
-  address                            String?             @db.VarChar(255)
-  contactname                        String?             @db.VarChar(255)
-  contactphonenumber                 String?             @db.VarChar(255)
-  email                              String?             @db.VarChar(255)
+  facilityid                         Int             @id @default(autoincrement())
+  name                               String?         @db.VarChar(255)
+  address                            String?         @db.VarChar(255)
+  contactname                        String?         @db.VarChar(255)
+  contactphonenumber                 String?         @db.VarChar(255)
+  email                              String?         @db.VarChar(255)
   isfacilityadmin                    Boolean?
-  is_active                          Boolean?            @default(true)
-  is_deleted                         Boolean?            @default(false)
-  date_created                       DateTime?           @default(now()) @db.Timestamptz(6)
-  date_updated                       DateTime?           @default(now()) @db.Timestamptz(6)
+  is_active                          Boolean?        @default(true)
+  is_deleted                         Boolean?        @default(false)
+  date_created                       DateTime?       @default(now()) @db.Timestamptz(6)
+  date_updated                       DateTime?       @default(now()) @db.Timestamptz(6)
   customerid                         Int?
   created_by                         Int
   updated_by                         Int
@@ -287,10 +284,9 @@ model facilities {
   currency                           String?             @db.VarChar(100)
   departments                        departments[]
   devices                            devices[]
-  users_facilities_created_byTousers users               @relation("facilities_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_createdby_fkey")
-  customers                          customers?          @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
-  users_facilities_updated_byTousers users               @relation("facilities_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_updatedby_fkey")
-  facilitydashboard                  facilitydashboard[]
+  users_facilities_created_byTousers users           @relation("facilities_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_createdby_fkey")
+  customers                          customers?      @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
+  users_facilities_updated_byTousers users           @relation("facilities_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "facilities_updatedby_fkey")
   facilityusers                      facilityusers[]
 }
 

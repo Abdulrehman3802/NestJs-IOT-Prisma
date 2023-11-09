@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModelUserDto = exports.CreateDepartmentAdminDto = exports.CreateFacilityAdminDto = exports.CreateUserDto = void 0;
+exports.findQuery = exports.ModelUserDto = exports.CreateDeviceAdminDto = exports.CreateDepartmentAdminDto = exports.CreateFacilityAdminDto = exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
 }
@@ -87,6 +87,11 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateFacilityAdminDto.prototype, "facilityid", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Boolean)
+], CreateFacilityAdminDto.prototype, "is_admin", void 0);
 exports.CreateFacilityAdminDto = CreateFacilityAdminDto;
 class CreateDepartmentAdminDto {
 }
@@ -128,8 +133,62 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateDepartmentAdminDto.prototype, "departmentid", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Boolean)
+], CreateDepartmentAdminDto.prototype, "is_admin", void 0);
 exports.CreateDepartmentAdminDto = CreateDepartmentAdminDto;
+class CreateDeviceAdminDto {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "firstname", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "lastname", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "address", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "passwordhash", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "phonenumber", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateDeviceAdminDto.prototype, "resettoken", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateDeviceAdminDto.prototype, "deviceid", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Boolean)
+], CreateDeviceAdminDto.prototype, "is_admin", void 0);
+exports.CreateDeviceAdminDto = CreateDeviceAdminDto;
 class ModelUserDto {
 }
 exports.ModelUserDto = ModelUserDto;
+class findQuery {
+}
+exports.findQuery = findQuery;
 //# sourceMappingURL=create-user.dto.js.map

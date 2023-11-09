@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {PrismaService} from "../prisma/prisma.service";
-import {UpdateUserDto} from "./dto/request/update-user.dto";
+import {UpdateFacilityAdminDto, UpdateUserDto} from "./dto/request/update-user.dto";
 import { ModelUserDto} from "./dto/request/create-user.dto";
 
 @Injectable()
@@ -94,6 +94,22 @@ export class UserRepository{
         })
     }
 
+    async findAllDeviceAdmins(){
+        return this.prismaService.deviceusers.findMany({
+            where:{
+                is_admin:true
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  }
+            }
+        })
+    }
+
 // For deleting user not use till
     async deleteUser(id:number){
         return this.prismaService.users.delete({
@@ -108,8 +124,73 @@ export class UserRepository{
             where:{
                 userid:id,
             },
-            data:body,
+            data:{
+                ...body,
+                date_updated: new Date()
+            },
 
         })
+    }
+
+    async findFacilityStaff(userid: number, facilityid: number) {
+        return this.prismaService.facilityusers.findFirstOrThrow({
+            where: {
+                userid: userid,
+                facilityid: facilityid,
+            },
+        });
+    }
+
+    async unAssignStaffFromFacility(facilityuserid: number){
+        return this.prismaService.facilityusers.delete({
+            where: {
+                facilityuserid: facilityuserid,
+            },
+        });
+    }
+
+    async makeFacilityAdminOrUser(facilityuserid: number, is_admin: boolean){
+        return this.prismaService.facilityusers.update({
+            where: {
+                facilityuserid: facilityuserid,
+            },
+            data: {
+                is_admin: is_admin
+            }
+        });
+    }
+
+    async findDepartmentStaff(userid: number, departmentid: number) {
+        return this.prismaService.departmentusers.findFirstOrThrow({
+            where: {
+                userid: userid,
+                departmentid: departmentid,
+            },
+        });
+    }
+
+    async unAssignStaffFromDepartment(departmentuserid: number){
+        return this.prismaService.departmentusers.delete({
+            where: {
+                departmentuserid: departmentuserid,
+            },
+        });
+    }
+
+    async findDeviceStaff(userid: number, deviceid: number) {
+        return this.prismaService.deviceusers.findFirstOrThrow({
+            where: {
+                userid: userid,
+                deviceid: deviceid,
+            },
+        });
+    }
+
+    async unAssignStaffFromDevice(deviceuserid: number){
+        return this.prismaService.deviceusers.delete({
+            where: {
+                deviceuserid: deviceuserid,
+            },
+        });
     }
 }

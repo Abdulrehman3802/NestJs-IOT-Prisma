@@ -4,11 +4,16 @@ import { DeviceRepository } from './device.repository';
 import { ResponseDeviceDto } from './dto/response/response-device.dto';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { SensorService } from 'src/sensor/sensor.service';
+import { UserService } from 'src/user/user.service';
+import { RolesService } from 'src/roles/roles.service';
 export declare class DeviceService {
     private readonly deviceRepository;
     private readonly sensorService;
-    constructor(deviceRepository: DeviceRepository, sensorService: SensorService);
+    private readonly userService;
+    private readonly roleService;
+    constructor(deviceRepository: DeviceRepository, sensorService: SensorService, userService: UserService, roleService: RolesService);
     create(createDeviceDto: CreateDeviceDto, token: Token): Promise<ApiResponseDto<ResponseDeviceDto>>;
+    createDeviceStaff(userid: number, deviceid: number, is_admin: boolean): Promise<ApiResponseDto<null>>;
     findAll(token: Token): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
     findDevicesByDepartmentIds(departmentIds: number[]): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseDeviceDto>>;

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ModelDepartmentDto } from "./dto/request/create-department.dto";
 import { UpdateDepartmentDto } from "./dto/request/update-department.dto";
-import {CreateDepartmentAdminModelDto, CreateDepartmentUserModelDto} from "./dto/request/create-department-user.dto";
+import {CreateDepartmentStaffModelDto, CreateDepartmentUserModelDto} from "./dto/request/create-department-user.dto";
 
 @Injectable()
 export class DepartmentRepository {
@@ -20,7 +20,7 @@ export class DepartmentRepository {
         })
     }
 
-    createDepartmentAdmin(model:CreateDepartmentAdminModelDto){
+    createDepartmentStaff(model:CreateDepartmentStaffModelDto){
         return this.prismaService.departmentusers.create({
             data:model,
         })

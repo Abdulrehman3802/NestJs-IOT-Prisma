@@ -21,7 +21,7 @@ export class PermissionsService {
        const response:ApiResponseDto<any> = 
            {
              statusCode: HttpStatus.OK,
-             message: "Role Successfully Created",
+             message: "Permission Successfully Created",
              data: createdPermission,
              error: false
            };

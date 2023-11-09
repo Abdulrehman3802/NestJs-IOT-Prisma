@@ -8,15 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceService = void 0;
 const common_1 = require("@nestjs/common");
 const device_repository_1 = require("./device.repository");
 const sensor_service_1 = require("../sensor/sensor.service");
+const create_user_dto_1 = require("../user/dto/request/create-user.dto");
+const user_service_1 = require("../user/user.service");
+const roles_service_1 = require("../roles/roles.service");
 let DeviceService = class DeviceService {
-    constructor(deviceRepository, sensorService) {
+    constructor(deviceRepository, sensorService, userService, roleService) {
         this.deviceRepository = deviceRepository;
         this.sensorService = sensorService;
+        this.userService = userService;
+        this.roleService = roleService;
     }
     async create(createDeviceDto, token) {
         try {
@@ -44,10 +52,35 @@ let DeviceService = class DeviceService {
                 deviceModel = Object.assign(Object.assign({}, createDeviceDto), { customerid: customerId, facilityid: facilityId, departmentid: departmentId, is_active: true, created_by: id, is_deleted: false, updated_by: id, date_created: new Date(), date_updated: new Date() });
             }
             const device = await this.deviceRepository.createDevice(deviceModel);
+            const userDto = new create_user_dto_1.CreateUserDto();
+            userDto.email = device.email;
+            const user = await this.userService.create(userDto, token);
+            const deviceAdminId = await this.roleService.findRoleByName('DeviceAdmin');
+            await this.roleService.createUserRole({ userid: user.data.userid, roleid: deviceAdminId.roleid });
+            await this.deviceRepository.createDeviceUser({ userid: user.data.userid, deviceid: device.deviceid, is_admin: true });
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: "Device Created Successfully!",
                 data: device,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async createDeviceStaff(userid, deviceid, is_admin) {
+        try {
+            await this.deviceRepository.createDeviceStaff({
+                userid: userid,
+                deviceid: deviceid,
+                is_admin: is_admin
+            });
+            const response = {
+                statusCode: common_1.HttpStatus.CREATED,
+                message: "Device Admin Created Successfully!",
+                data: null,
                 error: false
             };
             return response;
@@ -239,8 +272,11 @@ let DeviceService = class DeviceService {
 };
 DeviceService = __decorate([
     (0, common_1.Injectable)(),
+    __param(2, (0, common_1.Inject)((0, common_1.forwardRef)(() => user_service_1.UserService))),
     __metadata("design:paramtypes", [device_repository_1.DeviceRepository,
-        sensor_service_1.SensorService])
+        sensor_service_1.SensorService,
+        user_service_1.UserService,
+        roles_service_1.RolesService])
 ], DeviceService);
 exports.DeviceService = DeviceService;
 //# sourceMappingURL=device.service.js.map

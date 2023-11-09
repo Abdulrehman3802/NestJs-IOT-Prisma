@@ -16,6 +16,7 @@ export declare class CreateFacilityAdminDto {
     phonenumber: string;
     resettoken: string;
     facilityid: number;
+    is_admin: boolean;
 }
 export declare class CreateDepartmentAdminDto {
     firstname: string;
@@ -26,6 +27,18 @@ export declare class CreateDepartmentAdminDto {
     phonenumber: string;
     resettoken: string;
     departmentid: number;
+    is_admin: boolean;
+}
+export declare class CreateDeviceAdminDto {
+    firstname: string;
+    lastname: string;
+    email: string;
+    address: string;
+    passwordhash: string;
+    phonenumber: string;
+    resettoken: string;
+    deviceid: number;
+    is_admin: boolean;
 }
 export declare class ModelUserDto {
     firstname: string;
@@ -38,4 +51,7 @@ export declare class ModelUserDto {
     is_deleted: boolean;
     date_created: Date;
     date_updated: Date;
+}
+export declare class findQuery {
+    name: string;
 }

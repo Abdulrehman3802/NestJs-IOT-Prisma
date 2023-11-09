@@ -17,7 +17,7 @@ export declare class FacilityService {
     private readonly sensorService;
     constructor(facilityRepository: FacilityRepository, userService: UserService, roleService: RolesService, departmentService: DepartmentService, deviceService: DeviceService, sensorService: SensorService);
     create(createFacilityDto: CreateFacilityDto, token: Token): Promise<ApiResponseDto<ResponseFacilityDto>>;
-    createFacilityAdmin(userid: number, facilityid: number): Promise<ApiResponseDto<null>>;
+    createFacilityStaff(userid: number, facilityid: number, is_admin: boolean): Promise<ApiResponseDto<null>>;
     findAll(decodedtoken: Token): Promise<ApiResponseDto<ResponseFacilityDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseFacilityDto>>;
     update(id: number, updateFacilityDto: UpdateFacilityDto): Promise<ApiResponseDto<ResponseFacilityDto>>;

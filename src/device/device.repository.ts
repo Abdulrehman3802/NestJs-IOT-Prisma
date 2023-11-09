@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ModelDeviceDto } from './dto/request/create-device.dto';
 import { UpdateDeviceDto } from './dto/request/update-device.dto';
+import { CreateDeviceStaffModelDto, CreateDeviceUserModelDto } from './dto/request/create-device-user.dto';
 
 @Injectable()
 export class DeviceRepository {
@@ -10,6 +11,18 @@ export class DeviceRepository {
     createDevice(model: ModelDeviceDto) {
         return this.prismaService.devices.create({
             data: model,
+        })
+    }
+
+    createDeviceUser(model:CreateDeviceUserModelDto){
+        return this.prismaService.deviceusers.create({
+            data: model,
+        })
+    }
+
+    createDeviceStaff(model:CreateDeviceStaffModelDto){
+        return this.prismaService.deviceusers.create({
+            data:model,
         })
     }
 
@@ -57,6 +70,14 @@ export class DeviceRepository {
                 }
             }
         });
+    }
+
+    findDeviceByUserId(userId: number) {
+        return this.prismaService.deviceusers.findFirst({
+            where: {
+                userid: userId,
+            }
+        })
     }
 
     findOneDevice(id: number) {

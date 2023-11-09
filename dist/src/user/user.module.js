@@ -19,11 +19,12 @@ const facility_module_1 = require("../facility/facility.module");
 const roles_module_1 = require("../roles/roles.module");
 const permissions_repository_1 = require("../permissions/permissions.repository");
 const department_module_1 = require("../department/department.module");
+const device_module_1 = require("../device/device.module");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, jwt_1.JwtModule, email_module_1.EmailModule, roles_module_1.RolesModule, facility_module_1.FacilityModule, department_module_1.DepartmentModule],
+        imports: [prisma_module_1.PrismaModule, jwt_1.JwtModule, email_module_1.EmailModule, roles_module_1.RolesModule, facility_module_1.FacilityModule, department_module_1.DepartmentModule, device_module_1.DeviceModule],
         controllers: [user_controller_1.UserController],
         providers: [user_service_1.UserService, prisma_service_1.PrismaService, user_repository_1.UserRepository, permissions_repository_1.PermissionsRepository],
         exports: [user_repository_1.UserRepository, user_service_1.UserService]

@@ -9,6 +9,7 @@ import {EmailModule} from "../email/email.module";
 import { OrganizationRepository } from 'src/organization/organization.repository';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { DepartmentRepository } from 'src/department/department.repository';
+import { DeviceRepository } from 'src/device/device.repository';
 
 @Module({
   imports:[UserModule,JwtModule,EmailModule],
@@ -19,7 +20,8 @@ import { DepartmentRepository } from 'src/department/department.repository';
      PrismaService,
      OrganizationRepository,
      FacilityRepository,
-     DepartmentRepository
+     DepartmentRepository,
+     DeviceRepository
     ]
 })
 export class AuthModule {}

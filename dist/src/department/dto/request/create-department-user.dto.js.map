@@ -1,1 +1,1 @@
-{"version":3,"file":"create-department-user.dto.js","sourceRoot":"","sources":["../../../../../src/department/dto/request/create-department-user.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,4BAA4B;CAGxC;AAHD,oEAGC;AAED,MAAa,6BAA6B;CAIzC;AAJD,sEAIC"}
+{"version":3,"file":"create-department-user.dto.js","sourceRoot":"","sources":["../../../../../src/department/dto/request/create-department-user.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,4BAA4B;CAIxC;AAJD,oEAIC;AAED,MAAa,6BAA6B;CAIzC;AAJD,sEAIC"}

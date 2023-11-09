@@ -1,6 +1,7 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ModelDeviceDto } from './dto/request/create-device.dto';
 import { UpdateDeviceDto } from './dto/request/update-device.dto';
+import { CreateDeviceStaffModelDto, CreateDeviceUserModelDto } from './dto/request/create-device-user.dto';
 export declare class DeviceRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
@@ -19,6 +20,18 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    createDeviceUser(model: CreateDeviceUserModelDto): import(".prisma/client").Prisma.Prisma__deviceusersClient<{
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
+    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    createDeviceStaff(model: CreateDeviceStaffModelDto): import(".prisma/client").Prisma.Prisma__deviceusersClient<{
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     findAllDevices(): import(".prisma/client").Prisma.PrismaPromise<{
         deviceid: number;
@@ -100,6 +113,12 @@ export declare class DeviceRepository {
         updated_by: number;
         email: string;
     }[]>;
+    findDeviceByUserId(userId: number): import(".prisma/client").Prisma.Prisma__deviceusersClient<{
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
+    }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     findOneDevice(id: number): import(".prisma/client").Prisma.Prisma__devicesClient<{
         deviceid: number;
         devicename: string;

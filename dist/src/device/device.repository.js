@@ -21,6 +21,16 @@ let DeviceRepository = class DeviceRepository {
             data: model,
         });
     }
+    createDeviceUser(model) {
+        return this.prismaService.deviceusers.create({
+            data: model,
+        });
+    }
+    createDeviceStaff(model) {
+        return this.prismaService.deviceusers.create({
+            data: model,
+        });
+    }
     findAllDevices() {
         return this.prismaService.devices.findMany({
             where: {
@@ -59,6 +69,13 @@ let DeviceRepository = class DeviceRepository {
                 departmentid: {
                     in: departmentIds
                 }
+            }
+        });
+    }
+    findDeviceByUserId(userId) {
+        return this.prismaService.deviceusers.findFirst({
+            where: {
+                userid: userId,
             }
         });
     }

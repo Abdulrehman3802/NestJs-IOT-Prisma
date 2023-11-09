@@ -65,7 +65,7 @@ export class FacilityService {
       // Now Creation OF user Role
       const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin')
       await this.roleService.createUserRole({ userid: user.data.userid, roleid: facilityAdminId.roleid })
-      await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid })
+      await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid, is_admin: true })
       const response: ApiResponseDto<ResponseFacilityDto> = {
         statusCode: HttpStatus.CREATED,
         message: "Facility Created Successfully!",
@@ -78,12 +78,12 @@ export class FacilityService {
     }
   }
 
-  async createFacilityAdmin(userid: number, facilityid: number) {
+  async createFacilityStaff(userid: number, facilityid: number, is_admin: boolean) {
     try {
       await this.facilityRepository.createFacilityAdmin({ 
         userid: userid, 
         facilityid: facilityid,
-        is_admin:true
+        is_admin: is_admin
       })
 
       const response: ApiResponseDto<null> = {

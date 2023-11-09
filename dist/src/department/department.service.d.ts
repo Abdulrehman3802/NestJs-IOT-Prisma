@@ -15,7 +15,7 @@ export declare class DepartmentService {
     private readonly sensorService;
     constructor(departmentRepository: DepartmentRepository, userService: UserService, roleService: RolesService, deviceService: DeviceService, sensorService: SensorService);
     create(createDepartmentDto: CreateDepartmentDto, token: Token): Promise<ApiResponseDto<ResponseDepartmentDto>>;
-    createDepartmentAdmin(userid: number, departmentid: number): Promise<ApiResponseDto<null>>;
+    createDepartmentStaff(userid: number, departmentid: number, is_admin: boolean): Promise<ApiResponseDto<null>>;
     findAll(decodedtoken: Token): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
     GetAllDepartmentIdsByFacilityId(facilityid: number): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseDepartmentDto>>;

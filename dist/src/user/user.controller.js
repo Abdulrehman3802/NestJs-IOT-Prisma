@@ -30,17 +30,29 @@ let UserController = class UserController {
     }
     createFacilityAdmin(req, createFacilityAdminDto) {
         const token = req.token;
-        return this.userService.createFacilityAdmin(createFacilityAdminDto, token);
+        return this.userService.createFacilityStaff(createFacilityAdminDto, token);
     }
-    createDepartmentAdmin(req, createDepartmentAdminDto) {
+    createDepartmentStaff(req, createDepartmentAdminDto) {
         const token = req.token;
-        return this.userService.createDepartmentAdmin(createDepartmentAdminDto, token);
+        return this.userService.createDepartmentStaff(createDepartmentAdminDto, token);
+    }
+    createDeviceStaff(req, createDeviceAdminDto) {
+        const token = req.token;
+        return this.userService.createDeviceStaff(createDeviceAdminDto, token);
+    }
+    updateFacilityStaff(updateFacilityDto) {
+        return this.userService.updateFacilityStaff(updateFacilityDto);
+    }
+    updateDepartmentStaff(updateDepartmentDto) {
+        return this.userService.updateDepartmentStaff(updateDepartmentDto);
+    }
+    updateDeviceStaff(updateDeviceDto) {
+        return this.userService.updateDeviceStaff(updateDeviceDto);
     }
     findAll() {
         return this.userService.findAll();
     }
     findAllAdmins(query) {
-        console.log(query);
         return this.userService.findAdmins(query.name);
     }
     findOne(id) {
@@ -79,7 +91,40 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, create_user_dto_1.CreateDepartmentAdminDto]),
     __metadata("design:returntype", void 0)
-], UserController.prototype, "createDepartmentAdmin", null);
+], UserController.prototype, "createDepartmentStaff", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.CREATE),
+    (0, common_1.Post)('/create/deviceAdmin'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, create_user_dto_1.CreateDeviceAdminDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "createDeviceStaff", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
+    (0, common_1.Patch)('/updateFacilityStaff'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_user_dto_1.UpdateFacilityAdminDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateFacilityStaff", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
+    (0, common_1.Patch)('/updateDepartmentStaff'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_user_dto_1.UpdateDepartmentAdminDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateDepartmentStaff", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
+    (0, common_1.Patch)('/updateDeviceStaff'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_user_dto_1.UpdateDeviceAdminDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateDeviceStaff", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
@@ -90,7 +135,7 @@ __decorate([
     (0, common_1.Get)('findAdmins'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_user_dto_1.findQuery]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAllAdmins", null);
 __decorate([

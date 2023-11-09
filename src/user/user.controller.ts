@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateDepartmentAdminDto, CreateFacilityAdminDto, CreateUserDto } from './dto/request/create-user.dto';
-import { UpdateUserDto } from './dto/request/update-user.dto';
+import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateUserDto, findQuery } from './dto/request/create-user.dto';
+import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto } from './dto/request/update-user.dto';
 import { JwtAuthGuard, RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
 import { Permission } from 'core/generics/Guards/PermissionDecorator';
 import { Category, PermissionType } from 'core/generics/Enums/GeneralEnums';
@@ -28,17 +28,45 @@ export class UserController {
     @Body() createFacilityAdminDto: CreateFacilityAdminDto
     ) {
     const token = req.token
-    return this.userService.createFacilityAdmin(createFacilityAdminDto, token);
+    return this.userService.createFacilityStaff(createFacilityAdminDto, token);
   }
 
   @Permission(Category.USER, PermissionType.CREATE)
   @Post('/create/departmentAdmin')
-  createDepartmentAdmin(
+  createDepartmentStaff(
     @Req() req: RequestWithUser,
     @Body() createDepartmentAdminDto: CreateDepartmentAdminDto
     ) {
     const token = req.token
-    return this.userService.createDepartmentAdmin(createDepartmentAdminDto, token);
+    return this.userService.createDepartmentStaff(createDepartmentAdminDto, token);
+  }
+
+  @Permission(Category.USER, PermissionType.CREATE)
+  @Post('/create/deviceAdmin')
+  createDeviceStaff(
+    @Req() req: RequestWithUser,
+    @Body() createDeviceAdminDto: CreateDeviceAdminDto
+    ) {
+    const token = req.token
+    return this.userService.createDeviceStaff(createDeviceAdminDto, token);
+  }
+
+  @Permission(Category.USER, PermissionType.UPDATE)
+  @Patch('/updateFacilityStaff')
+  updateFacilityStaff(@Body() updateFacilityDto: UpdateFacilityAdminDto) {
+    return this.userService.updateFacilityStaff(updateFacilityDto);
+  }
+
+  @Permission(Category.USER, PermissionType.UPDATE)
+  @Patch('/updateDepartmentStaff')
+  updateDepartmentStaff(@Body() updateDepartmentDto: UpdateDepartmentAdminDto) {
+    return this.userService.updateDepartmentStaff(updateDepartmentDto);
+  }
+
+  @Permission(Category.USER, PermissionType.UPDATE)
+  @Patch('/updateDeviceStaff')
+  updateDeviceStaff(@Body() updateDeviceDto: UpdateDeviceAdminDto) {
+    return this.userService.updateDeviceStaff(updateDeviceDto);
   }
 
   @Get()
@@ -47,9 +75,7 @@ export class UserController {
   }
 
   @Get('findAdmins')
-  findAllAdmins(@Query() query) {
-    console.log(query);
-    
+  findAllAdmins(@Query() query: findQuery) {
     return this.userService.findAdmins(query.name);
   }
 

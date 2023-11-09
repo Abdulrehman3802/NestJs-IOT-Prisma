@@ -1,16 +1,22 @@
-import { Injectable, HttpStatus, NotFoundException, NotAcceptableException } from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, Inject, forwardRef } from '@nestjs/common';
 import { CreateDeviceDto, ModelDeviceDto } from './dto/request/create-device.dto';
 import { UpdateDeviceDto } from './dto/request/update-device.dto';
 import { DeviceRepository } from './device.repository';
 import { ResponseDeviceDto } from './dto/response/response-device.dto';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { SensorService } from 'src/sensor/sensor.service';
+import { CreateUserDto } from 'src/user/dto/request/create-user.dto';
+import { UserService } from 'src/user/user.service';
+import { RolesService } from 'src/roles/roles.service';
 
 @Injectable()
 export class DeviceService {
   constructor(
     private readonly deviceRepository: DeviceRepository,
-    private readonly sensorService: SensorService
+    private readonly sensorService: SensorService,
+    @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
+    private readonly roleService: RolesService
+
     ) { }
 
   async create(createDeviceDto: CreateDeviceDto, token: Token) {
@@ -75,7 +81,14 @@ export class DeviceService {
       }
 
       const device = await this.deviceRepository.createDevice(deviceModel);
-
+      const userDto = new CreateUserDto()
+      userDto.email = device.email
+      const user = await this.userService.create(userDto, token)
+      // Now Creation OF user Role
+      const deviceAdminId = await this.roleService.findRoleByName('DeviceAdmin')
+      await this.roleService.createUserRole({ userid: user.data.userid, roleid: deviceAdminId.roleid })
+      // Now Creation OF user Role in Department
+      await this.deviceRepository.createDeviceUser({ userid: user.data.userid, deviceid: device.deviceid, is_admin: true })
       const response: ApiResponseDto<ResponseDeviceDto> = {
         statusCode: HttpStatus.CREATED,
         message: "Device Created Successfully!",
@@ -85,6 +98,26 @@ export class DeviceService {
       return response;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async createDeviceStaff(userid: number, deviceid: number, is_admin: boolean) {
+    try {
+      await this.deviceRepository.createDeviceStaff({ 
+        userid: userid, 
+        deviceid: deviceid,
+        is_admin: is_admin
+      })
+
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.CREATED,
+        message: "Device Admin Created Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch(error) {
+      throw error
     }
   }
 

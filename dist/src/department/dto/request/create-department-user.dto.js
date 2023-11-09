@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateDepartmentAdminModelDto = exports.CreateDepartmentUserModelDto = void 0;
+exports.CreateDepartmentStaffModelDto = exports.CreateDepartmentUserModelDto = void 0;
 class CreateDepartmentUserModelDto {
 }
 exports.CreateDepartmentUserModelDto = CreateDepartmentUserModelDto;
-class CreateDepartmentAdminModelDto {
+class CreateDepartmentStaffModelDto {
 }
-exports.CreateDepartmentAdminModelDto = CreateDepartmentAdminModelDto;
+exports.CreateDepartmentStaffModelDto = CreateDepartmentStaffModelDto;
 //# sourceMappingURL=create-department-user.dto.js.map

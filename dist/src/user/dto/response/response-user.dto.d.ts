@@ -13,7 +13,12 @@ export declare class ResponseUserDto {
     date_created: Date;
     date_updated: Date;
 }
-export declare class ResponseAdmiDto {
+export declare class ResponseAdminDto {
+    userid: number;
+    is_admin: boolean;
+    users: userResponse;
+}
+export declare class userResponse {
     userid: number;
     firstname: string;
     lastname: string;

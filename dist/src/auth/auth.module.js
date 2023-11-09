@@ -18,6 +18,7 @@ const email_module_1 = require("../email/email.module");
 const organization_repository_1 = require("../organization/organization.repository");
 const facility_repository_1 = require("../facility/facility.repository");
 const department_repository_1 = require("../department/department.repository");
+const device_repository_1 = require("../device/device.repository");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -30,7 +31,8 @@ AuthModule = __decorate([
             prisma_service_1.PrismaService,
             organization_repository_1.OrganizationRepository,
             facility_repository_1.FacilityRepository,
-            department_repository_1.DepartmentRepository
+            department_repository_1.DepartmentRepository,
+            device_repository_1.DeviceRepository
         ]
     })
 ], AuthModule);

@@ -21,7 +21,7 @@ let PermissionsService = class PermissionsService {
             const createdPermission = await this.permssionsRepository.createPermission(createPermissionDto);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
-                message: "Role Successfully Created",
+                message: "Permission Successfully Created",
                 data: createdPermission,
                 error: false
             };

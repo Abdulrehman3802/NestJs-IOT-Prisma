@@ -49,7 +49,7 @@ let FacilityService = class FacilityService {
             const user = await this.userService.create(userDto, token);
             const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin');
             await this.roleService.createUserRole({ userid: user.data.userid, roleid: facilityAdminId.roleid });
-            await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid });
+            await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid, is_admin: true });
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: "Facility Created Successfully!",
@@ -62,12 +62,12 @@ let FacilityService = class FacilityService {
             throw error;
         }
     }
-    async createFacilityAdmin(userid, facilityid) {
+    async createFacilityStaff(userid, facilityid, is_admin) {
         try {
             await this.facilityRepository.createFacilityAdmin({
                 userid: userid,
                 facilityid: facilityid,
-                is_admin: true
+                is_admin: is_admin
             });
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,

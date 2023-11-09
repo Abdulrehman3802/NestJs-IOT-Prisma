@@ -14,7 +14,13 @@ export class ResponseUserDto{
     date_updated: Date;
 }
 
-export class ResponseAdmiDto{
+export class ResponseAdminDto{
+    userid: number;
+    is_admin: boolean
+    users: userResponse;
+}
+
+export class userResponse {
     userid: number;
     firstname: string;
     lastname: string;

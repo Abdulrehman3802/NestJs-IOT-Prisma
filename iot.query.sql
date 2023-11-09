@@ -229,6 +229,42 @@ ALTER TABLE IF EXISTS "IoT".facilities
 --------------------------------------------------------------
 ALTER TABLE IF EXISTS "IoT".departments DROP COLUMN IF EXISTS location;
 
+
+
+----------------Add deviceusers table ----------------
+CREATE SEQUENCE IF NOT EXISTS "IoT".deviceusers_deviceuserid_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE "IoT".deviceusers
+(
+    deviceuserid integer NOT NULL DEFAULT nextval('"IoT".deviceusers_deviceuserid_seq'::regclass),
+    deviceid integer,
+    userid integer,
+    is_admin boolean,
+    PRIMARY KEY (deviceuserid),
+    CONSTRAINT deviceusers_deviceid_fkey FOREIGN KEY (deviceid)
+        REFERENCES "IoT".devices (deviceid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT deviceusers_userid_fkey FOREIGN KEY (userid)
+        REFERENCES "IoT".users (userid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+);
+
+ALTER TABLE IF EXISTS "IoT".deviceusers
+    OWNER to postgres;
+
+---------------- Add email in devices  ----------------
+ALTER TABLE IF EXISTS "IoT".devices
+    ADD COLUMN email character varying(100) NOT NULL;
+
 ----------------------------------------------------------------
 -- 8/11/23 sensorname Added in table
 ALTER TABLE IF EXISTS "IoT".sensors
@@ -240,3 +276,4 @@ ALTER TABLE IF EXISTS "IoT".facilities
     ADD COLUMN timezone character varying(100);
     ALTER TABLE IF EXISTS "IoT".facilities
         ADD COLUMN currency character varying(100);
+

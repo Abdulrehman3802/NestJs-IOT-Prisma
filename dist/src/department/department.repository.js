@@ -26,7 +26,7 @@ let DepartmentRepository = class DepartmentRepository {
             data: model,
         });
     }
-    createDepartmentAdmin(model) {
+    createDepartmentStaff(model) {
         return this.prismaService.departmentusers.create({
             data: model,
         });

@@ -1,4 +1,4 @@
-import {IsString, IsOptional, IsArray, IsEmail, IsNotEmpty, IsNumber} from 'class-validator';
+import {IsString, IsOptional, IsArray, IsEmail, IsNotEmpty, IsNumber, IsBoolean} from 'class-validator';
 
 export class CreateUserDto {
     @IsString()
@@ -45,6 +45,9 @@ export class CreateFacilityAdminDto {
     @IsNumber()
     @IsNotEmpty()
     facilityid: number;
+    @IsBoolean()
+    @IsNotEmpty()
+    is_admin: boolean;
 }
 
 export class CreateDepartmentAdminDto {
@@ -70,6 +73,37 @@ export class CreateDepartmentAdminDto {
     @IsNumber()
     @IsNotEmpty()
     departmentid: number;
+    @IsBoolean()
+    @IsNotEmpty()
+    is_admin: boolean;
+}
+
+export class CreateDeviceAdminDto {
+    @IsString()
+    firstname: string;
+    @IsString()
+    lastname: string;
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+    @IsString()
+    @IsOptional()
+    address: string;
+    @IsString()
+    @IsOptional()
+    passwordhash: string;
+    @IsOptional()
+    @IsString()
+    phonenumber: string;
+    @IsOptional()
+    @IsString()
+    resettoken:string
+    @IsNumber()
+    @IsNotEmpty()
+    deviceid: number;
+    @IsBoolean()
+    @IsNotEmpty()
+    is_admin: boolean;
 }
 
 export class ModelUserDto {
@@ -83,5 +117,9 @@ export class ModelUserDto {
     is_deleted: boolean;
     date_created: Date;
     date_updated: Date;
+}
+
+export class findQuery {
+    name: string;
 }
 

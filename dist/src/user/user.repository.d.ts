@@ -169,6 +169,29 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
+    findAllDeviceAdmins(): Promise<({
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     deleteUser(id: number): Promise<{
         userid: number;
         firstname: string;
@@ -200,5 +223,47 @@ export declare class UserRepository {
         date_created: Date;
         date_updated: Date;
         resettoken: string;
+    }>;
+    findFacilityStaff(userid: number, facilityid: number): Promise<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    unAssignStaffFromFacility(facilityuserid: number): Promise<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    makeFacilityAdminOrUser(facilityuserid: number, is_admin: boolean): Promise<{
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    findDepartmentStaff(userid: number, departmentid: number): Promise<{
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    unAssignStaffFromDepartment(departmentuserid: number): Promise<{
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    findDeviceStaff(userid: number, deviceid: number): Promise<{
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
+    }>;
+    unAssignStaffFromDevice(deviceuserid: number): Promise<{
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
     }>;
 }

@@ -19,6 +19,7 @@ import {RolesRepository} from 'src/roles/roles.repository';
 import {OrganizationRepository} from 'src/organization/organization.repository';
 import {FacilityRepository} from 'src/facility/facility.repository';
 import {DepartmentRepository} from 'src/department/department.repository';
+import { DeviceRepository } from 'src/device/device.repository';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +29,7 @@ export class AuthService {
         private readonly organizationRepository: OrganizationRepository,
         private readonly facilityRepository: FacilityRepository,
         private readonly departmentRepository: DepartmentRepository,
+        private readonly deviceRepository: DeviceRepository,
         private readonly configService: ConfigService,
         private readonly jwtService: JwtService,
         private readonly emailService: EmailService
@@ -48,7 +50,7 @@ export class AuthService {
             const role = await this.rolesRepository.findRoleOfUser(user.userid)
             let accessToken: string;
 
-            if (role.roles.name === "SuperAdmin") {
+            if (role.roles.name == "SuperAdmin") {
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -59,7 +61,7 @@ export class AuthService {
                 );
             }
 
-            if (role.roles.name === "OrganizationAdmin") {
+            if (role.roles.name == "OrganizationAdmin") {
                 const organization = await this.organizationRepository.findOrganizationByUserId(user.userid)
                 accessToken = this.jwtService.sign(
                     {
@@ -72,7 +74,7 @@ export class AuthService {
                 );
             }
 
-            if (role.roles.name === "FacilityAdmin") {
+            if (role.roles.name == "FacilityAdmin") {
                 const facilityUser = await this.facilityRepository.findFacilityByUserId(user.userid)
                 const facility = await this.facilityRepository.findOneFacility(facilityUser.facilityid)
                 accessToken = this.jwtService.sign(
@@ -87,7 +89,7 @@ export class AuthService {
                 );
             }
 
-            if (role.roles.name === "DepartmentAdmin") {
+            if (role.roles.name == "DepartmentAdmin") {
                 const departmentUser = await this.departmentRepository.findDepartmentByUserId(user.userid)
                 const department = await this.departmentRepository.findOneDepartment(departmentUser.departmentid)
                 accessToken = this.jwtService.sign(
@@ -98,6 +100,23 @@ export class AuthService {
                         customerId: department.customerid,
                         facilityId: department.facilityid,
                         departmentId: departmentUser.departmentid
+                    },
+                    {secret: this.configService.get('JWT_SECRET')}
+                );
+            }
+
+            if (role.roles.name == "DeviceAdmin") {
+                const deviceUser = await this.deviceRepository.findDeviceByUserId(user.userid)
+                const device = await this.departmentRepository.findOneDepartment(deviceUser.deviceid)
+                accessToken = this.jwtService.sign(
+                    {
+                        id: user.userid,
+                        rolename: role.roles.name,
+                        roleid: role.roleid,
+                        customerId: device.customerid,
+                        facilityId: device.facilityid,
+                        departmentId: device.departmentid,
+                        deviceid: deviceUser.deviceid
                     },
                     {secret: this.configService.get('JWT_SECRET')}
                 );

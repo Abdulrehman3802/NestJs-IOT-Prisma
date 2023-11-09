@@ -21,13 +21,15 @@ const roles_repository_1 = require("../roles/roles.repository");
 const organization_repository_1 = require("../organization/organization.repository");
 const facility_repository_1 = require("../facility/facility.repository");
 const department_repository_1 = require("../department/department.repository");
+const device_repository_1 = require("../device/device.repository");
 let AuthService = class AuthService {
-    constructor(userRepository, rolesRepository, organizationRepository, facilityRepository, departmentRepository, configService, jwtService, emailService) {
+    constructor(userRepository, rolesRepository, organizationRepository, facilityRepository, departmentRepository, deviceRepository, configService, jwtService, emailService) {
         this.userRepository = userRepository;
         this.rolesRepository = rolesRepository;
         this.organizationRepository = organizationRepository;
         this.facilityRepository = facilityRepository;
         this.departmentRepository = departmentRepository;
+        this.deviceRepository = deviceRepository;
         this.configService = configService;
         this.jwtService = jwtService;
         this.emailService = emailService;
@@ -44,14 +46,14 @@ let AuthService = class AuthService {
             }
             const role = await this.rolesRepository.findRoleOfUser(user.userid);
             let accessToken;
-            if (role.roles.name === "SuperAdmin") {
+            if (role.roles.name == "SuperAdmin") {
                 accessToken = this.jwtService.sign({
                     id: user.userid,
                     rolename: role.roles.name,
                     roleid: role.roleid
                 }, { secret: this.configService.get('JWT_SECRET') });
             }
-            if (role.roles.name === "OrganizationAdmin") {
+            if (role.roles.name == "OrganizationAdmin") {
                 const organization = await this.organizationRepository.findOrganizationByUserId(user.userid);
                 accessToken = this.jwtService.sign({
                     id: user.userid,
@@ -60,7 +62,7 @@ let AuthService = class AuthService {
                     customerId: organization.customerid
                 }, { secret: this.configService.get('JWT_SECRET') });
             }
-            if (role.roles.name === "FacilityAdmin") {
+            if (role.roles.name == "FacilityAdmin") {
                 const facilityUser = await this.facilityRepository.findFacilityByUserId(user.userid);
                 const facility = await this.facilityRepository.findOneFacility(facilityUser.facilityid);
                 accessToken = this.jwtService.sign({
@@ -71,7 +73,7 @@ let AuthService = class AuthService {
                     facilityId: facilityUser.facilityid
                 }, { secret: this.configService.get('JWT_SECRET') });
             }
-            if (role.roles.name === "DepartmentAdmin") {
+            if (role.roles.name == "DepartmentAdmin") {
                 const departmentUser = await this.departmentRepository.findDepartmentByUserId(user.userid);
                 const department = await this.departmentRepository.findOneDepartment(departmentUser.departmentid);
                 accessToken = this.jwtService.sign({
@@ -81,6 +83,19 @@ let AuthService = class AuthService {
                     customerId: department.customerid,
                     facilityId: department.facilityid,
                     departmentId: departmentUser.departmentid
+                }, { secret: this.configService.get('JWT_SECRET') });
+            }
+            if (role.roles.name == "DeviceAdmin") {
+                const deviceUser = await this.deviceRepository.findDeviceByUserId(user.userid);
+                const device = await this.departmentRepository.findOneDepartment(deviceUser.deviceid);
+                accessToken = this.jwtService.sign({
+                    id: user.userid,
+                    rolename: role.roles.name,
+                    roleid: role.roleid,
+                    customerId: device.customerid,
+                    facilityId: device.facilityid,
+                    departmentId: device.departmentid,
+                    deviceid: deviceUser.deviceid
                 }, { secret: this.configService.get('JWT_SECRET') });
             }
             const response = {
@@ -233,6 +248,7 @@ AuthService = __decorate([
         organization_repository_1.OrganizationRepository,
         facility_repository_1.FacilityRepository,
         department_repository_1.DepartmentRepository,
+        device_repository_1.DeviceRepository,
         config_1.ConfigService,
         jwt_1.JwtService,
         email_service_1.EmailService])

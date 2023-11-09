@@ -1,7 +1,7 @@
 import { PrismaService } from "src/prisma/prisma.service";
 import { ModelDepartmentDto } from "./dto/request/create-department.dto";
 import { UpdateDepartmentDto } from "./dto/request/update-department.dto";
-import { CreateDepartmentAdminModelDto, CreateDepartmentUserModelDto } from "./dto/request/create-department-user.dto";
+import { CreateDepartmentStaffModelDto, CreateDepartmentUserModelDto } from "./dto/request/create-department-user.dto";
 export declare class DepartmentRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
@@ -25,7 +25,7 @@ export declare class DepartmentRepository {
         userid: number;
         is_admin: boolean;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
-    createDepartmentAdmin(model: CreateDepartmentAdminModelDto): import(".prisma/client").Prisma.Prisma__departmentusersClient<{
+    createDepartmentStaff(model: CreateDepartmentStaffModelDto): import(".prisma/client").Prisma.Prisma__departmentusersClient<{
         departmentuserid: number;
         departmentid: number;
         userid: number;

@@ -78,7 +78,7 @@ export class DepartmentService {
       const depAdminId = await this.roleService.findRoleByName('DepartmentAdmin')
       await this.roleService.createUserRole({ userid: user.data.userid, roleid: depAdminId.roleid })
       // Now Creation OF user Role in Department
-      await this.departmentRepository.createDepartmentUser({ userid: user.data.userid, departmentid: department.departmentid })
+      await this.departmentRepository.createDepartmentUser({ userid: user.data.userid, departmentid: department.departmentid, is_admin: true })
       const response: ApiResponseDto<ResponseDepartmentDto> = {
         statusCode: HttpStatus.CREATED,
         message: 'Department Created Successfully!',
@@ -91,12 +91,12 @@ export class DepartmentService {
     }
   }
 
-  async createDepartmentAdmin(userid: number, departmentid: number) {
+  async createDepartmentStaff(userid: number, departmentid: number, is_admin: boolean) {
     try {
-      await this.departmentRepository.createDepartmentAdmin({ 
+      await this.departmentRepository.createDepartmentStaff({ 
         userid: userid, 
         departmentid: departmentid,
-        is_admin:true
+        is_admin: is_admin
       })
 
       const response: ApiResponseDto<null> = {
