@@ -43,8 +43,15 @@ export class UserController {
   @Permission(Category.USER, PermissionType.VIEW)
   @Get('findAdmins')
   findAllAdmins(@Query() query: findQuery) {
-    return this.userService.findAdmins(query.name);
+    return this.userService.findAdminStaff(query.name);
   }
+
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('findUserStaff')
+  findAllUserStaff(@Query() query: findQuery) {
+    return this.userService.findUserStaff(query.name);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

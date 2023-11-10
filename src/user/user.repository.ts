@@ -98,9 +98,12 @@ export class UserRepository{
     //#region User CRUD - D
     // For deleting user not use till
     async deleteUser(id:number){
-        return this.prismaService.users.delete({
+        return this.prismaService.users.update({
             where:{
                 userid:id
+            }, data: {
+                is_active: false,
+                is_deleted: true
             }
         })
     }
@@ -138,6 +141,28 @@ export class UserRepository{
         })
     }
 
+    async findAllFacilityUsers(){
+        return this.prismaService.facilityusers.findMany({
+            where:{
+                is_admin:false
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  },
+                facilities: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
     async findAllFacilityStaff(){
         return this.prismaService.facilityusers.findMany()
     }
@@ -146,6 +171,28 @@ export class UserRepository{
         return this.prismaService.departmentusers.findMany({
             where:{
                 is_admin:true
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  },
+                departments: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
+    async findAllDepartmentUsers(){
+        return this.prismaService.departmentusers.findMany({
+            where:{
+                is_admin:false
             }, 
             include: {
                 users: {

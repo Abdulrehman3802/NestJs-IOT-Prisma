@@ -71,10 +71,17 @@ let RolesService = class RolesService {
             throw error;
         }
     }
-    async findAll() {
+    async findAll(token) {
         try {
+            const { rolename } = token;
             const allRoles = await this.rolesRepository.findAll();
-            const filteredRoles = allRoles.filter((role) => role.name !== 'SuperAdmin' && role.name !== 'OrganizationAdmin');
+            let filteredRoles = allRoles.filter((role) => role.name !== 'SuperAdmin' && role.name !== 'OrganizationAdmin');
+            if (rolename === 'FacilityAdmin') {
+                filteredRoles = filteredRoles.filter((role) => role.name !== 'FacilityAdmin');
+            }
+            else if (rolename === 'DepartmentAdmin') {
+                filteredRoles = filteredRoles.filter((role) => role.name !== 'FacilityAdmin' && role.name !== 'FacilityUser' && role.name !== 'DepartmentAdmin');
+            }
             const responseDtoArray = filteredRoles.map((role) => ({
                 roleid: role.roleid,
                 name: role.name,

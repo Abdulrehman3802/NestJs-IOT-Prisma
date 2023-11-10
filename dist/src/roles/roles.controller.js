@@ -31,8 +31,9 @@ let RolesController = class RolesController {
     assignRoletoUser(assignRoleDto) {
         return this.rolesService.assignRoletoUser(assignRoleDto);
     }
-    findAll() {
-        return this.rolesService.findAll();
+    findAll(req) {
+        const token = req.token;
+        return this.rolesService.findAll(token);
     }
     findOne(id) {
         return this.rolesService.findOne(+id);
@@ -63,8 +64,9 @@ __decorate([
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.ROLES, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], RolesController.prototype, "findAll", null);
 __decorate([

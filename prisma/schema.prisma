@@ -34,8 +34,6 @@ model customers {
   is_deleted                        Boolean?                @default(false)
   created_by                        Int
   updated_by                        Int
-  street                            String?                 @db.VarChar(100)
-  postcode                          Int?
   users_customers_created_byTousers users                   @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
   users_customers_updated_byTousers users                   @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
   departments                       departments[]
@@ -59,7 +57,6 @@ model departments {
   created_by                          Int
   updated_by                          Int
   email                               String                @db.VarChar(100)
-  description                         String?               @db.VarChar(100)
   departmentdashboard                 departmentdashboard[]
   users_departments_created_byTousers users                 @relation("departments_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_createdby_fkey")
   customers                           customers             @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
@@ -382,15 +379,6 @@ model organizationusers {
   users              users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model deviceusers {
-  deviceuserid Int      @id @default(autoincrement())
-  deviceid     Int?
-  userid       Int?
-  is_admin     Boolean?
-  devices      devices? @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
-  users        users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model departmentdashboard {
   departmentdashboardid Int         @id @default(autoincrement())
   departmentid          Int
@@ -417,4 +405,13 @@ model organizationdashboard {
   customerid     Int
   isCard         Boolean?
   customers      customers @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction, map: "dashboard_customerid_fkey")
+}
+
+model deviceusers {
+  deviceuserid Int      @id @default(autoincrement())
+  deviceid     Int?
+  userid       Int?
+  is_admin     Boolean?
+  devices      devices? @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
+  users        users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
-import {ConfigModule, ConfigService} from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OrganizationModule } from './organization/organization.module';
 import { FacilityModule } from './facility/facility.module';
 import { DepartmentModule } from './department/department.module';
@@ -15,11 +15,12 @@ import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { PermissionsRepository } from './permissions/permissions.repository';
 
-import {MailerModule} from "@nestjs-modules/mailer";
-import{join} from 'path'
-import {HandlebarsAdapter} from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
+import { MailerModule } from "@nestjs-modules/mailer";
+import { join } from 'path'
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
 import { AwsModule } from './aws/aws.module';
 import { SensorModule } from './sensor/sensor.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 @Module({
   imports: [
     PrismaModule,
@@ -51,8 +52,8 @@ import { SensorModule } from './sensor/sensor.module';
             strict: true,
           },
         },
+      }),
     }),
-  }),
     OrganizationModule,
     FacilityModule,
     DepartmentModule,
@@ -64,9 +65,10 @@ import { SensorModule } from './sensor/sensor.module';
     PermissionsModule,
     AwsModule,
     SensorModule,
+    DashboardModule
   ],
   controllers: [AppController],
   providers: [AppService, JwtService, ConfigService, PermissionsRepository],
   exports: []
 })
-export class AppModule {}
+export class AppModule { }

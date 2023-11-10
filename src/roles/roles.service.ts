@@ -2,7 +2,7 @@ import { BadRequestException, HttpStatus, Injectable} from '@nestjs/common';
 import { CreateRoleDto, CreateRoleModelDto } from './dto/Request/create-role.dto';
 import { UpdateRoleDto } from './dto/Request/update-role.dto';
 import { RolesRepository } from './roles.repository';
-import { ApiResponseDto } from 'core/generics/api-response.dto';
+import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { CreateRoleResponseDto, RolesResponseDto } from './dto/Response/role-response.dto';
 import { AssignRoleDto } from './dto/Request/assigne-role.dto';
 import { UserRepository } from 'src/user/user.repository';
@@ -86,10 +86,19 @@ export class RolesService {
        }
    }
 
- async findAll() {
+ async findAll(token: Token) {
   try {
+    const { rolename } = token
+
     const allRoles = await this.rolesRepository.findAll();
-    const filteredRoles = allRoles.filter((role) => role.name !== 'SuperAdmin' && role.name !== 'OrganizationAdmin');
+    let filteredRoles = allRoles.filter((role) => role.name !== 'SuperAdmin' && role.name !== 'OrganizationAdmin');
+
+   if (rolename === 'FacilityAdmin') {
+      filteredRoles = filteredRoles.filter((role) => role.name !== 'FacilityAdmin');
+    } 
+    else if (rolename === 'DepartmentAdmin') {
+      filteredRoles = filteredRoles.filter((role) => role.name !== 'FacilityAdmin' && role.name !== 'FacilityUser' && role.name !== 'DepartmentAdmin');
+    } 
 
     const responseDtoArray = filteredRoles.map((role) => ({
       roleid: role.roleid,

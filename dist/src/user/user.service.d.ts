@@ -23,13 +23,14 @@ export declare class UserService {
     findAll(): Promise<ApiResponseDto<ResponseUserDto[]>>;
     findUnAssignedUsers(): Promise<ApiResponseDto<ResponseUserDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseUserDto>>;
-    update(id: number, updateUserDto: UpdateUserDto): string;
-    remove(id: number): string;
+    update(id: number, updateUserDto: UpdateUserDto): Promise<ApiResponseDto<ResponseUserDto>>;
+    remove(id: number): Promise<ApiResponseDto<null>>;
     createStaffUser(createStaffUserDto: CreateStaffUserDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createFacilityStaff(createFacilityAdminDto: CreateFacilityAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDepartmentStaff(createDepartmentAdminDto: CreateDepartmentAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDeviceStaff(createDeviceAdminDto: CreateDeviceAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
-    findAdmins(query: string): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findAdminStaff(query: string): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findUserStaff(query: string): Promise<ApiResponseDto<ResponseAdminDto[]>>;
     updateFacilityStaff(updateFacilityAdminDto: UpdateFacilityAdminDto): Promise<ApiResponseDto<null>>;
     updateDepartmentStaff(updateDepartmentAdminDto: UpdateDepartmentAdminDto): Promise<ApiResponseDto<null>>;
     updateDeviceStaff(updateDeviceAdminDto: UpdateDeviceAdminDto): Promise<ApiResponseDto<null>>;

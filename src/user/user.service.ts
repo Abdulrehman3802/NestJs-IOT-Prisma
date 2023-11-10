@@ -153,14 +153,45 @@ export class UserService {
   //#endregion
 
   //#region User CRUD - U
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.userRepository.findUser(id);
+      if (!user) {
+        throw new NotFoundException(`User Not Found with id: ${id}`);
+      }
+      const updatedUser = await this.userRepository.updateUser(id, updateUserDto);
+      const response: ApiResponseDto<ResponseUserDto> = {
+        statusCode: HttpStatus.OK,
+        message: "User Updated Successfully!",
+        data: updatedUser,
+        error: false
+      }
+      return response;
+    } catch(error) {
+      throw error 
+    }
   }
   //#endregion
 
   //#region User CRUD - D 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    try {
+      const user = await this.userRepository.findUser(id);
+      if (!user) {
+        throw new NotFoundException(`User Not Found with id: ${id}`);
+      }
+
+      await this.userRepository.deleteUser(id);
+      const response: ApiResponseDto<null> = {
+        statusCode: HttpStatus.OK,
+        message: "User Deleted Successfully!",
+        data: null,
+        error: false
+      }
+      return response;
+    } catch(error) {
+      throw error 
+    }
   }
   //#endregion 
 
@@ -397,7 +428,7 @@ export class UserService {
   //#endregion
 
   //#region Staff CRUD - R
-  async findAdmins(query: string) {
+  async findAdminStaff(query: string) {
     try{
       let users: ResponseAdminDto[];
       
@@ -412,6 +443,28 @@ export class UserService {
       const response:ApiResponseDto<ResponseAdminDto[]> = {
         statusCode:HttpStatus.FOUND,
         message:"Admins Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
+  async findUserStaff(query: string) {
+    try{
+      let users: ResponseAdminDto[];
+      
+      if(query.toString() == 'FacilityUser') {
+          users = await this.userRepository.findAllFacilityUsers()
+      } else if(query == 'DepartmentUser') {
+          users = await this.userRepository.findAllDepartmentUsers()
+      } 
+
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Users Found Successfully",
         data:users,
         error:false
       }

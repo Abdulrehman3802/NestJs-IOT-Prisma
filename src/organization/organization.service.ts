@@ -1,4 +1,4 @@
-import {Injectable, HttpStatus, NotFoundException, NotImplementedException} from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { CreateOrganizationDto, ModelOrganizationDto } from './dto/request/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -39,6 +39,7 @@ export class OrganizationService {
         date_created: new Date(),
         date_updated: new Date()
       }
+
       const organization = await this.organizationRepository.createOrganization(organizationModel);
       if (!organization) {
         throw new NotImplementedException('Cannot create organization');
@@ -49,7 +50,7 @@ export class OrganizationService {
       const user = await this.userService.create(userDto, token)
       // Now Creation OF user Role
       const orgAdminId = await this.roleService.findRoleByName('OrganizationAdmin')
-      await this.roleService.createUserRole({userid: user.data.userid, roleid: orgAdminId.roleid})
+      await this.roleService.createUserRole({ userid: user.data.userid, roleid: orgAdminId.roleid })
       // Creation of Organization User
       const orgUser = new CreateOrganizationUserDto()
       orgUser.customerid = organization.customerid

@@ -119,11 +119,43 @@ let UserService = class UserService {
             throw error;
         }
     }
-    update(id, updateUserDto) {
-        return `This action updates a #${id} user`;
+    async update(id, updateUserDto) {
+        try {
+            const user = await this.userRepository.findUser(id);
+            if (!user) {
+                throw new common_1.NotFoundException(`User Not Found with id: ${id}`);
+            }
+            const updatedUser = await this.userRepository.updateUser(id, updateUserDto);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "User Updated Successfully!",
+                data: updatedUser,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
     }
-    remove(id) {
-        return `This action removes a #${id} user`;
+    async remove(id) {
+        try {
+            const user = await this.userRepository.findUser(id);
+            if (!user) {
+                throw new common_1.NotFoundException(`User Not Found with id: ${id}`);
+            }
+            await this.userRepository.deleteUser(id);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "User Deleted Successfully!",
+                data: null,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
     }
     async createStaffUser(createStaffUserDto, token) {
         try {
@@ -315,7 +347,7 @@ let UserService = class UserService {
             throw error;
         }
     }
-    async findAdmins(query) {
+    async findAdminStaff(query) {
         try {
             let users;
             if (query.toString() == 'FacilityAdmin') {
@@ -330,6 +362,27 @@ let UserService = class UserService {
             const response = {
                 statusCode: common_1.HttpStatus.FOUND,
                 message: "Admins Found Successfully",
+                data: users,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findUserStaff(query) {
+        try {
+            let users;
+            if (query.toString() == 'FacilityUser') {
+                users = await this.userRepository.findAllFacilityUsers();
+            }
+            else if (query == 'DepartmentUser') {
+                users = await this.userRepository.findAllDepartmentUsers();
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.FOUND,
+                message: "Users Found Successfully",
                 data: users,
                 error: false
             };

@@ -80,9 +80,12 @@ let UserRepository = class UserRepository {
         });
     }
     async deleteUser(id) {
-        return this.prismaService.users.delete({
+        return this.prismaService.users.update({
             where: {
                 userid: id
+            }, data: {
+                is_active: false,
+                is_deleted: true
             }
         });
     }
@@ -110,6 +113,27 @@ let UserRepository = class UserRepository {
             }
         });
     }
+    async findAllFacilityUsers() {
+        return this.prismaService.facilityusers.findMany({
+            where: {
+                is_admin: false
+            },
+            include: {
+                users: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                },
+                facilities: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        });
+    }
     async findAllFacilityStaff() {
         return this.prismaService.facilityusers.findMany();
     }
@@ -117,6 +141,27 @@ let UserRepository = class UserRepository {
         return this.prismaService.departmentusers.findMany({
             where: {
                 is_admin: true
+            },
+            include: {
+                users: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                },
+                departments: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        });
+    }
+    async findAllDepartmentUsers() {
+        return this.prismaService.departmentusers.findMany({
+            where: {
+                is_admin: false
             },
             include: {
                 users: {

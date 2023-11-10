@@ -10,9 +10,10 @@ export declare class UserController {
     findAll(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto[]>>;
     findUnAssignedUsers(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto[]>>;
     findAllAdmins(query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
+    findAllUserStaff(query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
     findOne(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
-    update(id: string, updateUserDto: UpdateUserDto): string;
-    remove(id: string): string;
+    update(id: string, updateUserDto: UpdateUserDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
+    remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;
     createUserStaff(req: RequestWithUser, createStaffUserDto: CreateStaffUserDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
     createFacilityStaff(req: RequestWithUser, createFacilityAdminDto: CreateFacilityAdminDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
     createDepartmentStaff(req: RequestWithUser, createDepartmentAdminDto: CreateDepartmentAdminDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;

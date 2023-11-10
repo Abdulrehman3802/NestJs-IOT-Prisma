@@ -36,7 +36,10 @@ let UserController = class UserController {
         return this.userService.findUnAssignedUsers();
     }
     findAllAdmins(query) {
-        return this.userService.findAdmins(query.name);
+        return this.userService.findAdminStaff(query.name);
+    }
+    findAllUserStaff(query) {
+        return this.userService.findUserStaff(query.name);
     }
     findOne(id) {
         return this.userService.findOne(+id);
@@ -112,6 +115,14 @@ __decorate([
     __metadata("design:paramtypes", [user_queries_dto_1.findQuery]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAllAdmins", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('findUserStaff'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllUserStaff", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

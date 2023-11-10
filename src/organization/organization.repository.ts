@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ModelOrganizationDto } from './dto/request/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
-import { OrganizationUserModelDto} from "./dto/request/create-organization-user.dto";
+import { OrganizationUserModelDto } from "./dto/request/create-organization-user.dto";
 
 @Injectable()
 export class OrganizationRepository {
@@ -22,8 +22,8 @@ export class OrganizationRepository {
 
     async findAllOrganization() {
         return this.prismaService.customers.findMany({
-            where:{
-                is_deleted:false
+            where: {
+                is_deleted: false
             }
         });
     }

@@ -28,6 +28,7 @@ const path_1 = require("path");
 const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
 const aws_module_1 = require("./aws/aws.module");
 const sensor_module_1 = require("./sensor/sensor.module");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -75,6 +76,7 @@ AppModule = __decorate([
             permissions_module_1.PermissionsModule,
             aws_module_1.AwsModule,
             sensor_module_1.SensorModule,
+            dashboard_module_1.DashboardModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, jwt_1.JwtService, config_1.ConfigService, permissions_repository_1.PermissionsRepository],

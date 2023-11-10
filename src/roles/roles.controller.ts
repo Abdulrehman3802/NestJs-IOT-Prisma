@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/Request/create-role.dto';
 import { UpdateRoleDto } from './dto/Request/update-role.dto';
-import { JwtAuthGuard } from 'core/generics/Guards/PermissionAuthGuard';
+import { JwtAuthGuard, RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
 import { Permission } from 'core/generics/Guards/PermissionDecorator';
 import { Category, PermissionType } from 'core/generics/Enums/GeneralEnums';
 import { AssignRoleDto } from './dto/Request/assigne-role.dto';
@@ -26,8 +26,9 @@ export class RolesController {
 
   @Permission(Category.ROLES, PermissionType.VIEW)
   @Get()
-  findAll() {
-    return this.rolesService.findAll();
+  findAll(@Req() req: RequestWithUser) {
+    const token = req.token
+    return this.rolesService.findAll(token);
   }
 
   @Permission(Category.ROLES, PermissionType.VIEW)

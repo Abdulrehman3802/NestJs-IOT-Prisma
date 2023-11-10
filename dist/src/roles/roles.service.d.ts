@@ -1,7 +1,7 @@
 import { CreateRoleDto } from './dto/Request/create-role.dto';
 import { UpdateRoleDto } from './dto/Request/update-role.dto';
 import { RolesRepository } from './roles.repository';
-import { ApiResponseDto } from 'core/generics/api-response.dto';
+import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { CreateRoleResponseDto, RolesResponseDto } from './dto/Response/role-response.dto';
 import { AssignRoleDto } from './dto/Request/assigne-role.dto';
 import { UserRepository } from 'src/user/user.repository';
@@ -17,7 +17,7 @@ export declare class RolesService {
         userid: number;
     }>;
     assignRoletoUser(assignRoleDto: AssignRoleDto): Promise<ApiResponseDto<string>>;
-    findAll(): Promise<ApiResponseDto<RolesResponseDto[]>>;
+    findAll(token: Token): Promise<ApiResponseDto<RolesResponseDto[]>>;
     findRoleByName(name: string): Promise<{
         roleid: number;
         name: string;
