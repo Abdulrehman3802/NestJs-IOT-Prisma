@@ -37,7 +37,7 @@ export class DeviceController {
   @Permission(Category.FACILITY, PermissionType.VIEW)
   @Get('by-depId/:id')
   finAllDevicesByDepId(@Param('id') id: string) {
-    return this.deviceService.findAllDevices(+id);
+    return this.deviceService.findAllDevicesByDepId(+id);
   }
 
   @Permission(Category.DEVICE, PermissionType.UPDATE)

@@ -7,13 +7,15 @@ import { RolesService } from 'src/roles/roles.service';
 import { UserService } from "../user/user.service";
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
+import { DashboardService } from "../dashboard/dashboard.service";
 export declare class DepartmentService {
     private readonly departmentRepository;
     private readonly userService;
     private readonly roleService;
     private readonly deviceService;
+    private readonly dashboardService;
     private readonly sensorService;
-    constructor(departmentRepository: DepartmentRepository, userService: UserService, roleService: RolesService, deviceService: DeviceService, sensorService: SensorService);
+    constructor(departmentRepository: DepartmentRepository, userService: UserService, roleService: RolesService, deviceService: DeviceService, dashboardService: DashboardService, sensorService: SensorService);
     create(createDepartmentDto: CreateDepartmentDto, token: Token): Promise<ApiResponseDto<ResponseDepartmentDto>>;
     createDepartmentStaff(userid: number, departmentid: number, is_admin: boolean): Promise<ApiResponseDto<null>>;
     findAll(decodedtoken: Token): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
@@ -24,4 +26,5 @@ export declare class DepartmentService {
     removeByOrganizationId(orgid: number): Promise<ApiResponseDto<null>>;
     removeByFacilityId(facilityid: number): Promise<ApiResponseDto<null>>;
     findAllDepartments(facId: number): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
+    GetAllDepartmentsByOrgId(orgId: number): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
 }

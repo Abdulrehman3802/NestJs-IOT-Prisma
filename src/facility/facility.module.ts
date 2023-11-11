@@ -11,9 +11,10 @@ import {RolesModule} from "../roles/roles.module";
 import { DepartmentModule } from 'src/department/department.module';
 import { DeviceModule } from 'src/device/device.module';
 import { SensorModule } from 'src/sensor/sensor.module';
+import {DashboardModule} from "../dashboard/dashboard.module";
 
 @Module({
-  imports: [PrismaModule, forwardRef(() => UserModule) ,RolesModule, DepartmentModule, DeviceModule, SensorModule],
+  imports: [PrismaModule, forwardRef(() => UserModule) ,RolesModule, DepartmentModule, DeviceModule, SensorModule,DashboardModule],
   controllers: [FacilityController],
   providers: [FacilityService, PrismaService, FacilityRepository, PermissionsRepository, JwtService],
   exports: [FacilityService]

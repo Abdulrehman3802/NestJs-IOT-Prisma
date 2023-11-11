@@ -119,6 +119,16 @@ let SensorRepository = class SensorRepository {
             }
         });
     }
+    findSensorByDeviceIds(deviceIds) {
+        return this.prismaService.sensors.findMany({
+            where: {
+                deviceid: {
+                    in: deviceIds
+                },
+                is_deleted: false,
+            }
+        });
+    }
     updateSensor(id, updateSensorDto) {
         return this.prismaService.sensors.update({
             where: {

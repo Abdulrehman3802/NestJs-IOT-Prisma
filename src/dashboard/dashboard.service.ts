@@ -1,13 +1,23 @@
-import { Injectable, HttpStatus, NotAcceptableException, NotFoundException } from "@nestjs/common";
-import { DashboardRepository } from "./dashboard.repository";
-import { CreateDashboardDto, FindDashboardDto } from "./dto/request/create-dashboard.dto";
-import { ApiResponseDto, Token } from "core/generics/api-response.dto";
+import {Injectable, HttpStatus, NotAcceptableException, NotFoundException, Inject, forwardRef} from "@nestjs/common";
+import {DashboardRepository} from "./dashboard.repository";
+import {CreateDashboardDto, FindDashboardDto} from "./dto/request/create-dashboard.dto";
+import {ApiResponseDto, Token} from "core/generics/api-response.dto";
+import {FacilityService} from "../facility/facility.service";
+import {DepartmentService} from "../department/department.service";
+import {DeviceService} from "../device/device.service";
+import {SensorService} from "../sensor/sensor.service";
+import {UserService} from "../user/user.service";
 
 @Injectable()
 export class DashboardService {
     constructor(
         private readonly dashboardRepository: DashboardRepository,
-    ) { }
+        @Inject(forwardRef(() => FacilityService)) private readonly facilityService: FacilityService,
+        @Inject(forwardRef(() => DepartmentService)) private readonly departmentService: DepartmentService,
+        private readonly deviceService: DeviceService,
+        private readonly SensorService: SensorService,
+    ) {
+    }
 
     async createDashboard(createDashboardDto: CreateDashboardDto) {
         try {
@@ -25,8 +35,7 @@ export class DashboardService {
                     isCard: createDashboardDto.isCard
                 }
                 responseDashboard = await this.dashboardRepository.createOrganizationDashboard(orgDashboardModel);
-            }
-            else if (createDashboardDto.facilityid !== undefined) {
+            } else if (createDashboardDto.facilityid !== undefined) {
                 const existingDashboard = await this.dashboardRepository.findDashboardByFacilityId(createDashboardDto.facilityid);
                 if (existingDashboard) {
                     throw new NotAcceptableException("Dashboard Already Exist")
@@ -36,8 +45,7 @@ export class DashboardService {
                     isCard: createDashboardDto.isCard,
                 }
                 responseDashboard = await this.dashboardRepository.createFacilityDashboard(facDashboardModel);
-            }
-            else if (createDashboardDto.departmentid !== undefined) {
+            } else if (createDashboardDto.departmentid !== undefined) {
                 const existingDashboard = await this.dashboardRepository.findDashboardByDepId(createDashboardDto.departmentid);
                 if (existingDashboard) {
                     throw new NotAcceptableException("Dashboard Already Exist")
@@ -47,8 +55,7 @@ export class DashboardService {
                     isCard: createDashboardDto.isCard,
                 }
                 responseDashboard = await this.dashboardRepository.createDepartmentDashboard(depDashboardModel);
-            }
-            else if (createDashboardDto.deviceid !== undefined) {
+            } else if (createDashboardDto.deviceid !== undefined) {
                 const existingDashboard = await this.dashboardRepository.findDashboardByDeviceId(createDashboardDto.deviceid);
                 if (existingDashboard) {
                     throw new NotAcceptableException("Dashboard Already Exist")
@@ -73,27 +80,46 @@ export class DashboardService {
 
     async findDashboard(findDashboardDto: FindDashboardDto, token: Token) {
         try {
-            const { rolename, facilityId, customerId, departmentId } = token;
-            let responseDashboard;
+            const {rolename, facilityId, customerId, departmentId} = token;
+            let responseDashboard, facCount, depCount, devCount, SensorCount,counts={};
             if (rolename == 'SuperAdmin') {
                 if (findDashboardDto.customerid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByOrgId(findDashboardDto.customerid);
-                }
-                if (findDashboardDto.facilityid) {
+                    counts = await this.getCountForOrg(findDashboardDto.customerid);
+                } else if (findDashboardDto.facilityid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByFacilityId(findDashboardDto.facilityid);
-                }
-                if (findDashboardDto.departmentid) {
+                   counts = await this.getCountForFacility(findDashboardDto.facilityid)
+                } else if (findDashboardDto.departmentid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByDepId(findDashboardDto.departmentid);
+                    counts = await this.getCountForDepartment(findDashboardDto.departmentid)
                 }
             }
             if (rolename == 'OrganizationAdmin') {
-                responseDashboard = await this.dashboardRepository.findDashboardByOrgId(customerId);
+                if (findDashboardDto.facilityid) {
+                    responseDashboard = await this.dashboardRepository.findDashboardByFacilityId(findDashboardDto.facilityid);
+                    counts = await this.getCountForFacility(findDashboardDto.facilityid)
+                } else if (findDashboardDto.departmentid) {
+                    responseDashboard = await this.dashboardRepository.findDashboardByDepId(findDashboardDto.departmentid);
+                    counts = await this.getCountForDepartment(findDashboardDto.departmentid)
+                }
+                else {
+                    responseDashboard = await this.dashboardRepository.findDashboardByOrgId(customerId);
+                    counts = await this.getCountForOrg(customerId);
+                }
             }
             if (rolename == 'FacilityAdmin') {
-                responseDashboard = await this.dashboardRepository.findDashboardByFacilityId(facilityId);
+                if (findDashboardDto.departmentid) {
+                    responseDashboard = await this.dashboardRepository.findDashboardByDepId(findDashboardDto.departmentid);
+                    counts = await this.getCountForDepartment(findDashboardDto.departmentid)
+                }
+                else {
+                    responseDashboard = await this.dashboardRepository.findDashboardByFacilityId(facilityId);
+                    counts = await this.getCountForFacility(facilityId)
+                }
             }
             if (rolename == 'DepartmentAdmin') {
                 responseDashboard = await this.dashboardRepository.findDashboardByDepId(departmentId);
+                counts = await this.getCountForDepartment(departmentId)
             }
 
             if (!responseDashboard) {
@@ -102,19 +128,25 @@ export class DashboardService {
             const response: ApiResponseDto<any> = {
                 statusCode: HttpStatus.OK,
                 message: "Dashboard Found Successfully!",
-                data: responseDashboard,
+                data: {
+                    ...responseDashboard,
+                    FacilityCount: facCount?.data?.length,
+                    DepartmentCount: depCount?.data?.length,
+                    DeviceCount: devCount?.data?.length,
+                    SensorCount: SensorCount?.data?.length,
+                    counts
+                },
                 error: false,
             }
             return response;
-        }
-        catch (error) {
+        } catch (error) {
             throw error;
         }
     }
 
     async findDashboardByFacId(token: Token) {
         try {
-            const { rolename, facilityId } = token;
+            const {rolename, facilityId} = token;
             if (rolename !== 'FacilityAdmin') {
                 throw new NotAcceptableException(`UnAuthorized Request Not A Facility Admin.`);
             }
@@ -133,7 +165,7 @@ export class DashboardService {
 
     async findDashboardByDepId(token: Token) {
         try {
-            const { rolename, departmentId } = token;
+            const {rolename, departmentId} = token;
             if (rolename !== 'DepartmentAdmin') {
                 throw new NotAcceptableException(`UnAuthorized Request Not A Department Admin.`);
             }
@@ -152,7 +184,7 @@ export class DashboardService {
 
     async findDashboardByOrganizationId(token: Token) {
         try {
-            const { rolename, customerId } = token;
+            const {rolename, customerId} = token;
             if (rolename !== 'OrganizationAdmin') {
                 throw new NotAcceptableException(`UnAuthorized Request Not A Organization Admin.`);
             }
@@ -168,4 +200,45 @@ export class DashboardService {
             throw error;
         }
     }
+
+    async getCountForOrg(orgId: number) {
+        const facCount = await this.deviceService.GetAllDeviceByOrgId(orgId);
+        const depCount = await this.departmentService.GetAllDepartmentsByOrgId(orgId);
+        const devCount = await this.deviceService.GetAllDeviceByOrgId(orgId);
+        const SensorCount = await this.SensorService.getSensorByOrgId(orgId);
+
+        return {
+            FacilityCount: facCount?.data?.length,
+            DepartmentCount: depCount?.data?.length,
+            DeviceCount: devCount?.data?.length,
+            SensorCount: SensorCount?.data?.length,
+        }
+    }
+
+    async getCountForFacility(facId: number) {
+        const depCount = await this.departmentService.GetAllDepartmentIdsByFacilityId(facId);
+        const devCount = await this.deviceService.getAllDeviceByFacilityId(facId);
+        const SensorCount = await this.SensorService.getSensorByFacilityId(facId);
+
+        return {
+            DepartmentCount: depCount?.data?.length,
+            DeviceCount: devCount?.data?.length,
+            SensorCount: SensorCount?.data?.length,
+        }
+    }
+
+    async getCountForDepartment(depId: number) {
+        const devCount = await this.deviceService.findAllDevicesByDepId(depId);
+        const SensorCount = await this.SensorService.getSensorByDepartmentId(depId);
+        return {
+            DeviceCount: devCount?.data?.length,
+            SensorCount: SensorCount?.data?.length,
+        }
+    }
+
+    // async getSensorsCount(id: number) {
+    //     const sensors = await this.SensorService.getSensorByOrgId(id)
+    //     return sensors.data.length
+    // }
+
 }

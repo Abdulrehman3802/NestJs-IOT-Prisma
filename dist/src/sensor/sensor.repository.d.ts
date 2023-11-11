@@ -147,6 +147,18 @@ export declare class SensorRepository {
         assigned_by: number;
         sensorname: string;
     })[]>;
+    findSensorByDeviceIds(deviceIds: number[]): import(".prisma/client").Prisma.PrismaPromise<{
+        sensorid: number;
+        deviceid: number;
+        is_active: boolean;
+        customerid: number;
+        is_deleted: boolean;
+        aws_sensorid: string;
+        date_created: Date;
+        date_updated: Date;
+        assigned_by: number;
+        sensorname: string;
+    }[]>;
     updateSensor(id: number, updateSensorDto: SensorDto): import(".prisma/client").Prisma.Prisma__sensorsClient<{
         sensorid: number;
         deviceid: number;

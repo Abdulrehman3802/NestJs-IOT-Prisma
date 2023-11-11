@@ -34,6 +34,8 @@ model customers {
   is_deleted                        Boolean?                @default(false)
   created_by                        Int
   updated_by                        Int
+  street                            String?                 @db.VarChar(100)
+  postcode                          Int?
   users_customers_created_byTousers users                   @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
   users_customers_updated_byTousers users                   @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
   departments                       departments[]
@@ -57,6 +59,7 @@ model departments {
   created_by                          Int
   updated_by                          Int
   email                               String                @db.VarChar(100)
+  description                         String?               @db.VarChar(100)
   departmentdashboard                 departmentdashboard[]
   users_departments_created_byTousers users                 @relation("departments_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_createdby_fkey")
   customers                           customers             @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
@@ -162,7 +165,7 @@ model sensors {
   date_created            DateTime?                 @default(now()) @db.Timestamp(6)
   date_updated            DateTime?                 @default(now()) @db.Timestamp(6)
   assigned_by             Int?
-  sensorname              String                    @db.VarChar
+  sensorname              String?                   @db.VarChar
   alerts                  alerts[]
   readings                readings[]
   sensorgatewayassignment sensorgatewayassignment[]
@@ -273,13 +276,13 @@ model facilities {
   customerid                         Int?
   created_by                         Int
   updated_by                         Int
-  longitude                          Int?
-  latitude                           Int?
   facility_type                      String?             @db.VarChar(100)
   street                             String?             @db.VarChar(100)
   city                               String?             @db.VarChar(100)
   postcode                           Int?
-  site_manager                       String?             @db.VarChar(100)
+  site_manager                       String?             @db.VarChar
+  longitude                          Int?
+  latitude                           Int?
   timezone                           String?             @db.VarChar(100)
   currency                           String?             @db.VarChar(100)
   departments                        departments[]

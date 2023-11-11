@@ -1,8 +1,10 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateUserDto } from './create-user.dto';
+import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateStaffUserDto, CreateUserDto } from './create-user.dto';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
+
+export class UpdateUserStaffDto extends PartialType(CreateStaffUserDto) {}
 
 export class UpdateFacilityAdminDto extends PartialType(CreateFacilityAdminDto) {
     @IsNumber()
@@ -21,3 +23,4 @@ export class UpdateDeviceAdminDto extends PartialType(CreateDeviceAdminDto) {
   @IsNotEmpty()
   userid: number;
 }
+

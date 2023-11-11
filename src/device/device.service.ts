@@ -294,12 +294,41 @@ export class DeviceService {
   }
 
 
-  async findAllDevices(depId: number) {
+  async findAllDevicesByDepId(depId: number) {
     try {
       const allDevices = await this.deviceRepository.findAllDevicesByDepartmentId(depId);
       const response: ApiResponseDto<ResponseDeviceDto[]> = {
         statusCode: HttpStatus.OK,
         message: "Devices Found Associated to Department",
+        data: allDevices,
+        error: false,
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async GetAllDeviceByOrgId(orgId: number){
+    try {
+      const allDevices = await this.deviceRepository.findAllDevicesByOrganizationId(orgId);
+      const response: ApiResponseDto<ResponseDeviceDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Devices Found Associated to Organization",
+        data: allDevices,
+        error: false,
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllDeviceByFacilityId(facilityId: number){
+    try {
+      const allDevices = await this.deviceRepository.findAllDevicesByFacilityId(facilityId);
+      const response: ApiResponseDto<ResponseDeviceDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Devices Found Associated to Facility",
         data: allDevices,
         error: false,
       }

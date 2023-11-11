@@ -30,6 +30,9 @@ let SensorController = class SensorController {
     getAllAssignedSensors(req) {
         return this.sensorService.getAllAssignedSensor(req.token);
     }
+    getSensorWidgets() {
+        return this.sensorService.getSensorWidgets();
+    }
     getSensorsByOrganizationId(id) {
         return this.sensorService.getSensorByOrgId(+id);
     }
@@ -66,6 +69,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SensorController.prototype, "getAllAssignedSensors", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('/get-assign-sensors-widget'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "getSensorWidgets", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('/get-sensors-by-orgId/:id'),

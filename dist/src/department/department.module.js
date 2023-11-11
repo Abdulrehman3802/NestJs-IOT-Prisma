@@ -19,11 +19,12 @@ const user_module_1 = require("../user/user.module");
 const roles_module_1 = require("../roles/roles.module");
 const device_module_1 = require("../device/device.module");
 const sensor_module_1 = require("../sensor/sensor.module");
+const dashboard_module_1 = require("../dashboard/dashboard.module");
 let DepartmentModule = class DepartmentModule {
 };
 DepartmentModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, (0, common_1.forwardRef)(() => user_module_1.UserModule), roles_module_1.RolesModule, device_module_1.DeviceModule, sensor_module_1.SensorModule],
+        imports: [prisma_module_1.PrismaModule, (0, common_1.forwardRef)(() => user_module_1.UserModule), roles_module_1.RolesModule, device_module_1.DeviceModule, sensor_module_1.SensorModule, (0, common_1.forwardRef)(() => dashboard_module_1.DashboardModule)],
         controllers: [department_controller_1.DepartmentController],
         providers: [department_service_1.DepartmentService, prisma_service_1.PrismaService, department_repository_1.DepartmentRepository, permissions_repository_1.PermissionsRepository, jwt_1.JwtService],
         exports: [department_service_1.DepartmentService]

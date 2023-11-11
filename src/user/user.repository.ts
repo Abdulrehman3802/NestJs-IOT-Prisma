@@ -27,7 +27,7 @@ export class UserRepository{
         return this.prismaService.users.findFirst({
             where:{
                 userid:id,
-                is_active:true
+                is_deleted:false
             }
         })
     }
@@ -62,6 +62,7 @@ export class UserRepository{
     async findAllUserForStaff(){
         return this.prismaService.users.findMany({
             where:{
+                is_active: true,
                 is_deleted:false
             },
             include: {   
@@ -75,6 +76,14 @@ export class UserRepository{
                     }
                 }
             },
+        })
+    }
+
+    async findUserRoleRelation(userid: number){
+        return this.prismaService.userroles.findFirstOrThrow({
+            where:{
+                userid: userid
+            }
         })
     }
     //#endregion
@@ -104,6 +113,14 @@ export class UserRepository{
             }, data: {
                 is_active: false,
                 is_deleted: true
+            }
+        })
+    }
+
+    async deleteUserRoleRelation(userroleid:number){
+        return this.prismaService.userroles.delete({
+            where:{
+                userroleid: userroleid
             }
         })
     }

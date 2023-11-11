@@ -10,9 +10,10 @@ import {UserModule} from "../user/user.module";
 import {RolesModule} from "../roles/roles.module";
 import { DeviceModule } from 'src/device/device.module';
 import { SensorModule } from 'src/sensor/sensor.module';
+import {DashboardModule} from "../dashboard/dashboard.module";
 
 @Module({
-  imports: [PrismaModule, forwardRef(() => UserModule),RolesModule, DeviceModule, SensorModule],
+  imports: [PrismaModule, forwardRef(() => UserModule),RolesModule, DeviceModule, SensorModule,forwardRef(() => DashboardModule)],
   controllers: [DepartmentController],
   providers: [DepartmentService, PrismaService, DepartmentRepository, PermissionsRepository, JwtService],
   exports: [DepartmentService]

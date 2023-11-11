@@ -7,6 +7,7 @@ export declare class SensorController {
     constructor(sensorService: SensorService);
     assignSensor(req: RequestWithUser, createSensorDto: CreateSensorDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto>>;
     getAllAssignedSensors(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
+    getSensorWidgets(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<any[]>>;
     getSensorsByOrganizationId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
     getSensorByDeviceId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
     getAllUnAssignedSensors(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<string[]>>;

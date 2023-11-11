@@ -14,6 +14,7 @@ export class SensorService {
     constructor(
         private readonly sensorRepository: SensorRepository,
         private readonly awsService: AwsService,
+        @Inject(forwardRef(() => DepartmentService)) private readonly departmentService: DepartmentService,
         @Inject(forwardRef(() => DeviceService)) private readonly deviceService: DeviceService,
     ) {
     }
@@ -296,6 +297,93 @@ export class SensorService {
         }
     }
 
+    async getSensorWidgets() {
+        const data = [
+            {
+                "sensorId": 249,
+                "awsSensorId": "00137a100004054f",
+                "sensorName": "reading1",
+                "minValue": 2,
+                "maxValue": 20,
+                "value": 13.46,
+                "batteryValue": 3.6,
+                "readingDateTime": "2023-11-02T13:49:01Z"
+            },
+            {
+                "sensorId": 227,
+                "awsSensorId": "a840418c718695d9",
+                "sensorName": "temp1",
+                "minValue": 5,
+                "maxValue": 10,
+                "value": 0.74,
+                "batteryValue": 3.676,
+                "readingDateTime": "2023-11-02T13:50:35Z"
+            },
+            {
+                "sensorId": 259,
+                "awsSensorId": "a840418c7186995d",
+                "sensorName": "heating1",
+                "minValue": 3,
+                "maxValue": 15,
+                "value": 9.31,
+                "batteryValue": 3.621,
+                "readingDateTime": "2023-11-02T13:52:25Z"
+            }
+        ];
+        try {
+            const response : ApiResponseDto<any[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Widget Found Successfully!",
+                data: data,
+                error: false,
+            }
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getSensorByDepartmentId(depId:number){
+        try{
+            const devices = await this.deviceService.findAllDevicesByDepId(depId)
+            let deviceIds = devices.data.map((obj) => {
+                return obj.deviceid
+            })
+            const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        }catch (error) {
+            throw error
+        }
+    }
+
+    async getSensorByFacilityId(facId:number){
+        try{
+            const departments = await this.departmentService.GetAllDepartmentIdsByFacilityId(facId)
+            let departmentIds = departments.data.map((obj) => {
+                return obj.departmentid
+            })
+            const device = await this.deviceService.findDevicesByDepartmentIds(departmentIds)
+            let deviceIds = device.data.map((obj) => {
+                return obj.deviceid
+            })
+            const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        }catch (error) {
+            throw error
+        }
+    }
     remove(id: number) {
         return `This action removes a #${id} sensor`;
     }

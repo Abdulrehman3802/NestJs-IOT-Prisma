@@ -20,14 +20,17 @@ const facility_service_1 = require("../facility/facility.service");
 const department_service_1 = require("../department/department.service");
 const device_service_1 = require("../device/device.service");
 const sensor_service_1 = require("../sensor/sensor.service");
+const dashboard_service_1 = require("../dashboard/dashboard.service");
+const create_dashboard_dto_1 = require("../dashboard/dto/request/create-dashboard.dto");
 let OrganizationService = class OrganizationService {
-    constructor(organizationRepository, userService, roleService, facilityService, departmentService, deviceService, sensorService) {
+    constructor(organizationRepository, userService, roleService, facilityService, departmentService, deviceService, dashboardService, sensorService) {
         this.organizationRepository = organizationRepository;
         this.userService = userService;
         this.roleService = roleService;
         this.facilityService = facilityService;
         this.departmentService = departmentService;
         this.deviceService = deviceService;
+        this.dashboardService = dashboardService;
         this.sensorService = sensorService;
     }
     async create(createOrganizationDto, token) {
@@ -47,6 +50,9 @@ let OrganizationService = class OrganizationService {
             orgUser.customerid = organization.customerid;
             orgUser.userid = user.data.userid;
             await this.organizationRepository.createOrganizationUser(orgUser);
+            const dashBoardDro = new create_dashboard_dto_1.CreateDashboardDto();
+            dashBoardDro.customerid = organization.customerid;
+            await this.dashboardService.createDashboard(dashBoardDro);
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: "Organization Created Successfully!",
@@ -142,6 +148,7 @@ OrganizationService = __decorate([
         facility_service_1.FacilityService,
         department_service_1.DepartmentService,
         device_service_1.DeviceService,
+        dashboard_service_1.DashboardService,
         sensor_service_1.SensorService])
 ], OrganizationService);
 exports.OrganizationService = OrganizationService;

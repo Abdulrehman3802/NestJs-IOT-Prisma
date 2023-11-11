@@ -254,12 +254,42 @@ let DeviceService = class DeviceService {
             throw error;
         }
     }
-    async findAllDevices(depId) {
+    async findAllDevicesByDepId(depId) {
         try {
             const allDevices = await this.deviceRepository.findAllDevicesByDepartmentId(depId);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Devices Found Associated to Department",
+                data: allDevices,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async GetAllDeviceByOrgId(orgId) {
+        try {
+            const allDevices = await this.deviceRepository.findAllDevicesByOrganizationId(orgId);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Devices Found Associated to Organization",
+                data: allDevices,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async getAllDeviceByFacilityId(facilityId) {
+        try {
+            const allDevices = await this.deviceRepository.findAllDevicesByFacilityId(facilityId);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Devices Found Associated to Facility",
                 data: allDevices,
                 error: false,
             };

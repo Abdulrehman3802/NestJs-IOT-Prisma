@@ -9,6 +9,8 @@ import { RolesService } from 'src/roles/roles.service';
 import { UserService } from "../user/user.service";
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
+import {DashboardService} from "../dashboard/dashboard.service";
+import {CreateDashboardDto} from "../dashboard/dto/request/create-dashboard.dto";
 
 @Injectable()
 export class DepartmentService {
@@ -17,6 +19,7 @@ export class DepartmentService {
     @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
     private readonly roleService: RolesService,
     private readonly deviceService: DeviceService,
+    private readonly dashboardService: DashboardService,
     private readonly sensorService: SensorService
   ) { }
 
@@ -79,6 +82,9 @@ export class DepartmentService {
       await this.roleService.createUserRole({ userid: user.data.userid, roleid: depAdminId.roleid })
       // Now Creation OF user Role in Department
       await this.departmentRepository.createDepartmentUser({ userid: user.data.userid, departmentid: department.departmentid, is_admin: true })
+      const dashboardDto = new CreateDashboardDto()
+      dashboardDto.departmentid = department.departmentid
+      await this.dashboardService.createDashboard(dashboardDto)
       const response: ApiResponseDto<ResponseDepartmentDto> = {
         statusCode: HttpStatus.CREATED,
         message: 'Department Created Successfully!',
@@ -212,7 +218,7 @@ export class DepartmentService {
     try {
       await this.departmentRepository.deleteDepartment(id);
 
-      const devices = await this.deviceService.findAllDevices(id)
+      const devices = await this.deviceService.findAllDevicesByDepId(id)
       await this.deviceService.removeByDepartmentId(id)
       const deviceIds = devices.data.map(dev => dev.deviceid)
 
@@ -263,6 +269,21 @@ export class DepartmentService {
   async findAllDepartments(facId: number) {
     try {
       const allDepartments = await this.departmentRepository.findAllDepartmentsByFacilityId(facId);
+      const response: ApiResponseDto<ResponseDepartmentDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Departments Found Associated to Facility",
+        data: allDepartments,
+        error: false,
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async GetAllDepartmentsByOrgId(orgId: number){
+    try {
+      const allDepartments = await this.departmentRepository.findAllDepartmentsByOrganizationId(orgId);
       const response: ApiResponseDto<ResponseDepartmentDto[]> = {
         statusCode: HttpStatus.OK,
         message: "Departments Found Associated to Facility",

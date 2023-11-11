@@ -1,6 +1,9 @@
-import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateUserDto } from './create-user.dto';
+import { CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateFacilityAdminDto, CreateStaffUserDto, CreateUserDto } from './create-user.dto';
 declare const UpdateUserDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateUserDto>>;
 export declare class UpdateUserDto extends UpdateUserDto_base {
+}
+declare const UpdateUserStaffDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateStaffUserDto>>;
+export declare class UpdateUserStaffDto extends UpdateUserStaffDto_base {
 }
 declare const UpdateFacilityAdminDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateFacilityAdminDto>>;
 export declare class UpdateFacilityAdminDto extends UpdateFacilityAdminDto_base {

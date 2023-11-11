@@ -1,8 +1,8 @@
 import { CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateStaffUserDto } from './dto/request/create-user.dto';
-import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto } from './dto/request/update-user.dto';
+import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserStaffDto } from './dto/request/update-user.dto';
 import { UserRepository } from "./user.repository";
 import { ApiResponseDto, Token } from "../../core/generics/api-response.dto";
-import { ResponseUserDto, ResponseAdminDto } from "./dto/response/response-user.dto";
+import { ResponseUserDto, ResponseAdminDto, ResponseUnAssignedUserStaffDto } from "./dto/response/response-user.dto";
 import { ConfigService } from "@nestjs/config";
 import { EmailService } from "../email/email.service";
 import { RolesService } from 'src/roles/roles.service';
@@ -21,9 +21,9 @@ export declare class UserService {
     constructor(userRepository: UserRepository, configService: ConfigService, roleService: RolesService, facilityService: FacilityService, departmentService: DepartmentService, deviceService: DeviceService, emailService: EmailService);
     create(createUserDto: CreateUserDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     findAll(): Promise<ApiResponseDto<ResponseUserDto[]>>;
-    findUnAssignedUsers(): Promise<ApiResponseDto<ResponseUserDto[]>>;
+    findUnAssignedUsers(): Promise<ApiResponseDto<ResponseUnAssignedUserStaffDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseUserDto>>;
-    update(id: number, updateUserDto: UpdateUserDto): Promise<ApiResponseDto<ResponseUserDto>>;
+    update(id: number, updateUserStaffDto: UpdateUserStaffDto): Promise<ApiResponseDto<ResponseUserDto>>;
     remove(id: number): Promise<ApiResponseDto<null>>;
     createStaffUser(createStaffUserDto: CreateStaffUserDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createFacilityStaff(createFacilityAdminDto: CreateFacilityAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;

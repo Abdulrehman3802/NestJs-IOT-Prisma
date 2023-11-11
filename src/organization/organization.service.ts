@@ -13,6 +13,8 @@ import { FacilityService } from 'src/facility/facility.service';
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
+import {DashboardService} from "../dashboard/dashboard.service";
+import {CreateDashboardDto} from "../dashboard/dto/request/create-dashboard.dto";
 
 
 @Injectable()
@@ -24,6 +26,7 @@ export class OrganizationService {
       private readonly facilityService: FacilityService,
       private readonly departmentService: DepartmentService,
       private readonly deviceService: DeviceService,
+      private readonly dashboardService: DashboardService,
       private readonly sensorService: SensorService,
 
   ) { }
@@ -56,6 +59,9 @@ export class OrganizationService {
       orgUser.customerid = organization.customerid
       orgUser.userid = user.data.userid
       await this.organizationRepository.createOrganizationUser(orgUser)
+      const dashBoardDro = new CreateDashboardDto()
+      dashBoardDro.customerid = organization.customerid
+      await this.dashboardService.createDashboard(dashBoardDro)
       // Returning Response
       const response: ApiResponseDto<ResponseOrganizationDto> = {
         statusCode: HttpStatus.CREATED,

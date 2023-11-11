@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userResponse = exports.ResponseAdminDto = exports.ResponseUserDto = void 0;
+exports.userResponse = exports.ResponseAdminDto = exports.ResponseUnAssignedUserStaffDto = exports.ResponseUserDto = void 0;
 class ResponseUserDto {
 }
 exports.ResponseUserDto = ResponseUserDto;
+class ResponseUnAssignedUserStaffDto {
+}
+exports.ResponseUnAssignedUserStaffDto = ResponseUnAssignedUserStaffDto;
 class ResponseAdminDto {
 }
 exports.ResponseAdminDto = ResponseAdminDto;

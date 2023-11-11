@@ -22,5 +22,7 @@ export declare class DeviceService {
     removeByOrganizationId(orgid: number): Promise<ApiResponseDto<null>>;
     removeByFacilityId(facilityid: number): Promise<ApiResponseDto<null>>;
     removeByDepartmentId(departmentid: number): Promise<ApiResponseDto<null>>;
-    findAllDevices(depId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
+    findAllDevicesByDepId(depId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
+    GetAllDeviceByOrgId(orgId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
+    getAllDeviceByFacilityId(facilityId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
 }

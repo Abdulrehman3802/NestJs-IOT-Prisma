@@ -35,6 +35,9 @@ export class DashboardRepository {
         return this.prismaService.departmentdashboard.findFirst({
             where: {
                 departmentid: depId
+            },
+            include:{
+                departments:true
             }
         })
     }
@@ -43,6 +46,9 @@ export class DashboardRepository {
         return this.prismaService.organizationdashboard.findFirst({
             where: {
                 customerid: orgId,
+            },
+            include:{
+                customers:true
             }
         })
     }
@@ -51,6 +57,9 @@ export class DashboardRepository {
         return this.prismaService.devicedashboard.findFirst({
             where: {
                 deviceid: deviceId,
+            },
+            include:{
+                devices:true
             }
         })
     }
@@ -59,6 +68,9 @@ export class DashboardRepository {
         return this.prismaService.facilitydashboard.findFirst({
             where: {
                 facilityid: facId,
+            },
+            include:{
+                facilities:true
             }
         })
     }

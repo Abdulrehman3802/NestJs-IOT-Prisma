@@ -1,9 +1,9 @@
 import {ConflictException, HttpStatus, Injectable, NotFoundException, NotImplementedException} from '@nestjs/common';
 import {CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateStaffUserDto} from './dto/request/create-user.dto';
-import {UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto} from './dto/request/update-user.dto';
+import {UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto, UpdateUserStaffDto} from './dto/request/update-user.dto';
 import {UserRepository} from "./user.repository";
 import {ApiResponseDto, Token} from "../../core/generics/api-response.dto";
-import {ResponseUserDto, ResponseAdminDto} from "./dto/response/response-user.dto";
+import {ResponseUserDto, ResponseAdminDto, ResponseUnAssignedUserStaffDto} from "./dto/response/response-user.dto";
 import {ConfigService} from "@nestjs/config";
 import * as bcrypt from 'bcrypt'
 import {EmailService} from "../email/email.service";
@@ -119,12 +119,31 @@ export class UserService {
       }
     }
 
-    const finalArray = users.filter((user) => !excludedObjects.includes(user));
+      const finalArray = users.filter((user) => !excludedObjects.includes(user));
+   
+      const responeArray = finalArray.map(user => ({
+        userid: user.userid,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        address: user.address,
+        passwordhash: user.passwordhash,
+        phonenumber: user.phonenumber,
+        createdby: user.createdby,
+        updatedby: user.updatedby,
+        is_active: user.is_active,
+        is_deleted: user.is_deleted,
+        date_created: user.date_created,
+        date_updated: user.date_updated,
+        resettoken: user.resettoken,
+        rolename: user.userroles[0]?.roles?.name || null,
+        roleid: user.userroles[0]?.roleid
+      }));
 
-      const response:ApiResponseDto<ResponseUserDto[]> = {
+      const response:ApiResponseDto<ResponseUnAssignedUserStaffDto[]> = {
         statusCode:HttpStatus.FOUND,
-        message:"User Found Successfully",
-        data: finalArray,
+        message:"Users Found Successfully",
+        data: responeArray,
         error:false
       }
       return response
@@ -153,13 +172,31 @@ export class UserService {
   //#endregion
 
   //#region User CRUD - U
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserStaffDto: UpdateUserStaffDto) {
     try {
+      const { roleid } = updateUserStaffDto
+
       const user = await this.userRepository.findUser(id);
       if (!user) {
         throw new NotFoundException(`User Not Found with id: ${id}`);
       }
-      const updatedUser = await this.userRepository.updateUser(id, updateUserDto);
+
+      if(roleid) {
+          const userroleid = await this.userRepository.findUserRoleRelation(user.userid)
+          if(userroleid.roleid !== roleid) {
+            await this.userRepository.deleteUserRoleRelation(userroleid.userroleid)
+    
+            const roleDto: AssignRoleDto = {
+              userid: user.userid.toString(),
+              roleid: roleid.toString()
+          }
+    
+          await this.roleService.assignRoletoUser(roleDto)
+        }
+        delete updateUserStaffDto.roleid
+      }
+
+      const updatedUser = await this.userRepository.updateUser(id, updateUserStaffDto);
       const response: ApiResponseDto<ResponseUserDto> = {
         statusCode: HttpStatus.OK,
         message: "User Updated Successfully!",
@@ -223,13 +260,14 @@ export class UserService {
         is_deleted: false,
         createdby: id,
         updatedby: id,
-      date_created: new Date(),
+        date_created: new Date(),
         date_updated: new Date()
       }
       const user = await this.userRepository.createUser(model)
       if(!user){
         throw new NotImplementedException("Cannot Create User")
       }
+
       const roleDto: AssignRoleDto = {
           userid: user.userid.toString(),
           roleid: roleid.toString()

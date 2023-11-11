@@ -18,10 +18,12 @@ const create_sensor_dto_1 = require("./dto/create-sensor.dto");
 const sensor_repository_1 = require("./sensor.repository");
 const aws_service_1 = require("../aws/aws.service");
 const device_service_1 = require("../device/device.service");
+const department_service_1 = require("../department/department.service");
 let SensorService = class SensorService {
-    constructor(sensorRepository, awsService, deviceService) {
+    constructor(sensorRepository, awsService, departmentService, deviceService) {
         this.sensorRepository = sensorRepository;
         this.awsService = awsService;
+        this.departmentService = departmentService;
         this.deviceService = deviceService;
     }
     async assignSensor(userId, createSensorDto) {
@@ -290,15 +292,105 @@ let SensorService = class SensorService {
             throw error;
         }
     }
+    async getSensorWidgets() {
+        const data = [
+            {
+                "sensorId": 249,
+                "awsSensorId": "00137a100004054f",
+                "sensorName": "reading1",
+                "minValue": 2,
+                "maxValue": 20,
+                "value": 13.46,
+                "batteryValue": 3.6,
+                "readingDateTime": "2023-11-02T13:49:01Z"
+            },
+            {
+                "sensorId": 227,
+                "awsSensorId": "a840418c718695d9",
+                "sensorName": "temp1",
+                "minValue": 5,
+                "maxValue": 10,
+                "value": 0.74,
+                "batteryValue": 3.676,
+                "readingDateTime": "2023-11-02T13:50:35Z"
+            },
+            {
+                "sensorId": 259,
+                "awsSensorId": "a840418c7186995d",
+                "sensorName": "heating1",
+                "minValue": 3,
+                "maxValue": 15,
+                "value": 9.31,
+                "batteryValue": 3.621,
+                "readingDateTime": "2023-11-02T13:52:25Z"
+            }
+        ];
+        try {
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Widget Found Successfully!",
+                data: data,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async getSensorByDepartmentId(depId) {
+        try {
+            const devices = await this.deviceService.findAllDevicesByDepId(depId);
+            let deviceIds = devices.data.map((obj) => {
+                return obj.deviceid;
+            });
+            const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async getSensorByFacilityId(facId) {
+        try {
+            const departments = await this.departmentService.GetAllDepartmentIdsByFacilityId(facId);
+            let departmentIds = departments.data.map((obj) => {
+                return obj.departmentid;
+            });
+            const device = await this.deviceService.findDevicesByDepartmentIds(departmentIds);
+            let deviceIds = device.data.map((obj) => {
+                return obj.deviceid;
+            });
+            const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensors updated Successfully",
+                data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     remove(id) {
         return `This action removes a #${id} sensor`;
     }
 };
 SensorService = __decorate([
     (0, common_1.Injectable)(),
-    __param(2, (0, common_1.Inject)((0, common_1.forwardRef)(() => device_service_1.DeviceService))),
+    __param(2, (0, common_1.Inject)((0, common_1.forwardRef)(() => department_service_1.DepartmentService))),
+    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => device_service_1.DeviceService))),
     __metadata("design:paramtypes", [sensor_repository_1.SensorRepository,
         aws_service_1.AwsService,
+        department_service_1.DepartmentService,
         device_service_1.DeviceService])
 ], SensorService);
 exports.SensorService = SensorService;

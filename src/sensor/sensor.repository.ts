@@ -119,6 +119,17 @@ export class SensorRepository{
         });
     }
 
+    findSensorByDeviceIds(deviceIds:number[]){
+        return this.prismaService.sensors.findMany({
+            where:{
+                deviceid: {
+                    in:deviceIds
+                },
+                is_deleted:false,
+            }
+        })
+    }
+
     updateSensor(id: number, updateSensorDto: SensorDto) {
         return this.prismaService.sensors.update({
             where:{

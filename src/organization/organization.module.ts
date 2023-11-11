@@ -12,9 +12,10 @@ import { FacilityModule } from 'src/facility/facility.module';
 import { DepartmentModule } from 'src/department/department.module';
 import { DeviceModule } from 'src/device/device.module';
 import { SensorModule } from 'src/sensor/sensor.module';
+import {DashboardModule} from "../dashboard/dashboard.module";
 
 @Module({
-  imports: [PrismaModule,UserModule,RolesModule,FacilityModule, DepartmentModule, DeviceModule, SensorModule],
+  imports: [PrismaModule,UserModule,RolesModule,FacilityModule, DepartmentModule, DeviceModule, SensorModule,DashboardModule],
   controllers: [OrganizationController],
   providers: [OrganizationService, PrismaService, OrganizationRepository, PermissionsRepository, JwtService]
 })

@@ -9,6 +9,7 @@ import { FacilityService } from 'src/facility/facility.service';
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
+import { DashboardService } from "../dashboard/dashboard.service";
 export declare class OrganizationService {
     private readonly organizationRepository;
     private readonly userService;
@@ -16,8 +17,9 @@ export declare class OrganizationService {
     private readonly facilityService;
     private readonly departmentService;
     private readonly deviceService;
+    private readonly dashboardService;
     private readonly sensorService;
-    constructor(organizationRepository: OrganizationRepository, userService: UserService, roleService: RolesService, facilityService: FacilityService, departmentService: DepartmentService, deviceService: DeviceService, sensorService: SensorService);
+    constructor(organizationRepository: OrganizationRepository, userService: UserService, roleService: RolesService, facilityService: FacilityService, departmentService: DepartmentService, deviceService: DeviceService, dashboardService: DashboardService, sensorService: SensorService);
     create(createOrganizationDto: CreateOrganizationDto, token: Token): Promise<ApiResponseDto<ResponseOrganizationDto>>;
     findAll(): Promise<ApiResponseDto<ResponseOrganizationDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseOrganizationDto>>;

@@ -8,14 +8,16 @@ import { UserService } from "../user/user.service";
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
+import { DashboardService } from "../dashboard/dashboard.service";
 export declare class FacilityService {
     private readonly facilityRepository;
     private readonly userService;
     private readonly roleService;
     private readonly departmentService;
     private readonly deviceService;
+    private readonly dashboardService;
     private readonly sensorService;
-    constructor(facilityRepository: FacilityRepository, userService: UserService, roleService: RolesService, departmentService: DepartmentService, deviceService: DeviceService, sensorService: SensorService);
+    constructor(facilityRepository: FacilityRepository, userService: UserService, roleService: RolesService, departmentService: DepartmentService, deviceService: DeviceService, dashboardService: DashboardService, sensorService: SensorService);
     create(createFacilityDto: CreateFacilityDto, token: Token): Promise<ApiResponseDto<ResponseFacilityDto>>;
     createFacilityStaff(userid: number, facilityid: number, is_admin: boolean): Promise<ApiResponseDto<null>>;
     findAll(decodedtoken: Token): Promise<ApiResponseDto<ResponseFacilityDto[]>>;

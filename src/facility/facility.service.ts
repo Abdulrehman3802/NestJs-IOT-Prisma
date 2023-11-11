@@ -11,6 +11,8 @@ import { CreateUserDto } from "../user/dto/request/create-user.dto";
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
+import {DashboardService} from "../dashboard/dashboard.service";
+import {CreateDashboardDto} from "../dashboard/dto/request/create-dashboard.dto";
 
 @Injectable()
 export class FacilityService {
@@ -20,6 +22,7 @@ export class FacilityService {
     private readonly roleService: RolesService,
     private readonly departmentService: DepartmentService,
     private readonly deviceService: DeviceService,
+    private readonly dashboardService: DashboardService,
     private readonly sensorService: SensorService
 
   ) { }
@@ -66,6 +69,9 @@ export class FacilityService {
       const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin')
       await this.roleService.createUserRole({ userid: user.data.userid, roleid: facilityAdminId.roleid })
       await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid, is_admin: true })
+      const dashboardDto = new CreateDashboardDto()
+      dashboardDto.facilityid = facility.facilityid
+      await this.dashboardService.createDashboard(dashboardDto)
       const response: ApiResponseDto<ResponseFacilityDto> = {
         statusCode: HttpStatus.CREATED,
         message: "Facility Created Successfully!",

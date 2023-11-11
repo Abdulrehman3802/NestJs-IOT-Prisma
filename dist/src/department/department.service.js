@@ -20,12 +20,15 @@ const roles_service_1 = require("../roles/roles.service");
 const user_service_1 = require("../user/user.service");
 const device_service_1 = require("../device/device.service");
 const sensor_service_1 = require("../sensor/sensor.service");
+const dashboard_service_1 = require("../dashboard/dashboard.service");
+const create_dashboard_dto_1 = require("../dashboard/dto/request/create-dashboard.dto");
 let DepartmentService = class DepartmentService {
-    constructor(departmentRepository, userService, roleService, deviceService, sensorService) {
+    constructor(departmentRepository, userService, roleService, deviceService, dashboardService, sensorService) {
         this.departmentRepository = departmentRepository;
         this.userService = userService;
         this.roleService = roleService;
         this.deviceService = deviceService;
+        this.dashboardService = dashboardService;
         this.sensorService = sensorService;
     }
     async create(createDepartmentDto, token) {
@@ -54,6 +57,9 @@ let DepartmentService = class DepartmentService {
             const depAdminId = await this.roleService.findRoleByName('DepartmentAdmin');
             await this.roleService.createUserRole({ userid: user.data.userid, roleid: depAdminId.roleid });
             await this.departmentRepository.createDepartmentUser({ userid: user.data.userid, departmentid: department.departmentid, is_admin: true });
+            const dashboardDto = new create_dashboard_dto_1.CreateDashboardDto();
+            dashboardDto.departmentid = department.departmentid;
+            await this.dashboardService.createDashboard(dashboardDto);
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: 'Department Created Successfully!',
@@ -183,7 +189,7 @@ let DepartmentService = class DepartmentService {
     async remove(id) {
         try {
             await this.departmentRepository.deleteDepartment(id);
-            const devices = await this.deviceService.findAllDevices(id);
+            const devices = await this.deviceService.findAllDevicesByDepId(id);
             await this.deviceService.removeByDepartmentId(id);
             const deviceIds = devices.data.map(dev => dev.deviceid);
             await this.sensorService.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds);
@@ -244,6 +250,21 @@ let DepartmentService = class DepartmentService {
             throw error;
         }
     }
+    async GetAllDepartmentsByOrgId(orgId) {
+        try {
+            const allDepartments = await this.departmentRepository.findAllDepartmentsByOrganizationId(orgId);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Departments Found Associated to Facility",
+                data: allDepartments,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 };
 DepartmentService = __decorate([
     (0, common_1.Injectable)(),
@@ -252,6 +273,7 @@ DepartmentService = __decorate([
         user_service_1.UserService,
         roles_service_1.RolesService,
         device_service_1.DeviceService,
+        dashboard_service_1.DashboardService,
         sensor_service_1.SensorService])
 ], DepartmentService);
 exports.DepartmentService = DepartmentService;

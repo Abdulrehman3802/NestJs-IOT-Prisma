@@ -110,6 +110,11 @@ export declare class UserRepository {
         date_updated: Date;
         resettoken: string;
     })[]>;
+    findUserRoleRelation(userid: number): Promise<{
+        userroleid: number;
+        roleid: number;
+        userid: number;
+    }>;
     updateUser(id: number, body: UpdateUserDto): Promise<{
         userid: number;
         firstname: string;
@@ -141,6 +146,11 @@ export declare class UserRepository {
         date_created: Date;
         date_updated: Date;
         resettoken: string;
+    }>;
+    deleteUserRoleRelation(userroleid: number): Promise<{
+        userroleid: number;
+        roleid: number;
+        userid: number;
     }>;
     findAllOrganizationStaff(): Promise<{
         organizationuserid: number;

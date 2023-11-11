@@ -36,7 +36,7 @@ let DeviceController = class DeviceController {
         return this.deviceService.findOne(+id);
     }
     finAllDevicesByDepId(id) {
-        return this.deviceService.findAllDevices(+id);
+        return this.deviceService.findAllDevicesByDepId(+id);
     }
     update(id, updateDeviceDto) {
         return this.deviceService.update(+id, updateDeviceDto);

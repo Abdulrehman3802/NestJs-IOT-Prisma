@@ -89,10 +89,31 @@ let UserService = class UserService {
                 }
             }
             const finalArray = users.filter((user) => !excludedObjects.includes(user));
+            const responeArray = finalArray.map(user => {
+                var _a, _b, _c;
+                return ({
+                    userid: user.userid,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    address: user.address,
+                    passwordhash: user.passwordhash,
+                    phonenumber: user.phonenumber,
+                    createdby: user.createdby,
+                    updatedby: user.updatedby,
+                    is_active: user.is_active,
+                    is_deleted: user.is_deleted,
+                    date_created: user.date_created,
+                    date_updated: user.date_updated,
+                    resettoken: user.resettoken,
+                    rolename: ((_b = (_a = user.userroles[0]) === null || _a === void 0 ? void 0 : _a.roles) === null || _b === void 0 ? void 0 : _b.name) || null,
+                    roleid: (_c = user.userroles[0]) === null || _c === void 0 ? void 0 : _c.roleid
+                });
+            });
             const response = {
                 statusCode: common_1.HttpStatus.FOUND,
-                message: "User Found Successfully",
-                data: finalArray,
+                message: "Users Found Successfully",
+                data: responeArray,
                 error: false
             };
             return response;
@@ -119,13 +140,26 @@ let UserService = class UserService {
             throw error;
         }
     }
-    async update(id, updateUserDto) {
+    async update(id, updateUserStaffDto) {
         try {
+            const { roleid } = updateUserStaffDto;
             const user = await this.userRepository.findUser(id);
             if (!user) {
                 throw new common_1.NotFoundException(`User Not Found with id: ${id}`);
             }
-            const updatedUser = await this.userRepository.updateUser(id, updateUserDto);
+            if (roleid) {
+                const userroleid = await this.userRepository.findUserRoleRelation(user.userid);
+                if (userroleid.roleid !== roleid) {
+                    await this.userRepository.deleteUserRoleRelation(userroleid.userroleid);
+                    const roleDto = {
+                        userid: user.userid.toString(),
+                        roleid: roleid.toString()
+                    };
+                    await this.roleService.assignRoletoUser(roleDto);
+                }
+                delete updateUserStaffDto.roleid;
+            }
+            const updatedUser = await this.userRepository.updateUser(id, updateUserStaffDto);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
                 message: "User Updated Successfully!",

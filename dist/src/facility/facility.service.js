@@ -21,13 +21,16 @@ const create_user_dto_1 = require("../user/dto/request/create-user.dto");
 const department_service_1 = require("../department/department.service");
 const device_service_1 = require("../device/device.service");
 const sensor_service_1 = require("../sensor/sensor.service");
+const dashboard_service_1 = require("../dashboard/dashboard.service");
+const create_dashboard_dto_1 = require("../dashboard/dto/request/create-dashboard.dto");
 let FacilityService = class FacilityService {
-    constructor(facilityRepository, userService, roleService, departmentService, deviceService, sensorService) {
+    constructor(facilityRepository, userService, roleService, departmentService, deviceService, dashboardService, sensorService) {
         this.facilityRepository = facilityRepository;
         this.userService = userService;
         this.roleService = roleService;
         this.departmentService = departmentService;
         this.deviceService = deviceService;
+        this.dashboardService = dashboardService;
         this.sensorService = sensorService;
     }
     async create(createFacilityDto, token) {
@@ -50,6 +53,9 @@ let FacilityService = class FacilityService {
             const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin');
             await this.roleService.createUserRole({ userid: user.data.userid, roleid: facilityAdminId.roleid });
             await this.facilityRepository.createFacilityUser({ userid: user.data.userid, facilityid: facility.facilityid, is_admin: true });
+            const dashboardDto = new create_dashboard_dto_1.CreateDashboardDto();
+            dashboardDto.facilityid = facility.facilityid;
+            await this.dashboardService.createDashboard(dashboardDto);
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: "Facility Created Successfully!",
@@ -197,6 +203,7 @@ FacilityService = __decorate([
         roles_service_1.RolesService,
         department_service_1.DepartmentService,
         device_service_1.DeviceService,
+        dashboard_service_1.DashboardService,
         sensor_service_1.SensorService])
 ], FacilityService);
 exports.FacilityService = FacilityService;

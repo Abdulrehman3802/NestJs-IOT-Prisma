@@ -25,7 +25,7 @@ let UserRepository = class UserRepository {
         return this.prismaService.users.findFirst({
             where: {
                 userid: id,
-                is_active: true
+                is_deleted: false
             }
         });
     }
@@ -56,6 +56,7 @@ let UserRepository = class UserRepository {
     async findAllUserForStaff() {
         return this.prismaService.users.findMany({
             where: {
+                is_active: true,
                 is_deleted: false
             },
             include: {
@@ -69,6 +70,13 @@ let UserRepository = class UserRepository {
                     }
                 }
             },
+        });
+    }
+    async findUserRoleRelation(userid) {
+        return this.prismaService.userroles.findFirstOrThrow({
+            where: {
+                userid: userid
+            }
         });
     }
     async updateUser(id, body) {
@@ -86,6 +94,13 @@ let UserRepository = class UserRepository {
             }, data: {
                 is_active: false,
                 is_deleted: true
+            }
+        });
+    }
+    async deleteUserRoleRelation(userroleid) {
+        return this.prismaService.userroles.delete({
+            where: {
+                userroleid: userroleid
             }
         });
     }
