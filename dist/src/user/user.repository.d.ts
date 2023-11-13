@@ -254,6 +254,54 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
+    findAllFacilityAdminsUsingFacilityId(facilityid: number): Promise<({
+        facilities: {
+            facilityid: number;
+            name: string;
+            address: string;
+            contactname: string;
+            contactphonenumber: string;
+            email: string;
+            isfacilityadmin: boolean;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            customerid: number;
+            created_by: number;
+            updated_by: number;
+            facility_type: string;
+            street: string;
+            city: string;
+            postcode: number;
+            site_manager: string;
+            longitude: number;
+            latitude: number;
+            timezone: string;
+            currency: string;
+        };
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     findAllFacilityUsers(): Promise<({
         facilities: {
             facilityid: number;
@@ -303,6 +351,54 @@ export declare class UserRepository {
         is_admin: boolean;
     })[]>;
     findAllFacilityUsersByOrganizationId(customerid: number): Promise<({
+        facilities: {
+            facilityid: number;
+            name: string;
+            address: string;
+            contactname: string;
+            contactphonenumber: string;
+            email: string;
+            isfacilityadmin: boolean;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            customerid: number;
+            created_by: number;
+            updated_by: number;
+            facility_type: string;
+            street: string;
+            city: string;
+            postcode: number;
+            site_manager: string;
+            longitude: number;
+            latitude: number;
+            timezone: string;
+            currency: string;
+        };
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
+    findAllFacilityUsersByFacilityId(facilityid: number): Promise<({
         facilities: {
             facilityid: number;
             name: string;
@@ -467,6 +563,43 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
+    findAllDepartmentAdminsByDepartmentId(departmentid: number): Promise<({
+        departments: {
+            departmentid: number;
+            departmentname: string;
+            customerid: number;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+            description: string;
+        };
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     findAllDepartmentUsers(): Promise<({
         departments: {
             departmentid: number;
@@ -505,6 +638,80 @@ export declare class UserRepository {
         is_admin: boolean;
     })[]>;
     findAllDepartmentUsersByOrganizationId(customerid: number): Promise<({
+        departments: {
+            departmentid: number;
+            departmentname: string;
+            customerid: number;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+            description: string;
+        };
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
+    findAllDepartmentUsersByFacilityId(facilityid: number): Promise<({
+        departments: {
+            departmentid: number;
+            departmentname: string;
+            customerid: number;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+            description: string;
+        };
+        users: {
+            userid: number;
+            firstname: string;
+            lastname: string;
+            email: string;
+            address: string;
+            passwordhash: string;
+            phonenumber: string;
+            createdby: number;
+            updatedby: number;
+            is_active: boolean;
+            is_deleted: boolean;
+            date_created: Date;
+            date_updated: Date;
+            resettoken: string;
+        };
+    } & {
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
+    findAllDepartmentUsersByDepartmentId(departmentid: number): Promise<({
         departments: {
             departmentid: number;
             departmentname: string;

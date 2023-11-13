@@ -200,6 +200,33 @@ export class UserRepository{
         })
     }
 
+    async findAllFacilityAdminsUsingFacilityId(facilityid: number){
+        return this.prismaService.facilityusers.findMany({
+            where:{
+                is_admin:true,
+                facilities: {
+                    is_active: true,
+                    is_deleted: false,
+                    facilityid: facilityid
+                }
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  },
+                facilities: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
     async findAllFacilityUsers(){
         return this.prismaService.facilityusers.findMany({
             where:{
@@ -231,9 +258,38 @@ export class UserRepository{
             where:{
                 is_admin:false,
                 facilities: {
+                    is_active: true,
+                    is_deleted: false,
                     customers: {
                         customerid: customerid
                     }
+                }
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  },
+                facilities: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
+    async findAllFacilityUsersByFacilityId(facilityid: number){
+        return this.prismaService.facilityusers.findMany({
+            where:{
+                is_admin:false,
+                facilities: {
+                    is_active: true,
+                    is_deleted: false,
+                    facilityid: facilityid
                 }
             }, 
             include: {
@@ -314,6 +370,7 @@ export class UserRepository{
         })
     }
 
+    
     async findAllDepartmentAdminsByFacilityId(facilityid: number){
         return this.prismaService.departmentusers.findMany({
             where:{
@@ -321,9 +378,34 @@ export class UserRepository{
                 departments: {
                     is_active: true,
                     is_deleted: false,
-                    facilities: {
-                        facilityid: facilityid
+                    facilityid: facilityid
+                }
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
                     }
+                  },
+                departments: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
+    async findAllDepartmentAdminsByDepartmentId(departmentid: number){
+        return this.prismaService.departmentusers.findMany({
+            where:{
+                is_admin:true,
+                departments: {
+                    is_active: true,
+                    is_deleted: false,
+                    departmentid: departmentid
                 }
             }, 
             include: {
@@ -380,6 +462,60 @@ export class UserRepository{
                             customerid: customerid
                         }
                     }
+                }
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  },
+                departments: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
+    async findAllDepartmentUsersByFacilityId(facilityid: number) {
+        return this.prismaService.departmentusers.findMany({
+            where:{
+                is_admin:false,
+                departments: {
+                    is_deleted: false,
+                    facilities: {
+                        facilityid: facilityid
+                    }
+                }
+            }, 
+            include: {
+                users: {
+                    where: {
+                      is_deleted: false,
+                      is_active: true
+                    }
+                  },
+                departments: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    }
+                }
+            }
+        })
+    }
+
+    async findAllDepartmentUsersByDepartmentId(departmentid: number) {
+        return this.prismaService.departmentusers.findMany({
+            where:{
+                is_admin:false,
+                departments: {
+                    is_deleted: false,
+                    departmentid: departmentid
                 }
             }, 
             include: {
@@ -469,11 +605,7 @@ export class UserRepository{
                 devices: {
                     is_active: true,
                     is_deleted: false,
-                    departments: {
-                        facilities: {
-                            facilityid: facilityid
-                        }
-                    }
+                    facilityid: facilityid
                 }
             }, 
             include: {

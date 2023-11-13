@@ -31,6 +31,7 @@ export declare class SensorRepository {
         date_updated: Date;
         updated_by: number;
         description: string;
+        name: string;
     }[]>;
     showSensorConfiguration(sensorId: number): import(".prisma/client").Prisma.PrismaPromise<{
         sensortypeid: number;
@@ -46,8 +47,24 @@ export declare class SensorRepository {
         date_updated: Date;
         updated_by: number;
         description: string;
+        name: string;
     }[]>;
-    updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]): Promise<import(".prisma/client").Prisma.BatchPayload[]>;
+    updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]): Promise<{
+        sensortypeid: number;
+        property: string;
+        unit: string;
+        minvalue: number;
+        maxvalue: number;
+        sensorid: number;
+        aws_sensorid: string;
+        is_hidden: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        updated_by: number;
+        description: string;
+        name: string;
+    }[]>;
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     unAssignSensorOnDeviceDeletion(deviceid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     createSensorType(model: SensorTypeModelDTO[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;

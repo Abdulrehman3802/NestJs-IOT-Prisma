@@ -33,6 +33,7 @@ export class SensorRepository{
             where:{
                 sensorid: sensorId,
             }
+
         })
     }
 
@@ -45,29 +46,28 @@ export class SensorRepository{
         })
     }
 
-    async   updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]) {
-        const updatedData = await Promise.all(
-            configuration.map(async (config) => {
-                const updatedRecord = await this.prismaService.sensortypes.updateMany({
-                    where: {
-                        sensorid: sensorId
-                    },
-                    data: {
-                        property: config.property,
-                        unit: config.unit,
-                        minvalue: config.minvalue,
-                        maxvalue: config.maxvalue,
-                        aws_sensorid: config.aws_sensorid,
-                        is_hidden: config.is_hidden,
-                    }
-                });
-                return updatedRecord;
-            })
-        );
-        // log the updated data to the console
+    async updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]) {
+        // Retrieve existing records
+        const updatedData = await Promise.all(configuration.map((config) => {
+            return this.prismaService.sensortypes.update({
+                where: {
+                    sensortypeid: config.sensortypeid,
+                },
+                data: {
+                    property: config.property,
+                    unit: config.unit,
+                    minvalue: config.minvalue,
+                    maxvalue: config.maxvalue,
+                    aws_sensorid: config.aws_sensorid,
+                    is_hidden: config.is_hidden,
+                    description: config.description,
+                    name: config.name,
+                },
+            });
+        }));
+
         return updatedData;
     }
-
 
 
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]) {

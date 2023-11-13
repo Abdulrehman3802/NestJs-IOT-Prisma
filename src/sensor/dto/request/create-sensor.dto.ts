@@ -36,6 +36,7 @@ export class SensorTypeModelDTO{
     minvalue: number;
     maxvalue: number;
     sensorid: number;
+    name: string;
     aws_sensorid: string;
     is_hidden: boolean;
     is_deleted: boolean;

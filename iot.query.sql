@@ -289,3 +289,6 @@ ALTER TABLE IF EXISTS "IoT".sensortypes
 
 ALTER TABLE IF EXISTS "IoT".sensortypes
     ADD COLUMN description character varying(100);
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN name character varying(100);

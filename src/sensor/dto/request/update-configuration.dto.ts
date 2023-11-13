@@ -2,8 +2,17 @@ import {IsBoolean, IsDate, IsNumber, IsOptional, IsString} from "class-validator
 
 export class UpdateConfigurationDto{
     @IsOptional()
+    @IsNumber()
+    sensortypeid: number;
+    @IsOptional()
     @IsString()
     property: string;
+    @IsOptional()
+    @IsString()
+    description: string;
+    @IsOptional()
+    @IsString()
+    name: string;
     @IsOptional()
     @IsString()
     unit: string;

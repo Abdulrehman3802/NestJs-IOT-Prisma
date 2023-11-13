@@ -517,6 +517,56 @@ export class UserService {
     }
   }
 
+  async findAdminStaffByFacilityId(query: string, id: number) {
+    try{
+  
+      let users: ResponseAdminDto[];
+      const facilityId = id;
+      
+        if(query == 'FacilityAdmin') {
+          users = await this.userRepository.findAllFacilityAdminsUsingFacilityId(facilityId)
+        } else if(query == 'DepartmentAdmin') {
+            users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId)
+        } else if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDeviceAdminsByFacilityId(facilityId)
+        }
+      
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Admins Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
+  async findAdminStaffByDepartmentId(query: string, id: number) {
+    try{
+  
+      let users: ResponseAdminDto[];
+      const departmentId = id;
+      
+        if(query == 'DepartmentAdmin') {
+            users = await this.userRepository.findAllDepartmentAdminsByDepartmentId(departmentId)
+        } else if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDeviceAdminsByDepartmentId(departmentId)
+        }
+      
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Admins Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
   async findUserStaff(query: string, token: Token) {
     try{
       const { customerId, facilityId, departmentId, rolename } = token;
@@ -556,6 +606,50 @@ export class UserService {
             users = await this.userRepository.findAllFacilityUsersByOrganizationId(customerId)
         } else if(query == 'DepartmentUser') {
             users = await this.userRepository.findAllDepartmentUsersByOrganizationId(customerId)
+        } 
+
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Users Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
+  async findUserStaffByFacilityId(query: string, id: number) {
+    try{
+      let users: ResponseAdminDto[];
+      const facilityId = id;
+
+        if(query.toString() == 'FacilityUser') {
+            users = await this.userRepository.findAllFacilityUsersByFacilityId(facilityId)
+        } else if(query == 'DepartmentUser') {
+            users = await this.userRepository.findAllDepartmentUsersByFacilityId(facilityId)
+        } 
+
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Users Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
+  async findUserStaffByDepartmentId(query: string, id: number) {
+    try{
+      let users: ResponseAdminDto[];
+      const departmentId = id;
+
+        if(query == 'DepartmentUser') {
+            users = await this.userRepository.findAllDepartmentUsersByDepartmentId(departmentId)
         } 
 
       const response:ApiResponseDto<ResponseAdminDto[]> = {

@@ -2,6 +2,7 @@ export class ResponseConfigurationDto{
     sensortypeid:number
     property: string;
     unit: string;
+    name:string;
     description:string
     minvalue: number;
     maxvalue: number;

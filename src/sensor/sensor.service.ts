@@ -53,6 +53,7 @@ export class SensorService {
                         unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
+                        name: "humidity",
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
@@ -63,10 +64,11 @@ export class SensorService {
                         description: " "
                     },
                     {
-                        property: "CO2",
+                        property: "co2",
                         unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
+                        name: "co2",
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
@@ -77,10 +79,11 @@ export class SensorService {
                         description: " "
                     },
                     {
-                        property: "temprature1",
+                        property: "temp",
                         unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
+                        name: "temp",
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
@@ -91,10 +94,11 @@ export class SensorService {
                         description: " "
                     },
                     {
-                        property: "temprature2",
+                        property: "temp2",
                         unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
+                        name: "temp2",
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,

@@ -457,6 +457,53 @@ let UserService = class UserService {
             throw error;
         }
     }
+    async findAdminStaffByFacilityId(query, id) {
+        try {
+            let users;
+            const facilityId = id;
+            if (query == 'FacilityAdmin') {
+                users = await this.userRepository.findAllFacilityAdminsUsingFacilityId(facilityId);
+            }
+            else if (query == 'DepartmentAdmin') {
+                users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId);
+            }
+            else if (query == 'DeviceAdmin') {
+                users = await this.userRepository.findAllDeviceAdminsByFacilityId(facilityId);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.FOUND,
+                message: "Admins Found Successfully",
+                data: users,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findAdminStaffByDepartmentId(query, id) {
+        try {
+            let users;
+            const departmentId = id;
+            if (query == 'DepartmentAdmin') {
+                users = await this.userRepository.findAllDepartmentAdminsByDepartmentId(departmentId);
+            }
+            else if (query == 'DeviceAdmin') {
+                users = await this.userRepository.findAllDeviceAdminsByDepartmentId(departmentId);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.FOUND,
+                message: "Admins Found Successfully",
+                data: users,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async findUserStaff(query, token) {
         try {
             const { customerId, facilityId, departmentId, rolename } = token;
@@ -498,6 +545,47 @@ let UserService = class UserService {
             }
             else if (query == 'DepartmentUser') {
                 users = await this.userRepository.findAllDepartmentUsersByOrganizationId(customerId);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.FOUND,
+                message: "Users Found Successfully",
+                data: users,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findUserStaffByFacilityId(query, id) {
+        try {
+            let users;
+            const facilityId = id;
+            if (query.toString() == 'FacilityUser') {
+                users = await this.userRepository.findAllFacilityUsersByFacilityId(facilityId);
+            }
+            else if (query == 'DepartmentUser') {
+                users = await this.userRepository.findAllDepartmentUsersByFacilityId(facilityId);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.FOUND,
+                message: "Users Found Successfully",
+                data: users,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findUserStaffByDepartmentId(query, id) {
+        try {
+            let users;
+            const departmentId = id;
+            if (query == 'DepartmentUser') {
+                users = await this.userRepository.findAllDepartmentUsersByDepartmentId(departmentId);
             }
             const response = {
                 statusCode: common_1.HttpStatus.FOUND,

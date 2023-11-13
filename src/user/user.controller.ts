@@ -71,6 +71,26 @@ export class UserController {
   }
 
   @Permission(Category.USER, PermissionType.VIEW)
+  @Get('admins-by-facId/:id')
+  findAllAdminsByFacilityId(
+    @Param('id') id: string,
+    @Query() query: findQuery,
+    ) {
+    
+    return this.userService.findAdminStaffByFacilityId(query.name, +id);
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('admins-by-depId/:id')
+  findAllAdminsByDepartmentId(
+    @Param('id') id: string,
+    @Query() query: findQuery,
+    ) {
+    
+    return this.userService.findAdminStaffByDepartmentId(query.name, +id);
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
   @Get('user-staff-by-orgId/:id')
   findAllUserStaffByOrganizationId(
     @Param('id') id: string,
@@ -78,6 +98,26 @@ export class UserController {
     ) {
     
     return this.userService.findUserStaffByOrganizationId(query.name, +id);
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('user-staff-by-facId/:id')
+  findAllUserStaffByFacilityId(
+    @Param('id') id: string,
+    @Query() query: findQuery,
+    ) {
+    
+    return this.userService.findUserStaffByFacilityId(query.name, +id);
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('user-staff-by-depId/:id')
+  findAllUserStaffByDepartmentId(
+    @Param('id') id: string,
+    @Query() query: findQuery,
+    ) {
+    
+    return this.userService.findUserStaffByDepartmentId(query.name, +id);
   }
 
   @Get(':id')

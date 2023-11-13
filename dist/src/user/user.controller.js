@@ -46,8 +46,20 @@ let UserController = class UserController {
     findAllAdminsByOrganizationId(id, query) {
         return this.userService.findAdminStaffByOrganizationId(query.name, +id);
     }
+    findAllAdminsByFacilityId(id, query) {
+        return this.userService.findAdminStaffByFacilityId(query.name, +id);
+    }
+    findAllAdminsByDepartmentId(id, query) {
+        return this.userService.findAdminStaffByDepartmentId(query.name, +id);
+    }
     findAllUserStaffByOrganizationId(id, query) {
         return this.userService.findUserStaffByOrganizationId(query.name, +id);
+    }
+    findAllUserStaffByFacilityId(id, query) {
+        return this.userService.findUserStaffByFacilityId(query.name, +id);
+    }
+    findAllUserStaffByDepartmentId(id, query) {
+        return this.userService.findUserStaffByDepartmentId(query.name, +id);
     }
     findOne(id) {
         return this.userService.findOne(+id);
@@ -144,6 +156,24 @@ __decorate([
 ], UserController.prototype, "findAllAdminsByOrganizationId", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('admins-by-facId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllAdminsByFacilityId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('admins-by-depId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllAdminsByDepartmentId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('user-staff-by-orgId/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Query)()),
@@ -151,6 +181,24 @@ __decorate([
     __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAllUserStaffByOrganizationId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('user-staff-by-facId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllUserStaffByFacilityId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('user-staff-by-depId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllUserStaffByDepartmentId", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
