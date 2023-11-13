@@ -35,21 +35,49 @@ export class UserController {
   }
 
   @Permission(Category.USER, PermissionType.VIEW)
-  @Get('unassignedUsers')
+  @Get('unassigned-users')
   findUnAssignedUsers() {
     return this.userService.findUnAssignedUsers();
   }
 
   @Permission(Category.USER, PermissionType.VIEW)
-  @Get('findAdmins')
-  findAllAdmins(@Query() query: findQuery) {
-    return this.userService.findAdminStaff(query.name);
+  @Get('find-admins')
+  findAllAdmins(
+    @Req() req: RequestWithUser,
+    @Query() query: findQuery
+    ) {
+    const token = req.token
+    return this.userService.findAdminStaff(query.name, token);
   }
 
   @Permission(Category.USER, PermissionType.VIEW)
-  @Get('findUserStaff')
-  findAllUserStaff(@Query() query: findQuery) {
-    return this.userService.findUserStaff(query.name);
+  @Get('find-user-staff')
+  findAllUserStaff(
+    @Req() req: RequestWithUser,
+    @Query() query: findQuery
+    ) {
+    const token = req.token
+    return this.userService.findUserStaff(query.name, token);
+  }
+  
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('admins-by-orgId/:id')
+  findAllAdminsByOrganizationId(
+    @Param('id') id: string,
+    @Query() query: findQuery,
+    ) {
+    
+    return this.userService.findAdminStaffByOrganizationId(query.name, +id);
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
+  @Get('user-staff-by-orgId/:id')
+  findAllUserStaffByOrganizationId(
+    @Param('id') id: string,
+    @Query() query: findQuery,
+    ) {
+    
+    return this.userService.findUserStaffByOrganizationId(query.name, +id);
   }
 
   @Get(':id')
@@ -124,19 +152,19 @@ export class UserController {
 
   //#region Staff CRUD - U
   @Permission(Category.USER, PermissionType.UPDATE)
-  @Patch('/updateFacilityStaff')
+  @Patch('staff/updateFacilityStaff')
   updateFacilityStaff(@Body() updateFacilityDto: UpdateFacilityAdminDto) {
     return this.userService.updateFacilityStaff(updateFacilityDto);
   }
 
   @Permission(Category.USER, PermissionType.UPDATE)
-  @Patch('/updateDepartmentStaff')
+  @Patch('staff/updateDepartmentStaff')
   updateDepartmentStaff(@Body() updateDepartmentDto: UpdateDepartmentAdminDto) {
     return this.userService.updateDepartmentStaff(updateDepartmentDto);
   }
 
   @Permission(Category.USER, PermissionType.UPDATE)
-  @Patch('/updateDeviceStaff')
+  @Patch('staff/updateDeviceStaff')
   updateDeviceStaff(@Body() updateDeviceDto: UpdateDeviceAdminDto) {
     return this.userService.updateDeviceStaff(updateDeviceDto);
   }
@@ -144,19 +172,19 @@ export class UserController {
 
   //#region Staff CRUD - D
   @Permission(Category.USER, PermissionType.DELETE)
-  @Delete('/deleteFacilityStaff')
+  @Delete('staff/deleteFacilityStaff')
   deleteFacilityStaff(@Query() query: deleteQueryFacility) {
     return this.userService.deleteFacilityStaff(query);
   }
 
   @Permission(Category.USER, PermissionType.DELETE)
-  @Delete('/deleteDepartmentStaff')
+  @Delete('staff/deleteDepartmentStaff')
   deleteDepartmentStaff(@Query() query: deleteQueryDepartment) {
     return this.userService.deleteDepartmentStaff(query);
   }
 
   @Permission(Category.USER, PermissionType.DELETE)
-  @Delete('/deleteDeviceStaff')
+  @Delete('staff/deleteDeviceStaff')
   deleteDeviceStaff(@Query() query: deleteQueryDevice) {
     return this.userService.deleteDeviceStaff(query);
   }

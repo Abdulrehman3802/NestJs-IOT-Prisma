@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SensorService = void 0;
 const common_1 = require("@nestjs/common");
-const create_sensor_dto_1 = require("./dto/create-sensor.dto");
+const create_sensor_dto_1 = require("./dto/request/create-sensor.dto");
 const sensor_repository_1 = require("./sensor.repository");
 const aws_service_1 = require("../aws/aws.service");
 const device_service_1 = require("../device/device.service");
@@ -46,56 +46,60 @@ let SensorService = class SensorService {
                     throw new common_1.NotImplementedException("Cannot Assign Sensor");
                 let sensorTypeModel = [
                     {
-                        sensortypename: "humidity",
-                        measurementunit: "c",
+                        property: "humidity",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     },
                     {
-                        sensortypename: "CO2",
-                        measurementunit: "c",
+                        property: "CO2",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     },
                     {
-                        sensortypename: "temprature1",
-                        measurementunit: "c",
+                        property: "temprature1",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     },
                     {
-                        sensortypename: "temprature2",
-                        measurementunit: "c",
+                        property: "temprature2",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     }
                 ];
                 const sensorType = await this.sensorRepository.createSensorType(sensorTypeModel);
@@ -106,6 +110,60 @@ let SensorService = class SensorService {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Sensor Assign Successfully",
                 data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async getSensorConfiguration(sensorId) {
+        try {
+            const sensorTypes = await this.sensorRepository.getSensorType(sensorId);
+            if (sensorTypes.length == 0) {
+                throw new common_1.NotFoundException(`Sensor configuration with id ${sensorId} does not exist`);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensor configuration Successfully",
+                data: sensorTypes,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async ShowSensorConfiguration(sensorId) {
+        try {
+            const sensorConfiguration = await this.sensorRepository.showSensorConfiguration(sensorId);
+            if (!sensorConfiguration) {
+                throw new common_1.NotFoundException(`Sensor configuration with id ${sensorId} does not exist`);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensor configuration Successfully",
+                data: sensorConfiguration,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async updateSensorConfiguration(sensorId, configuration) {
+        try {
+            const sensorConfiguration = await this.sensorRepository.updateSensorConfiguration(sensorId, configuration);
+            if (!sensorConfiguration) {
+                throw new common_1.NotImplementedException("Cannot Update Sensor Configuration");
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensor configuration Updated Successfully",
+                data: null,
                 error: false
             };
             return response;

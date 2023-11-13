@@ -9,8 +9,10 @@ export declare class UserController {
     create(req: RequestWithUser, createUserDto: CreateUserDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
     findAll(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto[]>>;
     findUnAssignedUsers(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUnAssignedUserStaffDto[]>>;
-    findAllAdmins(query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
-    findAllUserStaff(query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
+    findAllAdmins(req: RequestWithUser, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
+    findAllUserStaff(req: RequestWithUser, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
+    findAllAdminsByOrganizationId(id: string, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
+    findAllUserStaffByOrganizationId(id: string, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
     findOne(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUserDto>>;
     remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;

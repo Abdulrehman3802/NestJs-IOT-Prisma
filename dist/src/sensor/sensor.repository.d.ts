@@ -1,5 +1,6 @@
 import { PrismaService } from "../prisma/prisma.service";
-import { SensorDto, SensorTypeModelDTO } from "./dto/create-sensor.dto";
+import { SensorDto, SensorTypeModelDTO } from "./dto/request/create-sensor.dto";
+import { UpdateConfigurationDto } from "./dto/request/update-configuration.dto";
 export declare class SensorRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
@@ -16,6 +17,37 @@ export declare class SensorRepository {
         sensorname: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     unAssignSensorOnOrganizationDeletion(orgid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
+    getSensorType(sensorId: number): import(".prisma/client").Prisma.PrismaPromise<{
+        sensortypeid: number;
+        property: string;
+        unit: string;
+        minvalue: number;
+        maxvalue: number;
+        sensorid: number;
+        aws_sensorid: string;
+        is_hidden: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        updated_by: number;
+        description: string;
+    }[]>;
+    showSensorConfiguration(sensorId: number): import(".prisma/client").Prisma.PrismaPromise<{
+        sensortypeid: number;
+        property: string;
+        unit: string;
+        minvalue: number;
+        maxvalue: number;
+        sensorid: number;
+        aws_sensorid: string;
+        is_hidden: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        updated_by: number;
+        description: string;
+    }[]>;
+    updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]): Promise<import(".prisma/client").Prisma.BatchPayload[]>;
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     unAssignSensorOnDeviceDeletion(deviceid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     createSensorType(model: SensorTypeModelDTO[]): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;

@@ -1,12 +1,14 @@
-import { HttpStatus, Inject, Injectable, NotImplementedException, forwardRef} from '@nestjs/common';
-import {CreateSensorDto, SensorDto} from './dto/create-sensor.dto';
-import {UpdateSensorDto} from './dto/update-sensor.dto';
+import {HttpStatus, Inject, Injectable, NotImplementedException, forwardRef, NotFoundException} from '@nestjs/common';
+import {CreateSensorDto, SensorDto, SensorTypeModelDTO} from './dto/request/create-sensor.dto';
+import {UpdateSensorDto} from './dto/request/update-sensor.dto';
 import {SensorRepository} from "./sensor.repository";
 import {ApiResponseDto, Token} from "../../core/generics/api-response.dto";
 import {AwsService} from "../aws/aws.service";
 import {DeviceService} from "../device/device.service";
 import {tsTsxJsJsxRegex} from "ts-loader/dist/constants";
 import {DepartmentService} from "../department/department.service";
+import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
+import {ResponseConfigurationDto} from "./dto/response/response-configuration.dto";
 
 
 @Injectable()
@@ -21,7 +23,7 @@ export class SensorService {
 
     async assignSensor(userId: number, createSensorDto: CreateSensorDto) {
         try {
-            if(createSensorDto.deviceid && !(createSensorDto.customerid)){
+            if (createSensorDto.deviceid && !(createSensorDto.customerid)) {
                 const device = await this.deviceService.findOne(createSensorDto.deviceid)
                 createSensorDto.customerid = device.data.customerid
             }
@@ -47,149 +49,205 @@ export class SensorService {
                 // create 4 sensor type humidity and so on for later configuration
                 let sensorTypeModel = [
                     {
-                        sensortypename: "humidity",
-                        measurementunit: "c",
+                        property: "humidity",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     },
                     {
-                        sensortypename: "CO2",
-                        measurementunit: "c",
+                        property: "CO2",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     },
                     {
-                        sensortypename: "temprature1",
-                        measurementunit: "c",
+                        property: "temprature1",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     },
                     {
-                        sensortypename: "temprature2",
-                        measurementunit: "c",
+                        property: "temprature2",
+                        unit: "c",
                         minvalue: 0,
                         maxvalue: 0,
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
-                        is_hidden: true,
+                        is_hidden: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
                         updated_by: userId,
+                        description: " "
                     }
                 ]
                 const sensorType = await this.sensorRepository.createSensorType(sensorTypeModel)
                 if (!sensorType) throw new NotImplementedException("Sensor Type not Created")
             }
-          
+
             const response: ApiResponseDto<SensorDto> = {
-              statusCode: HttpStatus.OK,
-              message: "Sensor Assign Successfully",
-              data: sensor,
-              error: false
-          }
-          return response
-      } catch (error) {
-          throw error
-      }
-  }
-
-  async unAssignSensorOnOrganziationDeletion(orgid: number) {
-    try {
-        const deletionResponse = await this.sensorRepository.unAssignSensorOnOrganizationDeletion(orgid)
-        if(!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
-
-        const response:ApiResponseDto<null> ={
-          statusCode:HttpStatus.OK,
-          message:"Sensor UnAssigned Successfully",
-          data: null,
-          error:false
+                statusCode: HttpStatus.OK,
+                message: "Sensor Assign Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
         }
-        return response
-    } catch (error) {
-      throw error
     }
-  }
 
-  async unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]) {
-    try {
-        const deletionResponse = await this.sensorRepository.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds)
-        if(!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
-
-        const response:ApiResponseDto<null> ={
-          statusCode:HttpStatus.OK,
-          message:"Sensor UnAssigned Successfully",
-          data: null,
-          error:false
+    async getSensorConfiguration(sensorId: number) {
+        try {
+            const sensorTypes = await this.sensorRepository.getSensorType(sensorId)
+            if(sensorTypes.length == 0) {
+                throw new NotFoundException(`Sensor configuration with id ${sensorId} does not exist`)
+            }
+            const response: ApiResponseDto<ResponseConfigurationDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensor configuration Successfully",
+                data: sensorTypes,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
         }
-        return response
-    } catch (error) {
-      throw error
     }
-  }
 
-  async unAssignSensorOnDeviceDeletion(deviceid: number) {
-    try {
-        const deletionResponse = await this.sensorRepository.unAssignSensorOnDeviceDeletion(deviceid)
-        if(!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
-
-        const response:ApiResponseDto<null> ={
-          statusCode:HttpStatus.OK,
-          message:"Sensor UnAssigned Successfully",
-          data: null,
-          error:false
+    async ShowSensorConfiguration(sensorId: number) {
+        try {
+            const sensorConfiguration = await this.sensorRepository.showSensorConfiguration(sensorId)
+            if(!sensorConfiguration){
+                throw new NotFoundException(`Sensor configuration with id ${sensorId} does not exist`)
+            }
+            const response: ApiResponseDto<ResponseConfigurationDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensor configuration Successfully",
+                data: sensorConfiguration,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
         }
-        return response
-    } catch (error) {
-      throw error
     }
-  }
 
-  async getAllAssignedSensor(token:Token) {
-   try{
-     const { rolename, customerId } = token;
-     let assignSensor:SensorDto[];
-     if(rolename === 'SuperAdmin'){
-       assignSensor = await this.sensorRepository.findAssignSensor()
-     }
-     else
-     {
-       assignSensor = await this.sensorRepository.findAssignSensorByOrganizationId(customerId)
-     }
-     const response:ApiResponseDto<SensorDto[]> ={
-       statusCode:HttpStatus.OK,
-       message:"Sensors found Successfully",
-       data:assignSensor,
-       error:false
-     }
-     return response
-   }catch (error) {
-     throw error
-   }
-  }
+    async updateSensorConfiguration(sensorId: number, configuration:UpdateConfigurationDto[]) {
+        try {
+            const sensorConfiguration = await this.sensorRepository.updateSensorConfiguration(sensorId, configuration)
+            if(!sensorConfiguration){
+                throw new NotImplementedException("Cannot Update Sensor Configuration")
+            }
+            const response: ApiResponseDto<null> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensor configuration Updated Successfully",
+                data: null,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
 
-  async getAllUnAssignedSensors(token: Token) {
+    async unAssignSensorOnOrganziationDeletion(orgid: number) {
+        try {
+            const deletionResponse = await this.sensorRepository.unAssignSensorOnOrganizationDeletion(orgid)
+            if (!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
+
+            const response: ApiResponseDto<null> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensor UnAssigned Successfully",
+                data: null,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]) {
+        try {
+            const deletionResponse = await this.sensorRepository.unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds)
+            if (!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
+
+            const response: ApiResponseDto<null> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensor UnAssigned Successfully",
+                data: null,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async unAssignSensorOnDeviceDeletion(deviceid: number) {
+        try {
+            const deletionResponse = await this.sensorRepository.unAssignSensorOnDeviceDeletion(deviceid)
+            if (!deletionResponse) throw new NotImplementedException("Problem in unassigning sensor")
+
+            const response: ApiResponseDto<null> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensor UnAssigned Successfully",
+                data: null,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getAllAssignedSensor(token: Token) {
+        try {
+            const {rolename, customerId} = token;
+            let assignSensor: SensorDto[];
+            if (rolename === 'SuperAdmin') {
+                assignSensor = await this.sensorRepository.findAssignSensor()
+            } else {
+                assignSensor = await this.sensorRepository.findAssignSensorByOrganizationId(customerId)
+            }
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors found Successfully",
+                data: assignSensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getAllUnAssignedSensors(token: Token) {
         try {
             let assignedSensor: SensorDto[], subtracted: string[]
             const {rolename, customerId} = token;
@@ -221,12 +279,12 @@ export class SensorService {
         }
     }
 
-    async updateAssignedSensor(userid:number,id: number, updateDto: UpdateSensorDto) {
+    async updateAssignedSensor(userid: number, id: number, updateDto: UpdateSensorDto) {
         try {
             const model = new SensorDto()
             model.customerid = updateDto.customerid;
-                model.deviceid = updateDto.deviceid;
-                model.assigned_by = userid;
+            model.deviceid = updateDto.deviceid;
+            model.assigned_by = userid;
 
             const sensor = await this.sensorRepository.updateSensor(id, model);
             if (!sensor) {
@@ -267,8 +325,8 @@ export class SensorService {
         }
     }
 
-    async getSensorByDeviceId(devId:number){
-        try{
+    async getSensorByDeviceId(devId: number) {
+        try {
             const sensor = await this.sensorRepository.findAssignSensorByDeviceId(devId)
             const response: ApiResponseDto<SensorDto[]> = {
                 statusCode: HttpStatus.OK,
@@ -277,13 +335,13 @@ export class SensorService {
                 error: false
             }
             return response
-        }catch (error) {
+        } catch (error) {
             throw error
         }
     }
 
-    async getSensorByOrgId(orgId:number){
-        try{
+    async getSensorByOrgId(orgId: number) {
+        try {
             const sensor = await this.sensorRepository.findAssignSensorByOrganizationId(orgId)
             const response: ApiResponseDto<SensorDto[]> = {
                 statusCode: HttpStatus.OK,
@@ -292,7 +350,7 @@ export class SensorService {
                 error: false
             }
             return response
-        }catch (error) {
+        } catch (error) {
             throw error
         }
     }
@@ -331,7 +389,7 @@ export class SensorService {
             }
         ];
         try {
-            const response : ApiResponseDto<any[]> = {
+            const response: ApiResponseDto<any[]> = {
                 statusCode: HttpStatus.OK,
                 message: "Widget Found Successfully!",
                 data: data,
@@ -343,8 +401,8 @@ export class SensorService {
         }
     }
 
-    async getSensorByDepartmentId(depId:number){
-        try{
+    async getSensorByDepartmentId(depId: number) {
+        try {
             const devices = await this.deviceService.findAllDevicesByDepId(depId)
             let deviceIds = devices.data.map((obj) => {
                 return obj.deviceid
@@ -357,13 +415,13 @@ export class SensorService {
                 error: false
             }
             return response
-        }catch (error) {
+        } catch (error) {
             throw error
         }
     }
 
-    async getSensorByFacilityId(facId:number){
-        try{
+    async getSensorByFacilityId(facId: number) {
+        try {
             const departments = await this.departmentService.GetAllDepartmentIdsByFacilityId(facId)
             let departmentIds = departments.data.map((obj) => {
                 return obj.departmentid
@@ -380,10 +438,11 @@ export class SensorService {
                 error: false
             }
             return response
-        }catch (error) {
+        } catch (error) {
             throw error
         }
     }
+
     remove(id: number) {
         return `This action removes a #${id} sensor`;
     }

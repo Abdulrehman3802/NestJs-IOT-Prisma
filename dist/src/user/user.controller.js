@@ -35,11 +35,19 @@ let UserController = class UserController {
     findUnAssignedUsers() {
         return this.userService.findUnAssignedUsers();
     }
-    findAllAdmins(query) {
-        return this.userService.findAdminStaff(query.name);
+    findAllAdmins(req, query) {
+        const token = req.token;
+        return this.userService.findAdminStaff(query.name, token);
     }
-    findAllUserStaff(query) {
-        return this.userService.findUserStaff(query.name);
+    findAllUserStaff(req, query) {
+        const token = req.token;
+        return this.userService.findUserStaff(query.name, token);
+    }
+    findAllAdminsByOrganizationId(id, query) {
+        return this.userService.findAdminStaffByOrganizationId(query.name, +id);
+    }
+    findAllUserStaffByOrganizationId(id, query) {
+        return this.userService.findUserStaffByOrganizationId(query.name, +id);
     }
     findOne(id) {
         return this.userService.findOne(+id);
@@ -102,27 +110,47 @@ __decorate([
 ], UserController.prototype, "findAll", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
-    (0, common_1.Get)('unassignedUsers'),
+    (0, common_1.Get)('unassigned-users'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findUnAssignedUsers", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
-    (0, common_1.Get)('findAdmins'),
-    __param(0, (0, common_1.Query)()),
+    (0, common_1.Get)('find-admins'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_queries_dto_1.findQuery]),
+    __metadata("design:paramtypes", [Object, user_queries_dto_1.findQuery]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAllAdmins", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
-    (0, common_1.Get)('findUserStaff'),
-    __param(0, (0, common_1.Query)()),
+    (0, common_1.Get)('find-user-staff'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_queries_dto_1.findQuery]),
+    __metadata("design:paramtypes", [Object, user_queries_dto_1.findQuery]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAllUserStaff", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('admins-by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllAdminsByOrganizationId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('user-staff-by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_queries_dto_1.findQuery]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllUserStaffByOrganizationId", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -183,7 +211,7 @@ __decorate([
 ], UserController.prototype, "createDeviceStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
-    (0, common_1.Patch)('/updateFacilityStaff'),
+    (0, common_1.Patch)('staff/updateFacilityStaff'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_user_dto_1.UpdateFacilityAdminDto]),
@@ -191,7 +219,7 @@ __decorate([
 ], UserController.prototype, "updateFacilityStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
-    (0, common_1.Patch)('/updateDepartmentStaff'),
+    (0, common_1.Patch)('staff/updateDepartmentStaff'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_user_dto_1.UpdateDepartmentAdminDto]),
@@ -199,7 +227,7 @@ __decorate([
 ], UserController.prototype, "updateDepartmentStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.UPDATE),
-    (0, common_1.Patch)('/updateDeviceStaff'),
+    (0, common_1.Patch)('staff/updateDeviceStaff'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_user_dto_1.UpdateDeviceAdminDto]),
@@ -207,7 +235,7 @@ __decorate([
 ], UserController.prototype, "updateDeviceStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.DELETE),
-    (0, common_1.Delete)('/deleteFacilityStaff'),
+    (0, common_1.Delete)('staff/deleteFacilityStaff'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_queries_dto_1.deleteQueryFacility]),
@@ -215,7 +243,7 @@ __decorate([
 ], UserController.prototype, "deleteFacilityStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.DELETE),
-    (0, common_1.Delete)('/deleteDepartmentStaff'),
+    (0, common_1.Delete)('staff/deleteDepartmentStaff'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_queries_dto_1.deleteQueryDepartment]),
@@ -223,7 +251,7 @@ __decorate([
 ], UserController.prototype, "deleteDepartmentStaff", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.DELETE),
-    (0, common_1.Delete)('/deleteDeviceStaff'),
+    (0, common_1.Delete)('staff/deleteDeviceStaff'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_queries_dto_1.deleteQueryDevice]),

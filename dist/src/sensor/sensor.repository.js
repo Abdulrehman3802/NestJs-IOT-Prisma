@@ -32,6 +32,40 @@ let SensorRepository = class SensorRepository {
             }
         });
     }
+    getSensorType(sensorId) {
+        return this.prismaService.sensortypes.findMany({
+            where: {
+                sensorid: sensorId,
+            }
+        });
+    }
+    showSensorConfiguration(sensorId) {
+        return this.prismaService.sensortypes.findMany({
+            where: {
+                sensorid: sensorId,
+                is_hidden: false
+            }
+        });
+    }
+    async updateSensorConfiguration(sensorId, configuration) {
+        const updatedData = await Promise.all(configuration.map(async (config) => {
+            const updatedRecord = await this.prismaService.sensortypes.updateMany({
+                where: {
+                    sensorid: sensorId
+                },
+                data: {
+                    property: config.property,
+                    unit: config.unit,
+                    minvalue: config.minvalue,
+                    maxvalue: config.maxvalue,
+                    aws_sensorid: config.aws_sensorid,
+                    is_hidden: config.is_hidden,
+                }
+            });
+            return updatedRecord;
+        }));
+        return updatedData;
+    }
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds) {
         return this.prismaService.sensors.updateMany({
             where: {

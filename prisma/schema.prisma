@@ -176,20 +176,21 @@ model sensors {
 }
 
 model sensortypes {
-  sensortypeid    Int       @id @default(autoincrement())
-  sensortypename  String?   @db.VarChar(255)
-  measurementunit String?   @db.VarChar(50)
-  minvalue        Decimal?  @db.Decimal(10, 2)
-  maxvalue        Decimal?  @db.Decimal(10, 2)
-  sensorid        Int
-  aws_sensorid    String    @db.VarChar(50)
-  is_hidden       Boolean?  @default(false)
-  is_deleted      Boolean?  @default(false)
-  date_created    DateTime? @default(now()) @db.Timestamp(6)
-  date_updated    DateTime? @default(now()) @db.Timestamp(6)
-  updated_by      Int
-  sensors         sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
-  users           users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
+  sensortypeid Int       @id @default(autoincrement())
+  property     String?   @db.VarChar(255)
+  unit         String?   @db.VarChar(50)
+  minvalue     Int?
+  maxvalue     Int?
+  sensorid     Int
+  aws_sensorid String    @db.VarChar(50)
+  is_hidden    Boolean?  @default(false)
+  is_deleted   Boolean?  @default(false)
+  date_created DateTime? @default(now()) @db.Timestamp(6)
+  date_updated DateTime? @default(now()) @db.Timestamp(6)
+  updated_by   Int
+  description  String?   @db.VarChar(100)
+  sensors      sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
+  users        users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
 }
 
 model staff {

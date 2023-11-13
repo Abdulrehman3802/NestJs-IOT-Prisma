@@ -1,10 +1,11 @@
 import {Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards} from '@nestjs/common';
 import { SensorService } from './sensor.service';
-import {CreateSensorDto, SensorDto} from './dto/create-sensor.dto';
-import { UpdateSensorDto } from './dto/update-sensor.dto';
+import {CreateSensorDto, SensorDto} from './dto/request/create-sensor.dto';
+import { UpdateSensorDto } from './dto/request/update-sensor.dto';
 import {JwtAuthGuard, RequestWithUser} from "../../core/generics/Guards/PermissionAuthGuard";
 import {Permission} from "../../core/generics/Guards/PermissionDecorator";
 import {Category, PermissionType} from "../../core/generics/Enums/GeneralEnums";
+import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
 @UseGuards(JwtAuthGuard)
 @Controller('sensor')
 export class SensorController {
@@ -18,6 +19,23 @@ export class SensorController {
   @Get('/get-assign-sensors')
   getAllAssignedSensors(@Req()req:RequestWithUser,) {
     return this.sensorService.getAllAssignedSensor(req.token);
+  }
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Get('/get-sensors-configuration/:id')
+  getSensorsConfiguration(@Req()req:RequestWithUser,@Param('id')id:string) {
+    return this.sensorService.getSensorConfiguration(+id);
+  }
+
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Get('/show-sensors-configuration/:id')
+  showSensorsConfiguration(@Req()req:RequestWithUser,@Param('id')id:string) {
+    return this.sensorService.ShowSensorConfiguration(+id);
+  }
+
+  @Permission(Category.SENSOR, PermissionType.UPDATE)
+  @Patch('/update-sensors-configuration/:id')
+  UpdateSensorsConfiguration(@Req()req:RequestWithUser,@Param('id')id:string,@Body() body:UpdateConfigurationDto[]) {
+    return this.sensorService.updateSensorConfiguration(+id,body);
   }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)

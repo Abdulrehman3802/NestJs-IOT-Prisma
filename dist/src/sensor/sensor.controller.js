@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SensorController = void 0;
 const common_1 = require("@nestjs/common");
 const sensor_service_1 = require("./sensor.service");
-const create_sensor_dto_1 = require("./dto/create-sensor.dto");
-const update_sensor_dto_1 = require("./dto/update-sensor.dto");
+const create_sensor_dto_1 = require("./dto/request/create-sensor.dto");
+const update_sensor_dto_1 = require("./dto/request/update-sensor.dto");
 const PermissionAuthGuard_1 = require("../../core/generics/Guards/PermissionAuthGuard");
 const PermissionDecorator_1 = require("../../core/generics/Guards/PermissionDecorator");
 const GeneralEnums_1 = require("../../core/generics/Enums/GeneralEnums");
@@ -29,6 +29,15 @@ let SensorController = class SensorController {
     }
     getAllAssignedSensors(req) {
         return this.sensorService.getAllAssignedSensor(req.token);
+    }
+    getSensorsConfiguration(req, id) {
+        return this.sensorService.getSensorConfiguration(+id);
+    }
+    showSensorsConfiguration(req, id) {
+        return this.sensorService.ShowSensorConfiguration(+id);
+    }
+    UpdateSensorsConfiguration(req, id, body) {
+        return this.sensorService.updateSensorConfiguration(+id, body);
     }
     getSensorWidgets() {
         return this.sensorService.getSensorWidgets();
@@ -69,6 +78,34 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SensorController.prototype, "getAllAssignedSensors", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('/get-sensors-configuration/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "getSensorsConfiguration", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('/show-sensors-configuration/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "showSensorsConfiguration", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.UPDATE),
+    (0, common_1.Patch)('/update-sensors-configuration/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Array]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "UpdateSensorsConfiguration", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('/get-assign-sensors-widget'),

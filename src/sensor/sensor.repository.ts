@@ -1,7 +1,9 @@
 import {Injectable} from "@nestjs/common";
 import {PrismaService} from "../prisma/prisma.service";
-import {SensorDto, SensorTypeModelDTO} from "./dto/create-sensor.dto";
-import {UpdateSensorDto} from "./dto/update-sensor.dto";
+import {SensorDto, SensorTypeModelDTO} from "./dto/request/create-sensor.dto";
+import {UpdateSensorDto} from "./dto/request/update-sensor.dto";
+import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
+import {ResponseConfigurationDto} from "./dto/response/response-configuration.dto";
 
 @Injectable()
 export class SensorRepository{
@@ -25,6 +27,48 @@ export class SensorRepository{
             }
         })
     }
+
+    getSensorType(sensorId: number) {
+        return this.prismaService.sensortypes.findMany({
+            where:{
+                sensorid: sensorId,
+            }
+        })
+    }
+
+    showSensorConfiguration(sensorId: number) {
+        return this.prismaService.sensortypes.findMany({
+            where:{
+                sensorid: sensorId,
+                is_hidden:false
+            }
+        })
+    }
+
+    async   updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]) {
+        const updatedData = await Promise.all(
+            configuration.map(async (config) => {
+                const updatedRecord = await this.prismaService.sensortypes.updateMany({
+                    where: {
+                        sensorid: sensorId
+                    },
+                    data: {
+                        property: config.property,
+                        unit: config.unit,
+                        minvalue: config.minvalue,
+                        maxvalue: config.maxvalue,
+                        aws_sensorid: config.aws_sensorid,
+                        is_hidden: config.is_hidden,
+                    }
+                });
+                return updatedRecord;
+            })
+        );
+        // log the updated data to the console
+        return updatedData;
+    }
+
+
 
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]) {
         return this.prismaService.sensors.updateMany({

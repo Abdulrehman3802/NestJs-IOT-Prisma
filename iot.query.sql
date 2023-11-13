@@ -228,9 +228,6 @@ ALTER TABLE IF EXISTS "IoT".facilities
     ADD COLUMN latitude integer;
 --------------------------------------------------------------
 ALTER TABLE IF EXISTS "IoT".departments DROP COLUMN IF EXISTS location;
-
-
-
 ----------------Add deviceusers table ----------------
 CREATE SEQUENCE IF NOT EXISTS "IoT".deviceusers_deviceuserid_seq
     INCREMENT 1
@@ -277,3 +274,18 @@ ALTER TABLE IF EXISTS "IoT".facilities
     ALTER TABLE IF EXISTS "IoT".facilities
         ADD COLUMN currency character varying(100);
 
+----------------SensorType table changes --------------------------------
+ALTER TABLE "IoT".sensortypes
+    ALTER COLUMN minvalue TYPE integer;
+
+ALTER TABLE "IoT".sensortypes
+    ALTER COLUMN maxvalue TYPE integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    RENAME sensortypename TO property;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    RENAME measurementunit TO unit;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN description character varying(100);

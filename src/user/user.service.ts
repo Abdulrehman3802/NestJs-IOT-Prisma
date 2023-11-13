@@ -275,26 +275,6 @@ export class UserService {
 
       await this.roleService.assignRoletoUser(roleDto)
       
-      // if(rolename == 'OrganizationAdmin') {
-      //   const orgAdminId = await this.roleService.findRoleByName('OrganizationAdmin')
-      //   await this.roleService.createUserRole({userid: user.userid, roleid: orgAdminId.roleid})
-      // } else if(rolename == 'FacilityAdmin') {
-      //   const facilityAdminId = await this.roleService.findRoleByName('FacilityAdmin')
-      //   await this.roleService.createUserRole({ userid: user.userid, roleid: facilityAdminId.roleid })
-      // } else if(rolename == 'DepartmentAdmin') {
-      //   const depAdminId = await this.roleService.findRoleByName('DepartmentAdmin')
-      //   await this.roleService.createUserRole({ userid: user.userid, roleid: depAdminId.roleid })
-      // } else if(rolename == 'DeviceAdmin') {
-      //   const deviceAdminId = await this.roleService.findRoleByName('DeviceAdmin')
-      //   await this.roleService.createUserRole({ userid: user.userid, roleid: deviceAdminId.roleid })
-      // } else if(rolename == 'FacilityUser') {      
-      //   const facilityUserId = await this.roleService.findRoleByName('FacilityUser')
-      //   await this.roleService.createUserRole({ userid: user.userid, roleid: facilityUserId.roleid })      
-      // } else if(rolename == 'DepartmentUser') {      
-      //   const facilityUserId = await this.roleService.findRoleByName('DepartmentUser')
-      //   await this.roleService.createUserRole({ userid: user.userid, roleid: facilityUserId.roleid })      
-      // }
-
        // const email = await this.emailService.sendEmail('Welcome to NazTEC\'s Online System Access!','email.hbs',user.email, {userName:`${user.firstname} ${user.lastname}`,userPassword:password,userEmail:user.email})
       // if(email.rejected.length > 0){
       //   throw new NotImplementedException("Cannot Send email to user")
@@ -466,17 +446,64 @@ export class UserService {
   //#endregion
 
   //#region Staff CRUD - R
-  async findAdminStaff(query: string) {
+  async findAdminStaff(query: string, token: Token) {
     try{
+      const { customerId, facilityId, departmentId, rolename } = token
       let users: ResponseAdminDto[];
-      
-      if(query.toString() == 'FacilityAdmin') {
+
+      if(rolename == 'SuperAdmin') {
+        if(query.toString() == 'FacilityAdmin') {
           users = await this.userRepository.findAllFacilityAdmins()
-      } else if(query == 'DepartmentAdmin') {
-          users = await this.userRepository.findAllDepartmentAdmins()
-      } else if(query == 'DeviceAdmin') {
-          users = await this.userRepository.findAllDeviceAdmins()
+        } else if(query == 'DepartmentAdmin') {
+            users = await this.userRepository.findAllDepartmentAdmins()
+        } else if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDeviceAdmins()
+        }
+      } else if (rolename == 'OrganizationAdmin') {
+        if(query == 'FacilityAdmin') {
+          users = await this.userRepository.findAllFacilityAdminsUsingOrganizationId(customerId)
+        } else if(query == 'DepartmentAdmin') {
+            users = await this.userRepository.findAllDepartmentAdminsByOrganizationId(customerId)
+        } else if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDeviceAdminsByOrganizationId(customerId)
+        }
+      } else if (rolename == 'FacilityAdmin') {
+        if(query == 'DepartmentAdmin') {
+            users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId)
+        } else if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId)
+        }
+      } else if (rolename == 'DepartmentAdmin') {
+        if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDeviceAdminsByDepartmentId(departmentId)
+        }
+      }
+            
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Admins Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
     }
+  }
+
+  async findAdminStaffByOrganizationId(query: string, id: number) {
+    try{
+  
+      let users: ResponseAdminDto[];
+      const customerId = id;
+      
+        if(query == 'FacilityAdmin') {
+          users = await this.userRepository.findAllFacilityAdminsUsingOrganizationId(customerId)
+        } else if(query == 'DepartmentAdmin') {
+            users = await this.userRepository.findAllDepartmentAdminsByOrganizationId(customerId)
+        } else if(query == 'DeviceAdmin') {
+            users = await this.userRepository.findAllDeviceAdminsByOrganizationId(customerId)
+        }
       
       const response:ApiResponseDto<ResponseAdminDto[]> = {
         statusCode:HttpStatus.FOUND,
@@ -490,15 +517,46 @@ export class UserService {
     }
   }
 
-  async findUserStaff(query: string) {
+  async findUserStaff(query: string, token: Token) {
+    try{
+      const { customerId, facilityId, departmentId, rolename } = token;
+      let users: ResponseAdminDto[];
+      if(rolename == 'SuperAdmin') {
+          if(query.toString() == 'FacilityUser') {
+              users = await this.userRepository.findAllFacilityUsers()
+          } else if(query == 'DepartmentUser') {
+              users = await this.userRepository.findAllDepartmentUsers()
+          } 
+      } else if (rolename == 'OrganizationAdmin') {
+        if(query.toString() == 'FacilityUser') {
+            users = await this.userRepository.findAllFacilityUsersByOrganizationId(customerId)
+        } else if(query == 'DepartmentUser') {
+            users = await this.userRepository.findAllDepartmentUsersByOrganizationId(customerId)
+        } 
+      } 
+
+      const response:ApiResponseDto<ResponseAdminDto[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Users Found Successfully",
+        data:users,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
+  async findUserStaffByOrganizationId(query: string, id: number) {
     try{
       let users: ResponseAdminDto[];
-      
-      if(query.toString() == 'FacilityUser') {
-          users = await this.userRepository.findAllFacilityUsers()
-      } else if(query == 'DepartmentUser') {
-          users = await this.userRepository.findAllDepartmentUsers()
-      } 
+      const customerId = id;
+
+        if(query.toString() == 'FacilityUser') {
+            users = await this.userRepository.findAllFacilityUsersByOrganizationId(customerId)
+        } else if(query == 'DepartmentUser') {
+            users = await this.userRepository.findAllDepartmentUsersByOrganizationId(customerId)
+        } 
 
       const response:ApiResponseDto<ResponseAdminDto[]> = {
         statusCode:HttpStatus.FOUND,

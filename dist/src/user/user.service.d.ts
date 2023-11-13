@@ -29,8 +29,10 @@ export declare class UserService {
     createFacilityStaff(createFacilityAdminDto: CreateFacilityAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDepartmentStaff(createDepartmentAdminDto: CreateDepartmentAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDeviceStaff(createDeviceAdminDto: CreateDeviceAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
-    findAdminStaff(query: string): Promise<ApiResponseDto<ResponseAdminDto[]>>;
-    findUserStaff(query: string): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findAdminStaff(query: string, token: Token): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findAdminStaffByOrganizationId(query: string, id: number): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findUserStaff(query: string, token: Token): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findUserStaffByOrganizationId(query: string, id: number): Promise<ApiResponseDto<ResponseAdminDto[]>>;
     updateFacilityStaff(updateFacilityAdminDto: UpdateFacilityAdminDto): Promise<ApiResponseDto<null>>;
     updateDepartmentStaff(updateDepartmentAdminDto: UpdateDepartmentAdminDto): Promise<ApiResponseDto<null>>;
     updateDeviceStaff(updateDeviceAdminDto: UpdateDeviceAdminDto): Promise<ApiResponseDto<null>>;
