@@ -50,3 +50,9 @@ export declare class userResponse {
     date_created: Date;
     date_updated: Date;
 }
+export declare class OrganizationAllStaffEmailPhoneResponse {
+    userid: number;
+    name: string;
+    email: string;
+    phonenumber: string;
+}

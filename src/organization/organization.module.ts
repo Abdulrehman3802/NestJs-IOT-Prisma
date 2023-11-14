@@ -17,6 +17,7 @@ import {DashboardModule} from "../dashboard/dashboard.module";
 @Module({
   imports: [PrismaModule,UserModule,RolesModule,FacilityModule, DepartmentModule, DeviceModule, SensorModule,DashboardModule],
   controllers: [OrganizationController],
-  providers: [OrganizationService, PrismaService, OrganizationRepository, PermissionsRepository, JwtService]
+  providers: [OrganizationService, PrismaService, OrganizationRepository, PermissionsRepository, JwtService],
+  exports:[OrganizationService]
 })
 export class OrganizationModule { }

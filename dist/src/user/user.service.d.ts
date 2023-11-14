@@ -2,7 +2,7 @@ import { CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, Create
 import { UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserStaffDto } from './dto/request/update-user.dto';
 import { UserRepository } from "./user.repository";
 import { ApiResponseDto, Token } from "../../core/generics/api-response.dto";
-import { ResponseUserDto, ResponseAdminDto, ResponseUnAssignedUserStaffDto } from "./dto/response/response-user.dto";
+import { ResponseUserDto, ResponseAdminDto, ResponseUnAssignedUserStaffDto, OrganizationAllStaffEmailPhoneResponse } from "./dto/response/response-user.dto";
 import { ConfigService } from "@nestjs/config";
 import { EmailService } from "../email/email.service";
 import { RolesService } from 'src/roles/roles.service';
@@ -30,6 +30,7 @@ export declare class UserService {
     createDepartmentStaff(createDepartmentAdminDto: CreateDepartmentAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     createDeviceStaff(createDeviceAdminDto: CreateDeviceAdminDto, token: Token): Promise<ApiResponseDto<ResponseUserDto>>;
     findAdminStaff(query: string, token: Token): Promise<ApiResponseDto<ResponseAdminDto[]>>;
+    findAllOrganizationStaffByOrganizationId(id: number): Promise<ApiResponseDto<OrganizationAllStaffEmailPhoneResponse[]>>;
     findAdminStaffByOrganizationId(query: string, id: number): Promise<ApiResponseDto<ResponseAdminDto[]>>;
     findAdminStaffByFacilityId(query: string, id: number): Promise<ApiResponseDto<ResponseAdminDto[]>>;
     findAdminStaffByDepartmentId(query: string, id: number): Promise<ApiResponseDto<ResponseAdminDto[]>>;

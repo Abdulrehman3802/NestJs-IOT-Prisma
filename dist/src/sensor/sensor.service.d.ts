@@ -16,7 +16,7 @@ export declare class SensorService {
     assignSensor(userId: number, createSensorDto: CreateSensorDto): Promise<ApiResponseDto<SensorDto>>;
     getSensorConfiguration(sensorId: number): Promise<ApiResponseDto<ResponseConfigurationDto[]>>;
     ShowSensorConfiguration(sensorId: number): Promise<ApiResponseDto<ResponseConfigurationDto[]>>;
-    updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]): Promise<ApiResponseDto<null>>;
+    updateSensorConfiguration(userId: number, configuration: UpdateConfigurationDto[]): Promise<ApiResponseDto<null>>;
     unAssignSensorOnOrganziationDeletion(orgid: number): Promise<ApiResponseDto<null>>;
     unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds: number[]): Promise<ApiResponseDto<null>>;
     unAssignSensorOnDeviceDeletion(deviceid: number): Promise<ApiResponseDto<null>>;

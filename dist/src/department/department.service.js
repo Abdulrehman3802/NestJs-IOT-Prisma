@@ -265,6 +265,21 @@ let DepartmentService = class DepartmentService {
             throw error;
         }
     }
+    async findAllDepartmentsForSuperAdmin() {
+        try {
+            const departments = await this.departmentRepository.findAllDepartments();
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Departments Found Associated to Facility",
+                data: departments,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 };
 DepartmentService = __decorate([
     (0, common_1.Injectable)(),

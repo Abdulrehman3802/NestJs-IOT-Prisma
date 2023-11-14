@@ -194,6 +194,21 @@ let FacilityService = class FacilityService {
             throw error;
         }
     }
+    async findAllFacilityForSuperAdmin() {
+        try {
+            const facilities = await this.facilityRepository.findAllFacilities();
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Facilities Found Associated to Organization",
+                data: facilities,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 };
 FacilityService = __decorate([
     (0, common_1.Injectable)(),

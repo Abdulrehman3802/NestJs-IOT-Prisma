@@ -26,4 +26,5 @@ export declare class FacilityService {
     remove(id: number): Promise<ApiResponseDto<null>>;
     removeByOrganizationId(orgid: number): Promise<ApiResponseDto<null>>;
     findAllFacilities(orgId: number): Promise<ApiResponseDto<ResponseFacilityDto[]>>;
+    findAllFacilityForSuperAdmin(): Promise<ApiResponseDto<ResponseFacilityDto[]>>;
 }

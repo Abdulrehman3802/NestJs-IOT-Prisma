@@ -53,3 +53,10 @@ export class userResponse {
     date_created: Date;
     date_updated: Date;
 }
+
+export class OrganizationAllStaffEmailPhoneResponse{
+    userid: number;
+    name: string;
+    email: string;
+    phonenumber: string;
+}

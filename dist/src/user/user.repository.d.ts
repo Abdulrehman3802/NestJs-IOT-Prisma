@@ -206,6 +206,20 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     })[]>;
+    findAllFacilityStaffEmailPhoneUsingOrganizationId(customerid: number): Promise<({
+        users: {
+            email: string;
+            userid: number;
+            firstname: string;
+            lastname: string;
+            phonenumber: string;
+        };
+    } & {
+        facilityuserid: number;
+        facilityid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     findAllFacilityAdminsUsingOrganizationId(customerid: number): Promise<({
         facilities: {
             facilityid: number;
@@ -452,6 +466,20 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     }[]>;
+    findAllDepartmentStaffEmailPhoneByOrganizationId(customerid: number): Promise<({
+        users: {
+            email: string;
+            userid: number;
+            firstname: string;
+            lastname: string;
+            phonenumber: string;
+        };
+    } & {
+        departmentuserid: number;
+        departmentid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     findAllDepartmentAdmins(): Promise<({
         departments: {
             departmentid: number;
@@ -754,6 +782,20 @@ export declare class UserRepository {
         userid: number;
         is_admin: boolean;
     }[]>;
+    findAllDeviceStaffEmailPhoneByOrganizationId(customerid: number): Promise<({
+        users: {
+            email: string;
+            userid: number;
+            firstname: string;
+            lastname: string;
+            phonenumber: string;
+        };
+    } & {
+        deviceuserid: number;
+        deviceid: number;
+        userid: number;
+        is_admin: boolean;
+    })[]>;
     findAllDeviceAdmins(): Promise<({
         devices: {
             deviceid: number;

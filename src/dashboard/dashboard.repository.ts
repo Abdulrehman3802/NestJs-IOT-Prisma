@@ -37,7 +37,11 @@ export class DashboardRepository {
                 departmentid: depId
             },
             include:{
-                departments:true
+                departments:{
+                    include:{
+                        facilities:true
+                    }
+                }
             }
         })
     }
@@ -59,7 +63,11 @@ export class DashboardRepository {
                 deviceid: deviceId,
             },
             include:{
-                devices:true
+                devices:{
+                    include:{
+                        departments: true
+                    }
+                }
             }
         })
     }
@@ -69,8 +77,14 @@ export class DashboardRepository {
             where: {
                 facilityid: facId,
             },
+
             include:{
-                facilities:true
+                facilities:{
+                    include:{
+                        customers:true
+                    }
+                },
+
             }
         })
     }

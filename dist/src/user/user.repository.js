@@ -141,6 +141,32 @@ let UserRepository = class UserRepository {
             }
         });
     }
+    async findAllFacilityStaffEmailPhoneUsingOrganizationId(customerid) {
+        return this.prismaService.facilityusers.findMany({
+            where: {
+                facilities: {
+                    is_active: true,
+                    is_deleted: false,
+                    customerid: customerid
+                }
+            },
+            include: {
+                users: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    },
+                    select: {
+                        userid: true,
+                        email: true,
+                        firstname: true,
+                        lastname: true,
+                        phonenumber: true
+                    }
+                },
+            }
+        });
+    }
     async findAllFacilityAdminsUsingOrganizationId(customerid) {
         return this.prismaService.facilityusers.findMany({
             where: {
@@ -276,6 +302,32 @@ let UserRepository = class UserRepository {
     }
     async findAllFacilityStaff() {
         return this.prismaService.facilityusers.findMany();
+    }
+    async findAllDepartmentStaffEmailPhoneByOrganizationId(customerid) {
+        return this.prismaService.departmentusers.findMany({
+            where: {
+                departments: {
+                    is_active: true,
+                    is_deleted: false,
+                    customerid: customerid
+                }
+            },
+            include: {
+                users: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    },
+                    select: {
+                        userid: true,
+                        email: true,
+                        firstname: true,
+                        lastname: true,
+                        phonenumber: true
+                    }
+                },
+            }
+        });
     }
     async findAllDepartmentAdmins() {
         return this.prismaService.departmentusers.findMany({
@@ -414,6 +466,8 @@ let UserRepository = class UserRepository {
             where: {
                 is_admin: false,
                 departments: {
+                    is_active: true,
+                    is_deleted: false,
                     facilities: {
                         customers: {
                             customerid: customerid
@@ -442,6 +496,7 @@ let UserRepository = class UserRepository {
             where: {
                 is_admin: false,
                 departments: {
+                    is_active: true,
                     is_deleted: false,
                     facilities: {
                         facilityid: facilityid
@@ -469,6 +524,7 @@ let UserRepository = class UserRepository {
             where: {
                 is_admin: false,
                 departments: {
+                    is_active: true,
                     is_deleted: false,
                     departmentid: departmentid
                 }
@@ -491,6 +547,32 @@ let UserRepository = class UserRepository {
     }
     async findAllDepartmentStaff() {
         return this.prismaService.departmentusers.findMany();
+    }
+    async findAllDeviceStaffEmailPhoneByOrganizationId(customerid) {
+        return this.prismaService.deviceusers.findMany({
+            where: {
+                devices: {
+                    is_active: true,
+                    is_deleted: false,
+                    customerid: customerid
+                }
+            },
+            include: {
+                users: {
+                    where: {
+                        is_deleted: false,
+                        is_active: true
+                    },
+                    select: {
+                        userid: true,
+                        email: true,
+                        firstname: true,
+                        lastname: true,
+                        phonenumber: true
+                    }
+                }
+            }
+        });
     }
     async findAllDeviceAdmins() {
         return this.prismaService.deviceusers.findMany({

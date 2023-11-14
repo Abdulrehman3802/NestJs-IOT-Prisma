@@ -47,7 +47,7 @@ let SensorRepository = class SensorRepository {
             }
         });
     }
-    async updateSensorConfiguration(sensorId, configuration) {
+    async updateSensorConfiguration(userid, configuration) {
         const updatedData = await Promise.all(configuration.map((config) => {
             return this.prismaService.sensortypes.update({
                 where: {
@@ -62,6 +62,8 @@ let SensorRepository = class SensorRepository {
                     is_hidden: config.is_hidden,
                     description: config.description,
                     name: config.name,
+                    updated_by: userid,
+                    date_updated: new Date()
                 },
             });
         }));
@@ -116,7 +118,8 @@ let SensorRepository = class SensorRepository {
         return this.prismaService.sensors.findMany({
             where: {
                 assigned_by: { not: null },
-                is_deleted: false
+                is_deleted: false,
+                customerid: { not: null }
             },
             include: {
                 customers: true,

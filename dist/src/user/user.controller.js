@@ -43,6 +43,9 @@ let UserController = class UserController {
         const token = req.token;
         return this.userService.findUserStaff(query.name, token);
     }
+    findAllOrganizationStaffByOrganizationId(id) {
+        return this.userService.findAllOrganizationStaffByOrganizationId(+id);
+    }
     findAllAdminsByOrganizationId(id, query) {
         return this.userService.findAdminStaffByOrganizationId(query.name, +id);
     }
@@ -145,6 +148,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, user_queries_dto_1.findQuery]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAllUserStaff", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('allstaff-by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findAllOrganizationStaffByOrganizationId", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.USER, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('admins-by-orgId/:id'),

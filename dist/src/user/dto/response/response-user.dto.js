@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userResponse = exports.ResponseAdminDto = exports.ResponseUnAssignedUserStaffDto = exports.ResponseUserDto = void 0;
+exports.OrganizationAllStaffEmailPhoneResponse = exports.userResponse = exports.ResponseAdminDto = exports.ResponseUnAssignedUserStaffDto = exports.ResponseUserDto = void 0;
 class ResponseUserDto {
 }
 exports.ResponseUserDto = ResponseUserDto;
@@ -13,4 +13,7 @@ exports.ResponseAdminDto = ResponseAdminDto;
 class userResponse {
 }
 exports.userResponse = userResponse;
+class OrganizationAllStaffEmailPhoneResponse {
+}
+exports.OrganizationAllStaffEmailPhoneResponse = OrganizationAllStaffEmailPhoneResponse;
 //# sourceMappingURL=response-user.dto.js.map

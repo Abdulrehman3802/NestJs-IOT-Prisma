@@ -49,7 +49,7 @@ export declare class SensorRepository {
         description: string;
         name: string;
     }[]>;
-    updateSensorConfiguration(sensorId: number, configuration: UpdateConfigurationDto[]): Promise<{
+    updateSensorConfiguration(userid: number, configuration: UpdateConfigurationDto[]): Promise<{
         sensortypeid: number;
         property: string;
         unit: string;

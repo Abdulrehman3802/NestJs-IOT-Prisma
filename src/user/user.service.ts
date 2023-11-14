@@ -3,7 +3,7 @@ import {CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateD
 import {UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto, UpdateUserStaffDto} from './dto/request/update-user.dto';
 import {UserRepository} from "./user.repository";
 import {ApiResponseDto, Token} from "../../core/generics/api-response.dto";
-import {ResponseUserDto, ResponseAdminDto, ResponseUnAssignedUserStaffDto} from "./dto/response/response-user.dto";
+import {ResponseUserDto, ResponseAdminDto, ResponseUnAssignedUserStaffDto, OrganizationAllStaffEmailPhoneResponse} from "./dto/response/response-user.dto";
 import {ConfigService} from "@nestjs/config";
 import * as bcrypt from 'bcrypt'
 import {EmailService} from "../email/email.service";
@@ -491,6 +491,48 @@ export class UserService {
     }
   }
 
+  async findAllOrganizationStaffByOrganizationId(id: number) {
+    try{
+  
+      const customerId = id;
+      const finalarray: OrganizationAllStaffEmailPhoneResponse[] = [];    
+
+      const facilityusers = await this.userRepository.findAllFacilityStaffEmailPhoneUsingOrganizationId(customerId)
+      facilityusers.map((user) => finalarray.push({
+        userid: user.users.userid,
+        email: user.users.email,
+        name: user.users.firstname + ' ' + user.users.lastname,
+        phonenumber: user.users.phonenumber
+      }))
+
+      const departmentusers = await this.userRepository.findAllDepartmentStaffEmailPhoneByOrganizationId(customerId)
+      departmentusers.map((user) => finalarray.push({
+        userid: user.users.userid,
+        email: user.users.email,
+        name: user.users.firstname + ' ' + user.users.lastname,
+        phonenumber: user.users.phonenumber
+      }))
+
+      const deviceadmins = await this.userRepository.findAllDeviceStaffEmailPhoneByOrganizationId(customerId)
+      deviceadmins.map((user) => finalarray.push({
+        userid: user.users.userid,
+        email: user.users.email,
+        name: user.users.firstname + ' ' + user.users.lastname,
+        phonenumber: user.users.phonenumber
+      }))
+
+      const response:ApiResponseDto<OrganizationAllStaffEmailPhoneResponse[]> = {
+        statusCode:HttpStatus.FOUND,
+        message:"Staff Found Successfully",
+        data:finalarray,
+        error:false
+      }
+      return response
+    }catch (error) {
+      throw error
+    }
+  }
+
   async findAdminStaffByOrganizationId(query: string, id: number) {
     try{
   
@@ -583,7 +625,18 @@ export class UserService {
         } else if(query == 'DepartmentUser') {
             users = await this.userRepository.findAllDepartmentUsersByOrganizationId(customerId)
         } 
+      } else if (rolename == 'FacilityAdmin') {
+        if(query.toString() == 'FacilityUser') {
+            users = await this.userRepository.findAllFacilityUsersByFacilityId(facilityId)
+        } else if(query == 'DepartmentUser') {
+            users = await this.userRepository.findAllDepartmentUsersByFacilityId(facilityId)
+        } 
+      } else if (rolename == 'DepartmentAdmin') {
+        if(query == 'DepartmentUser') {
+            users = await this.userRepository.findAllDepartmentUsersByDepartmentId(departmentId)
+        } 
       } 
+
 
       const response:ApiResponseDto<ResponseAdminDto[]> = {
         statusCode:HttpStatus.FOUND,

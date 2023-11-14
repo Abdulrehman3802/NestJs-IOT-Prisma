@@ -337,4 +337,21 @@ export class DeviceService {
       throw error;
     }
   }
+
+  // For SuperAdmin Dashboard
+  async findAllDeviceForSuperAdmin(){
+    try {
+      const devices = await this.deviceRepository.findAllDevices()
+      const response: ApiResponseDto<ResponseDeviceDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Devices Found Associated to Facility",
+        data: devices,
+        error: false,
+      }
+      return response;
+    }catch (error) {
+      throw error;
+    }
+  }
+
 }

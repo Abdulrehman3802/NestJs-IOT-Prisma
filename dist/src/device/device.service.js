@@ -299,6 +299,21 @@ let DeviceService = class DeviceService {
             throw error;
         }
     }
+    async findAllDeviceForSuperAdmin() {
+        try {
+            const devices = await this.deviceRepository.findAllDevices();
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Devices Found Associated to Facility",
+                data: devices,
+                error: false,
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 };
 DeviceService = __decorate([
     (0, common_1.Injectable)(),

@@ -161,9 +161,9 @@ export class SensorService {
         }
     }
 
-    async updateSensorConfiguration(sensorId: number, configuration:UpdateConfigurationDto[]) {
+    async updateSensorConfiguration(userId: number, configuration:UpdateConfigurationDto[]) {
         try {
-            const sensorConfiguration = await this.sensorRepository.updateSensorConfiguration(sensorId, configuration)
+            const sensorConfiguration = await this.sensorRepository.updateSensorConfiguration(userId, configuration)
             if(!sensorConfiguration){
                 throw new NotImplementedException("Cannot Update Sensor Configuration")
             }
@@ -377,7 +377,7 @@ export class SensorService {
                 "sensorName": "temp1",
                 "minValue": 5,
                 "maxValue": 10,
-                "value": 0.74,
+                "value": 4.74,
                 "batteryValue": 3.676,
                 "readingDateTime": "2023-11-02T13:50:35Z"
             },

@@ -7,6 +7,7 @@ import {DepartmentService} from "../department/department.service";
 import {DeviceService} from "../device/device.service";
 import {SensorService} from "../sensor/sensor.service";
 import {UserService} from "../user/user.service";
+import {OrganizationService} from "../organization/organization.service";
 
 @Injectable()
 export class DashboardService {
@@ -14,6 +15,7 @@ export class DashboardService {
         private readonly dashboardRepository: DashboardRepository,
         @Inject(forwardRef(() => FacilityService)) private readonly facilityService: FacilityService,
         @Inject(forwardRef(() => DepartmentService)) private readonly departmentService: DepartmentService,
+        @Inject(forwardRef(() => OrganizationService)) private readonly organizationService: OrganizationService,
         private readonly deviceService: DeviceService,
         private readonly SensorService: SensorService,
     ) {
@@ -81,17 +83,26 @@ export class DashboardService {
     async findDashboard(findDashboardDto: FindDashboardDto, token: Token) {
         try {
             const {rolename, facilityId, customerId, departmentId} = token;
-            let responseDashboard, facCount, depCount, devCount, SensorCount,counts={};
+            let responseDashboard, facCount, depCount, devCount, SensorCount, counts = {};
             if (rolename == 'SuperAdmin') {
                 if (findDashboardDto.customerid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByOrgId(findDashboardDto.customerid);
                     counts = await this.getCountForOrg(findDashboardDto.customerid);
                 } else if (findDashboardDto.facilityid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByFacilityId(findDashboardDto.facilityid);
-                   counts = await this.getCountForFacility(findDashboardDto.facilityid)
+                    counts = await this.getCountForFacility(findDashboardDto.facilityid)
                 } else if (findDashboardDto.departmentid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByDepId(findDashboardDto.departmentid);
                     counts = await this.getCountForDepartment(findDashboardDto.departmentid)
+                } else {
+                    counts = await this.getCountsForSuperAdmin(token)
+                    const response: ApiResponseDto<any> = {
+                        statusCode: HttpStatus.OK,
+                        message: "Dashboard Found Successfully!",
+                        data: {counts},
+                        error: false,
+                    }
+                    return response;
                 }
             }
             if (rolename == 'OrganizationAdmin') {
@@ -101,8 +112,7 @@ export class DashboardService {
                 } else if (findDashboardDto.departmentid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByDepId(findDashboardDto.departmentid);
                     counts = await this.getCountForDepartment(findDashboardDto.departmentid)
-                }
-                else {
+                } else {
                     responseDashboard = await this.dashboardRepository.findDashboardByOrgId(customerId);
                     counts = await this.getCountForOrg(customerId);
                 }
@@ -111,8 +121,7 @@ export class DashboardService {
                 if (findDashboardDto.departmentid) {
                     responseDashboard = await this.dashboardRepository.findDashboardByDepId(findDashboardDto.departmentid);
                     counts = await this.getCountForDepartment(findDashboardDto.departmentid)
-                }
-                else {
+                } else {
                     responseDashboard = await this.dashboardRepository.findDashboardByFacilityId(facilityId);
                     counts = await this.getCountForFacility(facilityId)
                 }
@@ -236,9 +245,22 @@ export class DashboardService {
         }
     }
 
-    // async getSensorsCount(id: number) {
-    //     const sensors = await this.SensorService.getSensorByOrgId(id)
-    //     return sensors.data.length
-    // }
+    async getCountsForSuperAdmin(token: Token) {
+        const organizations = await this.organizationService.findAll()
+        const facilities = await this.facilityService.findAllFacilityForSuperAdmin()
+        const departments = await this.departmentService.findAllDepartmentsForSuperAdmin()
+        const devices = await this.deviceService.findAllDeviceForSuperAdmin()
+        const unAssignedSensors = await this.SensorService.getAllUnAssignedSensors(token)
+        const assignedSensors = await this.SensorService.getAllAssignedSensor(token)
+
+        return {
+            OrganizationCount: organizations?.data?.length,
+            FacilityCount: facilities?.data?.length,
+            DepartmentCount: departments?.data?.length,
+            DeviceCount: devices?.data?.length,
+            UnAssignedSensorCount: unAssignedSensors?.data?.length,
+            AssignedSensorCount: assignedSensors?.data?.length
+        }
+    }
 
 }

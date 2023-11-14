@@ -61,6 +61,15 @@ export class UserController {
   }
   
   @Permission(Category.USER, PermissionType.VIEW)
+  @Get('allstaff-by-orgId/:id')
+  findAllOrganizationStaffByOrganizationId(
+    @Param('id') id: string,
+    ) {
+    
+    return this.userService.findAllOrganizationStaffByOrganizationId(+id);
+  }
+
+  @Permission(Category.USER, PermissionType.VIEW)
   @Get('admins-by-orgId/:id')
   findAllAdminsByOrganizationId(
     @Param('id') id: string,

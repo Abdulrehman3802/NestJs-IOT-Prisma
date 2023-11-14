@@ -220,4 +220,19 @@ export class FacilityService {
       throw error;
     }
   }
+
+  async findAllFacilityForSuperAdmin(){
+    try {
+      const facilities = await this.facilityRepository.findAllFacilities()
+      const response: ApiResponseDto<ResponseFacilityDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Facilities Found Associated to Organization",
+        data: facilities,
+        error: false,
+      }
+      return response;
+    }catch (error) {
+      throw error
+    }
+  }
 }

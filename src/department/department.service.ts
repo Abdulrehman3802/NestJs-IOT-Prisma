@@ -295,4 +295,19 @@ export class DepartmentService {
       throw error;
     }
   }
+
+  async findAllDepartmentsForSuperAdmin(){
+    try {
+      const departments = await this.departmentRepository.findAllDepartments()
+      const response: ApiResponseDto<ResponseDepartmentDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Departments Found Associated to Facility",
+        data: departments,
+        error: false,
+      }
+      return response;
+    }catch (error) {
+      throw error
+    }
+  }
 }

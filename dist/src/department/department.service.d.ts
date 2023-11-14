@@ -27,4 +27,5 @@ export declare class DepartmentService {
     removeByFacilityId(facilityid: number): Promise<ApiResponseDto<null>>;
     findAllDepartments(facId: number): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
     GetAllDepartmentsByOrgId(orgId: number): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
+    findAllDepartmentsForSuperAdmin(): Promise<ApiResponseDto<ResponseDepartmentDto[]>>;
 }

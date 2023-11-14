@@ -10,7 +10,7 @@ export declare class SensorController {
     getAllAssignedSensors(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
     getSensorsConfiguration(req: RequestWithUser, id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-configuration.dto").ResponseConfigurationDto[]>>;
     showSensorsConfiguration(req: RequestWithUser, id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-configuration.dto").ResponseConfigurationDto[]>>;
-    UpdateSensorsConfiguration(req: RequestWithUser, id: string, body: UpdateConfigurationDto[]): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;
+    UpdateSensorsConfiguration(req: RequestWithUser, body: UpdateConfigurationDto[]): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;
     getSensorWidgets(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<any[]>>;
     getSensorsByOrganizationId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
     getSensorByDeviceId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;

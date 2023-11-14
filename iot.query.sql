@@ -292,3 +292,17 @@ ALTER TABLE IF EXISTS "IoT".sensortypes
 
 ALTER TABLE IF EXISTS "IoT".sensortypes
     ADD COLUMN name character varying(100);
+
+    ------------------------- Gateway table changes --------------------------------
+    ALTER TABLE IF EXISTS "IoT".gateways
+        RENAME gatewayname TO gateway_note;
+
+    ALTER TABLE IF EXISTS "IoT".gateways
+        ALTER COLUMN gateway_note DROP NOT NULL;
+
+    ALTER TABLE IF EXISTS "IoT".gateways
+        ADD COLUMN gateway_id character varying NOT NULL;
+
+        ALTER TABLE "IoT".gateways
+        ADD CONSTRAINT unique_gateway_id UNIQUE (gateway_id);
+

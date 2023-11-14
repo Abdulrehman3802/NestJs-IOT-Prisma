@@ -33,9 +33,9 @@ export class SensorController {
   }
 
   @Permission(Category.SENSOR, PermissionType.UPDATE)
-  @Patch('/update-sensors-configuration/:id')
-  UpdateSensorsConfiguration(@Req()req:RequestWithUser,@Param('id')id:string,@Body() body:UpdateConfigurationDto[]) {
-    return this.sensorService.updateSensorConfiguration(+id,body);
+  @Patch('/update-sensors-configuration')
+  UpdateSensorsConfiguration(@Req()req:RequestWithUser,@Body() body:UpdateConfigurationDto[]) {
+    return this.sensorService.updateSensorConfiguration(req.token.id,body);
   }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)

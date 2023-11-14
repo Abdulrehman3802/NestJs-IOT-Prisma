@@ -21,6 +21,7 @@ import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handleba
 import { AwsModule } from './aws/aws.module';
 import { SensorModule } from './sensor/sensor.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { GatewayModule } from './gateway/gateway.module';
 @Module({
   imports: [
     PrismaModule,
@@ -65,7 +66,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     PermissionsModule,
     AwsModule,
     SensorModule,
-    DashboardModule
+    DashboardModule,
+    GatewayModule
   ],
   controllers: [AppController],
   providers: [AppService, JwtService, ConfigService, PermissionsRepository],

@@ -25,4 +25,5 @@ export declare class DeviceService {
     findAllDevicesByDepId(depId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
     GetAllDeviceByOrgId(orgId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
     getAllDeviceByFacilityId(facilityId: number): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
+    findAllDeviceForSuperAdmin(): Promise<ApiResponseDto<ResponseDeviceDto[]>>;
 }

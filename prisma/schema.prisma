@@ -115,7 +115,7 @@ model gatewayfailures {
 
 model gateways {
   gatewayid                        Int                       @id @default(autoincrement())
-  gatewayname                      String                    @db.VarChar(100)
+  gateway_note                     String?                   @db.VarChar(100)
   location                         String?                   @db.VarChar(255)
   customerid                       Int
   is_active                        Boolean?                  @default(true)
@@ -124,6 +124,7 @@ model gateways {
   is_deleted                       Boolean?                  @default(false)
   created_by                       Int
   updated_by                       Int
+  gateway_id                       String                    @unique(map: "unique_gateway_id") @db.VarChar
   gatewayfailures                  gatewayfailures[]
   users_gateways_created_byTousers users                     @relation("gateways_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "gateways_createdby_fkey")
   customers                        customers                 @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)

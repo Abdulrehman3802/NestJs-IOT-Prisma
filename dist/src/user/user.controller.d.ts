@@ -11,6 +11,7 @@ export declare class UserController {
     findUnAssignedUsers(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseUnAssignedUserStaffDto[]>>;
     findAllAdmins(req: RequestWithUser, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
     findAllUserStaff(req: RequestWithUser, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
+    findAllOrganizationStaffByOrganizationId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").OrganizationAllStaffEmailPhoneResponse[]>>;
     findAllAdminsByOrganizationId(id: string, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
     findAllAdminsByFacilityId(id: string, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
     findAllAdminsByDepartmentId(id: string, query: findQuery): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-user.dto").ResponseAdminDto[]>>;
