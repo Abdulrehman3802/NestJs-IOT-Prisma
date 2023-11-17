@@ -6,6 +6,7 @@ export declare class ResponseOrganizationDto {
     phone: string;
     address: string;
     city: string;
+    credit?: number;
     is_active?: boolean;
     date_created: Date;
     date_updated?: Date;

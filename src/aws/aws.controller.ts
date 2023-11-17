@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AwsService } from './aws.service';
-import { CreateAwsDto } from './dto/create-aw.dto';
-import { UpdateAwsDto } from './dto/update-aw.dto';
+import { CreateAwsDto } from './dto/Request/create-aw.dto';
+import { UpdateAwsDto } from './dto/Request/update-aw.dto';
 
 @Controller('aws')
 export class AwsController {

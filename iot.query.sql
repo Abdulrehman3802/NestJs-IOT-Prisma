@@ -293,7 +293,7 @@ ALTER TABLE IF EXISTS "IoT".sensortypes
 ALTER TABLE IF EXISTS "IoT".sensortypes
     ADD COLUMN name character varying(100);
 
-    ------------------------- Gateway table changes --------------------------------
+------------------------- Gateway table changes --------------------------------
     ALTER TABLE IF EXISTS "IoT".gateways
         RENAME gatewayname TO gateway_note;
 
@@ -306,3 +306,62 @@ ALTER TABLE IF EXISTS "IoT".sensortypes
         ALTER TABLE "IoT".gateways
         ADD CONSTRAINT unique_gateway_id UNIQUE (gateway_id);
 
+------------------------- Add NotificationSetup table --------------------------------
+CREATE SEQUENCE IF NOT EXISTS "IoT".notificationsetup_notificationsetupid_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE "IoT".notificationsetup
+(
+    notificationsetupid integer NOT NULL DEFAULT nextval('"IoT".notificationsetup_notificationsetupid_seq'::regclass),
+    email character varying(100),
+    phonenumber character varying(100),
+    text_to_speech character varying(100),
+    plain_email character varying(100),
+    customerid integer NOT NULL,
+    userid integer NOT NULL,
+    is_email boolean,
+    is_phone boolean,
+    is_text_to_speech boolean,
+    is_plain_email boolean,
+    PRIMARY KEY (notificationsetupid),
+    CONSTRAINT notificationsetup_customerid_fkey FOREIGN KEY (customerid)
+        REFERENCES "IoT".customers (customerid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT notificationsetup_userid_fkey FOREIGN KEY (userid)
+        REFERENCES "IoT".users (userid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+);
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    OWNER to postgres;
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    ADD COLUMN is_active boolean;
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    ADD COLUMN is_deleted boolean;
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    ADD COLUMN date_created timestamp with time zone;
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    ADD COLUMN date_updated timestamp with time zone;
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    ADD COLUMN created_by integer NOT NULL;
+
+ALTER TABLE IF EXISTS "IoT".notificationsetup
+    ADD COLUMN updated_by integer NOT NULL;
+
+
+-------------------------Credit Field Added In Organization-----------------------------------
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN credit integer;

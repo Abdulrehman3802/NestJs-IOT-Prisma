@@ -354,51 +354,70 @@ let SensorService = class SensorService {
             throw error;
         }
     }
-    async getSensorWidgets() {
-        const data = [
-            {
-                "sensorId": 249,
-                "awsSensorId": "00137a100004054f",
-                "sensorName": "reading1",
-                "minValue": 2,
-                "maxValue": 20,
-                "value": 13.46,
-                "batteryValue": 3.6,
-                "readingDateTime": "2023-11-02T13:49:01Z"
-            },
-            {
-                "sensorId": 227,
-                "awsSensorId": "a840418c718695d9",
-                "sensorName": "temp1",
-                "minValue": 5,
-                "maxValue": 10,
-                "value": 4.74,
-                "batteryValue": 3.676,
-                "readingDateTime": "2023-11-02T13:50:35Z"
-            },
-            {
-                "sensorId": 259,
-                "awsSensorId": "a840418c7186995d",
-                "sensorName": "heating1",
-                "minValue": 3,
-                "maxValue": 15,
-                "value": 9.31,
-                "batteryValue": 3.621,
-                "readingDateTime": "2023-11-02T13:52:25Z"
-            }
-        ];
-        try {
-            const response = {
+    async getSensorWidgets(orgId) {
+        const sensors = await this.sensorRepository.getAllSensorByOrgId(orgId);
+        if (sensors.length === 0) {
+            return {
                 statusCode: common_1.HttpStatus.OK,
-                message: "Widget Found Successfully!",
-                data: data,
+                message: "Widget Not Found!",
+                data: [],
                 error: false,
             };
-            return response;
         }
-        catch (error) {
-            throw error;
+        const awsIds = sensors.map((obj) => obj.aws_sensorid);
+        const sensorIds = sensors.map((obj) => obj.sensorid);
+        const [sensorType, awsSensorData] = await Promise.all([
+            this.sensorRepository.getSensorTypesOfSensors(sensorIds),
+            this.awsService.getSensorDataForWidgets(awsIds),
+        ]);
+        if (awsSensorData.length === 0) {
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Widget Not Found!",
+                data: [],
+                error: false,
+            };
         }
+        const batteryDataBySensor = {};
+        const mergedData = [];
+        awsSensorData.forEach((awsData) => {
+            var _a;
+            if (awsData.type === 'battery') {
+                const sensorId = awsData.sensorId || '';
+                if (!batteryDataBySensor[sensorId]) {
+                    batteryDataBySensor[sensorId] = [];
+                }
+                batteryDataBySensor[sensorId].push({
+                    aws_sensorid: awsData.sensorId,
+                    value: awsData.value,
+                    time: awsData.time,
+                });
+            }
+            const matchingSensorType = sensorType.find((sensorType) => {
+                return (sensorType.aws_sensorid === (awsData === null || awsData === void 0 ? void 0 : awsData.sensorId) &&
+                    sensorType.property === (awsData === null || awsData === void 0 ? void 0 : awsData.type));
+            });
+            const batteryData = batteryDataBySensor[awsData.sensorId || ''] || [];
+            if (matchingSensorType) {
+                mergedData.push({
+                    property: matchingSensorType.property,
+                    sensorId: matchingSensorType.sensorid,
+                    awsSensorId: matchingSensorType.aws_sensorid,
+                    value: awsData === null || awsData === void 0 ? void 0 : awsData.value,
+                    batteryValue: (_a = batteryData[0]) === null || _a === void 0 ? void 0 : _a.value,
+                    minValue: matchingSensorType.minvalue,
+                    maxValue: matchingSensorType.maxvalue,
+                    sensorName: matchingSensorType.name,
+                    readingDateTime: awsData === null || awsData === void 0 ? void 0 : awsData.time,
+                });
+            }
+        });
+        return {
+            statusCode: common_1.HttpStatus.OK,
+            message: "Widget Found Successfully!",
+            data: mergedData,
+            error: false,
+        };
     }
     async getSensorByDepartmentId(depId) {
         try {

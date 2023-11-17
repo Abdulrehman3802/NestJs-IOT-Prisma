@@ -9,6 +9,7 @@ import {tsTsxJsJsxRegex} from "ts-loader/dist/constants";
 import {DepartmentService} from "../department/department.service";
 import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
 import {ResponseConfigurationDto} from "./dto/response/response-configuration.dto";
+import {SensorWidgetsDto} from "./dto/response/sensor-widgets.dto";
 
 
 @Injectable()
@@ -359,50 +360,85 @@ export class SensorService {
         }
     }
 
-    async getSensorWidgets() {
-        const data = [
-            {
-                "sensorId": 249,
-                "awsSensorId": "00137a100004054f",
-                "sensorName": "reading1",
-                "minValue": 2,
-                "maxValue": 20,
-                "value": 13.46,
-                "batteryValue": 3.6,
-                "readingDateTime": "2023-11-02T13:49:01Z"
-            },
-            {
-                "sensorId": 227,
-                "awsSensorId": "a840418c718695d9",
-                "sensorName": "temp1",
-                "minValue": 5,
-                "maxValue": 10,
-                "value": 4.74,
-                "batteryValue": 3.676,
-                "readingDateTime": "2023-11-02T13:50:35Z"
-            },
-            {
-                "sensorId": 259,
-                "awsSensorId": "a840418c7186995d",
-                "sensorName": "heating1",
-                "minValue": 3,
-                "maxValue": 15,
-                "value": 9.31,
-                "batteryValue": 3.621,
-                "readingDateTime": "2023-11-02T13:52:25Z"
-            }
-        ];
-        try {
-            const response: ApiResponseDto<any[]> = {
+    async getSensorWidgets(orgId: number) {
+        // Finding Sensor of an organization
+        const sensors = await this.sensorRepository.getAllSensorByOrgId(orgId);
+
+        if (sensors.length === 0) {
+            return {
                 statusCode: HttpStatus.OK,
-                message: "Widget Found Successfully!",
-                data: data,
+                message: "Widget Not Found!",
+                data: [],
                 error: false,
-            }
-            return response;
-        } catch (error) {
-            throw error;
+            };
         }
+
+        // Separating their AWS ids
+        const awsIds: string[] = sensors.map((obj) => obj.aws_sensorid);
+        const sensorIds = sensors.map((obj) => obj.sensorid);
+
+        const [sensorType, awsSensorData] = await Promise.all([
+            this.sensorRepository.getSensorTypesOfSensors(sensorIds),
+            this.awsService.getSensorDataForWidgets(awsIds),
+        ]);
+
+        if (awsSensorData.length === 0) {
+            return {
+                statusCode: HttpStatus.OK,
+                message: "Widget Not Found!",
+                data: [],
+                error: false,
+            };
+        }
+
+        const batteryDataBySensor = {};
+        const mergedData = [];
+
+        awsSensorData.forEach((awsData) => {
+            if (awsData.type === 'battery') {
+                const sensorId = awsData.sensorId || '';
+
+                if (!batteryDataBySensor[sensorId]) {
+                    batteryDataBySensor[sensorId] = [];
+                }
+
+                batteryDataBySensor[sensorId].push({
+                    aws_sensorid: awsData.sensorId,
+                    value: awsData.value,
+                    time: awsData.time,
+                });
+            }
+
+            const matchingSensorType = sensorType.find((sensorType) => {
+                return (
+                    sensorType.aws_sensorid === awsData?.sensorId &&
+                    sensorType.property === awsData?.type
+                );
+            });
+
+            const batteryData = batteryDataBySensor[awsData.sensorId || ''] || [];
+
+            if (matchingSensorType) {
+                mergedData.push({
+                    property: matchingSensorType.property,
+                    sensorId: matchingSensorType.sensorid,
+                    awsSensorId: matchingSensorType.aws_sensorid,
+                    value: awsData?.value,
+                    batteryValue: batteryData[0]?.value,
+                    minValue: matchingSensorType.minvalue,
+                    maxValue: matchingSensorType.maxvalue,
+                    sensorName: matchingSensorType.name,
+                    readingDateTime: awsData?.time,
+                });
+            }
+        });
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: "Widget Found Successfully!",
+            data: mergedData,
+            error: false,
+        };
     }
 
     async getSensorByDepartmentId(depId: number) {

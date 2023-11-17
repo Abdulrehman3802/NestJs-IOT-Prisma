@@ -25,6 +25,10 @@ export class CreateOrganizationDto {
     @IsString()
     @IsNotEmpty()
     city: string;
+
+    @IsNumber()
+    @IsOptional()
+    credit: number;
 }
 
 export class ModelOrganizationDto {
@@ -34,6 +38,7 @@ export class ModelOrganizationDto {
     phone: string
     address: string
     city: string
+    credit: number
     is_active?: boolean
     date_created: Date
     date_updated?: Date

@@ -33,10 +33,10 @@ let AwsService = class AwsService {
         var _a;
         try {
             const request = {
-                QueryString: 'SELECT * FROM sensordata.sensorData WHERE time BETWEEN ago(15m) AND now()'
+                QueryString: 'SELECT * FROM sensordata.sensorData WHERE time BETWEEN ago(5m) AND now()'
             };
             const response = await this.timestreamClient.query(request).promise();
-            const fieldTitles = ['location', 'sensorId', 'type', 'date', 'value'];
+            const fieldTitles = ['location', 'sensorId', 'type', 'time', 'value'];
             const scalarObject = (_a = response.Rows) === null || _a === void 0 ? void 0 : _a.map((item) => {
                 return item.Data.reduce((obj, scalarItem, index) => {
                     if (scalarItem.ScalarValue) {
@@ -47,6 +47,76 @@ let AwsService = class AwsService {
                 }, {});
             });
             return scalarObject;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async getDataOfSpecificSensor(awsId) {
+        var _a;
+        try {
+            const query = `
+      SELECT devEUI, region, measure_name, measure_value::double, time
+      FROM sensordata.sensorData
+      WHERE devEUI = awsId
+        AND time BETWEEN ago(5m) AND now()
+      ORDER BY measure_name, time DESC
+    `;
+            const request = {
+                QueryString: query,
+            };
+            const response = await this.timestreamClient.query(request).promise();
+            const uniqueMeasureNames = {};
+            (_a = response.Rows) === null || _a === void 0 ? void 0 : _a.forEach((row) => {
+                const measureName = row.Data[2].ScalarValue;
+                if (!uniqueMeasureNames[measureName]) {
+                    uniqueMeasureNames[measureName] = {
+                        sensorId: row.Data[0].ScalarValue,
+                        location: row.Data[1].ScalarValue,
+                        type: measureName,
+                        value: row.Data[3].ScalarValue,
+                        time: row.Data[4].ScalarValue,
+                    };
+                }
+            });
+            const uniqueValues = Object.values(uniqueMeasureNames);
+            return uniqueValues;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async getSensorDataForWidgets(devEUIs) {
+        var _a;
+        try {
+            const query = `
+      SELECT devEUI, region, measure_name, measure_value::double, time
+      FROM sensordata.sensorData
+      WHERE devEUI IN (${devEUIs.map((devEUI) => `'${devEUI}'`).join(',')})
+        AND time BETWEEN ago(5m) AND now()
+      ORDER BY devEUI, measure_name, time DESC
+    `;
+            const request = {
+                QueryString: query,
+            };
+            const response = await this.timestreamClient.query(request).promise();
+            const uniqueData = {};
+            (_a = response.Rows) === null || _a === void 0 ? void 0 : _a.forEach((row) => {
+                const devEUI = row.Data[0].ScalarValue;
+                const measureName = row.Data[2].ScalarValue;
+                const key = `${devEUI}-${measureName}`;
+                if (!uniqueData[key]) {
+                    uniqueData[key] = {
+                        sensorId: devEUI,
+                        location: row.Data[1].ScalarValue,
+                        type: measureName,
+                        value: row.Data[3].ScalarValue,
+                        time: row.Data[4].ScalarValue,
+                    };
+                }
+            });
+            const uniqueValues = Object.values(uniqueData);
+            return uniqueValues;
         }
         catch (error) {
             throw error;

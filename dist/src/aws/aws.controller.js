@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AwsController = void 0;
 const common_1 = require("@nestjs/common");
 const aws_service_1 = require("./aws.service");
-const update_aw_dto_1 = require("./dto/update-aw.dto");
+const update_aw_dto_1 = require("./dto/Request/update-aw.dto");
 let AwsController = class AwsController {
     constructor(awsService) {
         this.awsService = awsService;

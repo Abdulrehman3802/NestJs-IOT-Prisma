@@ -30,6 +30,7 @@ const aws_module_1 = require("./aws/aws.module");
 const sensor_module_1 = require("./sensor/sensor.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const gateway_module_1 = require("./gateway/gateway.module");
+const notificationsetup_module_1 = require("./notificationsetup/notificationsetup.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -78,7 +79,8 @@ AppModule = __decorate([
             aws_module_1.AwsModule,
             sensor_module_1.SensorModule,
             dashboard_module_1.DashboardModule,
-            gateway_module_1.GatewayModule
+            gateway_module_1.GatewayModule,
+            notificationsetup_module_1.NotificationsetupModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, jwt_1.JwtService, config_1.ConfigService, permissions_repository_1.PermissionsRepository],

@@ -21,6 +21,7 @@ export declare class OrganizationRepository {
         updated_by: number;
         street: string;
         postcode: number;
+        credit: number;
     }>;
     createOrganizationUser(model: OrganizationUserModelDto): Promise<{
         organizationuserid: number;
@@ -44,6 +45,7 @@ export declare class OrganizationRepository {
         updated_by: number;
         street: string;
         postcode: number;
+        credit: number;
     }[]>;
     findOrganization(orgId: number): Promise<{
         customerid: number;
@@ -61,6 +63,7 @@ export declare class OrganizationRepository {
         updated_by: number;
         street: string;
         postcode: number;
+        credit: number;
     }>;
     findOrganizationByUserId(userId: number): Promise<{
         organizationuserid: number;
@@ -84,6 +87,7 @@ export declare class OrganizationRepository {
         updated_by: number;
         street: string;
         postcode: number;
+        credit: number;
     }>;
     deleteOrganization(orgId: number): Promise<{
         customerid: number;
@@ -101,5 +105,24 @@ export declare class OrganizationRepository {
         updated_by: number;
         street: string;
         postcode: number;
+        credit: number;
+    }>;
+    getOrganizationCredit(orgId: number): Promise<{
+        customerid: number;
+        customername: string;
+        contactperson: string;
+        email: string;
+        phone: string;
+        address: string;
+        city: string;
+        is_active: boolean;
+        date_created: Date;
+        date_updated: Date;
+        is_deleted: boolean;
+        created_by: number;
+        updated_by: number;
+        street: string;
+        postcode: number;
+        credit: number;
     }>;
 }

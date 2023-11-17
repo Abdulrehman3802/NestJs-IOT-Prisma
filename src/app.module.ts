@@ -22,6 +22,7 @@ import { AwsModule } from './aws/aws.module';
 import { SensorModule } from './sensor/sensor.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { NotificationsetupModule } from './notificationsetup/notificationsetup.module';
 @Module({
   imports: [
     PrismaModule,
@@ -67,10 +68,12 @@ import { GatewayModule } from './gateway/gateway.module';
     AwsModule,
     SensorModule,
     DashboardModule,
-    GatewayModule
+    GatewayModule,
+    NotificationsetupModule
   ],
   controllers: [AppController],
   providers: [AppService, JwtService, ConfigService, PermissionsRepository],
   exports: []
 })
 export class AppModule { }
+

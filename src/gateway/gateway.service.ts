@@ -33,7 +33,7 @@ export class GatewayService {
       }
       return response
     }catch(error){
-throw error
+      throw error
     }
   }
 

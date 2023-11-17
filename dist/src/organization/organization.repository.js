@@ -67,6 +67,13 @@ let OrganizationRepository = class OrganizationRepository {
             }
         });
     }
+    async getOrganizationCredit(orgId) {
+        return this.prismaService.customers.findFirst({
+            where: {
+                customerid: orgId
+            }
+        });
+    }
 };
 OrganizationRepository = __decorate([
     (0, common_1.Injectable)(),

@@ -1,5 +1,5 @@
 import { AwsService } from './aws.service';
-import { UpdateAwsDto } from './dto/update-aw.dto';
+import { UpdateAwsDto } from './dto/Request/update-aw.dto';
 export declare class AwsController {
     private readonly awsService;
     constructor(awsService: AwsService);

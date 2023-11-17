@@ -39,8 +39,8 @@ let SensorController = class SensorController {
     UpdateSensorsConfiguration(req, body) {
         return this.sensorService.updateSensorConfiguration(req.token.id, body);
     }
-    getSensorWidgets() {
-        return this.sensorService.getSensorWidgets();
+    getSensorWidgets(orgId) {
+        return this.sensorService.getSensorWidgets(+orgId);
     }
     getSensorsByOrganizationId(id) {
         return this.sensorService.getSensorByOrgId(+id);
@@ -107,9 +107,10 @@ __decorate([
 ], SensorController.prototype, "UpdateSensorsConfiguration", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
-    (0, common_1.Get)('/get-assign-sensors-widget'),
+    (0, common_1.Get)('/get-assign-sensors-widget/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SensorController.prototype, "getSensorWidgets", null);
 __decorate([

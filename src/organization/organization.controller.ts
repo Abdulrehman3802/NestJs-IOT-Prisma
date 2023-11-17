@@ -13,10 +13,10 @@ export class OrganizationController {
 
   @Permission(Category.ORGANIZATION, PermissionType.CREATE)
   @Post()
-  create(@Body() createOrganizationDto: CreateOrganizationDto,@Req() req: RequestWithUser) {
+  create(@Body() createOrganizationDto: CreateOrganizationDto, @Req() req: RequestWithUser) {
     // Extarcting userid from the request
     const token = req.token;
-    return this.organizationService.create(createOrganizationDto,token);
+    return this.organizationService.create(createOrganizationDto, token);
   }
 
   @Permission(Category.ORGANIZATION, PermissionType.VIEW)
@@ -29,6 +29,12 @@ export class OrganizationController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.organizationService.findOne(+id);
+  }
+
+  @Permission(Category.ORGANIZATION, PermissionType.VIEW)
+  @Get('credit/:id')
+  findCredit(@Param('id') id: string) {
+    return this.organizationService.findOrganizationCredit(+id);
   }
 
   @Permission(Category.ORGANIZATION, PermissionType.UPDATE)

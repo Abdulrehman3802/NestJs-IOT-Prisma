@@ -8,6 +8,7 @@ export declare class OrganizationController {
     create(createOrganizationDto: CreateOrganizationDto, req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-organization.dto").ResponseOrganizationDto>>;
     findAll(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-organization.dto").ResponseOrganizationDto[]>>;
     findOne(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-organization.dto").ResponseOrganizationDto>>;
+    findCredit(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<number>>;
     update(id: string, updateOrganizationDto: UpdateOrganizationDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-organization.dto").ResponseOrganizationDto>>;
     remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-organization.dto").ResponseOrganizationDto>>;
 }

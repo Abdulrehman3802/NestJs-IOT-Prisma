@@ -39,9 +39,9 @@ export class SensorController {
   }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)
-  @Get('/get-assign-sensors-widget')
-  getSensorWidgets() {
-    return this.sensorService.getSensorWidgets();
+  @Get('/get-assign-sensors-widget/:id')
+  getSensorWidgets(@Param('id')orgId:string) {
+    return this.sensorService.getSensorWidgets(+orgId);
   }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)

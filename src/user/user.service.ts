@@ -72,7 +72,7 @@ export class UserService {
       return response
     }catch (error) {
       throw error
-    } 
+    }
   }
   //#endregion
 

@@ -44,6 +44,11 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateOrganizationDto.prototype, "city", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Number)
+], CreateOrganizationDto.prototype, "credit", void 0);
 exports.CreateOrganizationDto = CreateOrganizationDto;
 class ModelOrganizationDto {
 }

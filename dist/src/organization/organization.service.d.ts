@@ -23,6 +23,7 @@ export declare class OrganizationService {
     create(createOrganizationDto: CreateOrganizationDto, token: Token): Promise<ApiResponseDto<ResponseOrganizationDto>>;
     findAll(): Promise<ApiResponseDto<ResponseOrganizationDto[]>>;
     findOne(id: number): Promise<ApiResponseDto<ResponseOrganizationDto>>;
+    findOrganizationCredit(orgId: number): Promise<ApiResponseDto<number>>;
     update(id: number, updateOrganizationDto: UpdateOrganizationDto): Promise<ApiResponseDto<ResponseOrganizationDto>>;
     remove(id: number): Promise<ApiResponseDto<ResponseOrganizationDto>>;
 }

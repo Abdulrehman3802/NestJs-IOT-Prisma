@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { CreateSensorDto, SensorDto } from './dto/request/create-sensor.dto';
 import { UpdateSensorDto } from './dto/request/update-sensor.dto';
 import { SensorRepository } from "./sensor.repository";
@@ -26,7 +27,12 @@ export declare class SensorService {
     unAssignedSensor(id: number): Promise<ApiResponseDto<SensorDto>>;
     getSensorByDeviceId(devId: number): Promise<ApiResponseDto<SensorDto[]>>;
     getSensorByOrgId(orgId: number): Promise<ApiResponseDto<SensorDto[]>>;
-    getSensorWidgets(): Promise<ApiResponseDto<any[]>>;
+    getSensorWidgets(orgId: number): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        data: any[];
+        error: boolean;
+    }>;
     getSensorByDepartmentId(depId: number): Promise<ApiResponseDto<SensorDto[]>>;
     getSensorByFacilityId(facId: number): Promise<ApiResponseDto<SensorDto[]>>;
     remove(id: number): string;

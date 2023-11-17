@@ -11,7 +11,12 @@ export declare class SensorController {
     getSensorsConfiguration(req: RequestWithUser, id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-configuration.dto").ResponseConfigurationDto[]>>;
     showSensorsConfiguration(req: RequestWithUser, id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-configuration.dto").ResponseConfigurationDto[]>>;
     UpdateSensorsConfiguration(req: RequestWithUser, body: UpdateConfigurationDto[]): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;
-    getSensorWidgets(): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<any[]>>;
+    getSensorWidgets(orgId: string): Promise<{
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data: any[];
+        error: boolean;
+    }>;
     getSensorsByOrganizationId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
     getSensorByDeviceId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto[]>>;
     getAllUnAssignedSensors(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<string[]>>;

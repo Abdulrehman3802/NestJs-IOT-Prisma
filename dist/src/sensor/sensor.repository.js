@@ -39,6 +39,13 @@ let SensorRepository = class SensorRepository {
             }
         });
     }
+    getSensorTypesOfSensors(sensorId) {
+        return this.prismaService.sensortypes.findMany({
+            where: {
+                sensorid: { in: sensorId },
+            }
+        });
+    }
     showSensorConfiguration(sensorId) {
         return this.prismaService.sensortypes.findMany({
             where: {
@@ -173,6 +180,15 @@ let SensorRepository = class SensorRepository {
                 sensorid: id
             },
             data: updateSensorDto
+        });
+    }
+    getAllSensorByOrgId(orgId) {
+        return this.prismaService.sensors.findMany({
+            where: {
+                customerid: orgId,
+                is_active: true,
+                is_deleted: false
+            }
         });
     }
     remove(id) {

@@ -33,7 +33,14 @@ export class SensorRepository{
             where:{
                 sensorid: sensorId,
             }
+        })
+    }
 
+    getSensorTypesOfSensors(sensorId:number[]){
+        return this.prismaService.sensortypes.findMany({
+            where:{
+                sensorid: {in:sensorId},
+            }
         })
     }
 
@@ -186,6 +193,15 @@ export class SensorRepository{
         })
     }
 
+    getAllSensorByOrgId(orgId:number){
+        return this.prismaService.sensors.findMany({
+            where:{
+                customerid:orgId,
+                is_active:true,
+                is_deleted:false
+            }
+        })
+    }
     remove(id: number) {
         return `This action removes a #${id} sensor`;
     }

@@ -36,12 +36,14 @@ model customers {
   updated_by                        Int
   street                            String?                 @db.VarChar(100)
   postcode                          Int?
+  credit                            Int?
   users_customers_created_byTousers users                   @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
   users_customers_updated_byTousers users                   @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
   departments                       departments[]
   devices                           devices[]
   facilities                        facilities[]
   gateways                          gateways[]
+  notificationsetup                 notificationsetup[]
   organizationdashboard             organizationdashboard[]
   organizationusers                 organizationusers[]
   sensors                           sensors[]
@@ -59,7 +61,6 @@ model departments {
   created_by                          Int
   updated_by                          Int
   email                               String                @db.VarChar(100)
-  description                         String?               @db.VarChar(100)
   departmentdashboard                 departmentdashboard[]
   users_departments_created_byTousers users                 @relation("departments_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_createdby_fkey")
   customers                           customers             @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
@@ -342,6 +343,7 @@ model users {
   facilityusers                             facilityusers[]
   gateways_gateways_created_byTousers       gateways[]          @relation("gateways_created_byTousers")
   gateways_gateways_updated_byTousers       gateways[]          @relation("gateways_updated_byTousers")
+  notificationsetup                         notificationsetup[]
   organizationusers                         organizationusers[]
   sensors                                   sensors[]
   sensortypes                               sensortypes[]
@@ -420,4 +422,26 @@ model deviceusers {
   is_admin     Boolean?
   devices      devices? @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
   users        users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model notificationsetup {
+  notificationsetupid Int       @id @default(autoincrement())
+  email               String?   @db.VarChar(100)
+  phonenumber         String?   @db.VarChar(100)
+  text_to_speech      String?   @db.VarChar(100)
+  plain_email         String?   @db.VarChar(100)
+  customerid          Int
+  userid              Int
+  is_email            Boolean?
+  is_phone            Boolean?
+  is_text_to_speech   Boolean?
+  is_plain_email      Boolean?
+  is_active           Boolean?
+  is_deleted          Boolean?
+  date_created        DateTime? @db.Timestamptz(6)
+  date_updated        DateTime? @db.Timestamptz(6)
+  created_by          Int
+  updated_by          Int
+  customers           customers @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
+  users               users     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
 }

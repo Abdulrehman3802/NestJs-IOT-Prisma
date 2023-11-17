@@ -5,35 +5,35 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { OrganizationRepository } from './organization.repository';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { ResponseOrganizationDto } from './dto/response/response-organization.dto';
-import {UserService} from "../user/user.service";
-import {CreateUserDto} from "../user/dto/request/create-user.dto";
-import {RolesService} from "../roles/roles.service";
-import {CreateOrganizationUserDto} from "./dto/request/create-organization-user.dto";
+import { UserService } from "../user/user.service";
+import { CreateUserDto } from "../user/dto/request/create-user.dto";
+import { RolesService } from "../roles/roles.service";
+import { CreateOrganizationUserDto } from "./dto/request/create-organization-user.dto";
 import { FacilityService } from 'src/facility/facility.service';
 import { DepartmentService } from 'src/department/department.service';
 import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
-import {DashboardService} from "../dashboard/dashboard.service";
-import {CreateDashboardDto} from "../dashboard/dto/request/create-dashboard.dto";
+import { DashboardService } from "../dashboard/dashboard.service";
+import { CreateDashboardDto } from "../dashboard/dto/request/create-dashboard.dto";
 
 
 @Injectable()
 export class OrganizationService {
   constructor(
-      private readonly organizationRepository: OrganizationRepository,
-      private readonly userService:UserService,
-      private readonly roleService:RolesService,
-      private readonly facilityService: FacilityService,
-      private readonly departmentService: DepartmentService,
-      private readonly deviceService: DeviceService,
-      private readonly dashboardService: DashboardService,
-      private readonly sensorService: SensorService,
+    private readonly organizationRepository: OrganizationRepository,
+    private readonly userService: UserService,
+    private readonly roleService: RolesService,
+    private readonly facilityService: FacilityService,
+    private readonly departmentService: DepartmentService,
+    private readonly deviceService: DeviceService,
+    private readonly dashboardService: DashboardService,
+    private readonly sensorService: SensorService,
 
   ) { }
 
   async create(createOrganizationDto: CreateOrganizationDto, token: Token) {
     try {
-      const { id } = token; 
+      const { id } = token;
       const organizationModel: ModelOrganizationDto = {
         ...createOrganizationDto,
         is_active: true,
@@ -42,7 +42,9 @@ export class OrganizationService {
         date_created: new Date(),
         date_updated: new Date()
       }
-
+      if (organizationModel.credit == undefined) {
+        organizationModel.credit = 0;
+      }
       const organization = await this.organizationRepository.createOrganization(organizationModel);
       if (!organization) {
         throw new NotImplementedException('Cannot create organization');
@@ -102,6 +104,25 @@ export class OrganizationService {
         statusCode: HttpStatus.OK,
         message: "Organization Found Successfully!",
         data: organization,
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findOrganizationCredit(orgId: number) {
+    try {
+      const organization = await this.organizationRepository.getOrganizationCredit(orgId);
+      if (!organization) {
+        throw new NotFoundException(`Organization Not Found With Id ${orgId}`);
+      }
+      
+      const response: ApiResponseDto<number> = {
+        statusCode: HttpStatus.OK,
+        message: "Organization Credit Fetched Successfully!",
+        data: (organization.credit === null) ? 0 : organization.credit,
         error: false
       }
       return response;

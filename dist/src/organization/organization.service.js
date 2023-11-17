@@ -37,6 +37,9 @@ let OrganizationService = class OrganizationService {
         try {
             const { id } = token;
             const organizationModel = Object.assign(Object.assign({}, createOrganizationDto), { is_active: true, created_by: id, updated_by: id, date_created: new Date(), date_updated: new Date() });
+            if (organizationModel.credit == undefined) {
+                organizationModel.credit = 0;
+            }
             const organization = await this.organizationRepository.createOrganization(organizationModel);
             if (!organization) {
                 throw new common_1.NotImplementedException('Cannot create organization');
@@ -90,6 +93,24 @@ let OrganizationService = class OrganizationService {
                 statusCode: common_1.HttpStatus.OK,
                 message: "Organization Found Successfully!",
                 data: organization,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async findOrganizationCredit(orgId) {
+        try {
+            const organization = await this.organizationRepository.getOrganizationCredit(orgId);
+            if (!organization) {
+                throw new common_1.NotFoundException(`Organization Not Found With Id ${orgId}`);
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Organization Credit Fetched Successfully!",
+                data: (organization.credit === null) ? 0 : organization.credit,
                 error: false
             };
             return response;

@@ -65,4 +65,12 @@ export class OrganizationRepository {
             }
         })
     }
+
+    async getOrganizationCredit(orgId: number) {
+        return this.prismaService.customers.findFirst({
+            where: {
+                customerid: orgId
+            }
+        })
+    }
 }

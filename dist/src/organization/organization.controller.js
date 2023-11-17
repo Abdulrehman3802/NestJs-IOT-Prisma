@@ -34,6 +34,9 @@ let OrganizationController = class OrganizationController {
     findOne(id) {
         return this.organizationService.findOne(+id);
     }
+    findCredit(id) {
+        return this.organizationService.findOrganizationCredit(+id);
+    }
     update(id, updateOrganizationDto) {
         return this.organizationService.update(+id, updateOrganizationDto);
     }
@@ -65,6 +68,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], OrganizationController.prototype, "findOne", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.ORGANIZATION, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('credit/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], OrganizationController.prototype, "findCredit", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.ORGANIZATION, GeneralEnums_1.PermissionType.UPDATE),
     (0, common_1.Patch)(':id'),

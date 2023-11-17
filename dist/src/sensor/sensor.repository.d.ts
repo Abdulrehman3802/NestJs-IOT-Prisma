@@ -33,6 +33,22 @@ export declare class SensorRepository {
         description: string;
         name: string;
     }[]>;
+    getSensorTypesOfSensors(sensorId: number[]): import(".prisma/client").Prisma.PrismaPromise<{
+        sensortypeid: number;
+        property: string;
+        unit: string;
+        minvalue: number;
+        maxvalue: number;
+        sensorid: number;
+        aws_sensorid: string;
+        is_hidden: boolean;
+        is_deleted: boolean;
+        date_created: Date;
+        date_updated: Date;
+        updated_by: number;
+        description: string;
+        name: string;
+    }[]>;
     showSensorConfiguration(sensorId: number): import(".prisma/client").Prisma.PrismaPromise<{
         sensortypeid: number;
         property: string;
@@ -109,6 +125,7 @@ export declare class SensorRepository {
             updated_by: number;
             street: string;
             postcode: number;
+            credit: number;
         };
     } & {
         sensorid: number;
@@ -139,6 +156,7 @@ export declare class SensorRepository {
             updated_by: number;
             street: string;
             postcode: number;
+            credit: number;
         };
     } & {
         sensorid: number;
@@ -220,5 +238,17 @@ export declare class SensorRepository {
         assigned_by: number;
         sensorname: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    getAllSensorByOrgId(orgId: number): import(".prisma/client").Prisma.PrismaPromise<{
+        sensorid: number;
+        deviceid: number;
+        is_active: boolean;
+        customerid: number;
+        is_deleted: boolean;
+        aws_sensorid: string;
+        date_created: Date;
+        date_updated: Date;
+        assigned_by: number;
+        sensorname: string;
+    }[]>;
     remove(id: number): string;
 }
