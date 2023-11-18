@@ -61,6 +61,7 @@ model departments {
   created_by                          Int
   updated_by                          Int
   email                               String                @db.VarChar(100)
+  description                         String?               @db.VarChar(100)
   departmentdashboard                 departmentdashboard[]
   users_departments_created_byTousers users                 @relation("departments_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "departments_createdby_fkey")
   customers                           customers             @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)
