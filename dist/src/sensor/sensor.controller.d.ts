@@ -22,5 +22,6 @@ export declare class SensorController {
     getAllUnAssignedSensors(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<string[]>>;
     updateAssignedSensor(req: RequestWithUser, id: string, updateSensorDto: UpdateSensorDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto>>;
     unAssignedSensor(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto>>;
+    unAssignedSensorFromDevice(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<SensorDto>>;
     remove(id: string): string;
 }

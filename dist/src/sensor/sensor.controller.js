@@ -57,6 +57,9 @@ let SensorController = class SensorController {
     unAssignedSensor(id) {
         return this.sensorService.unAssignedSensor(+id);
     }
+    unAssignedSensorFromDevice(id) {
+        return this.sensorService.unAssignedSensorFromDevice(+id);
+    }
     remove(id) {
         return this.sensorService.remove(+id);
     }
@@ -155,6 +158,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SensorController.prototype, "unAssignedSensor", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.UPDATE),
+    (0, common_1.Patch)('unAssigned-from-device/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "unAssignedSensorFromDevice", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.DELETE),
     (0, common_1.Delete)(':id'),

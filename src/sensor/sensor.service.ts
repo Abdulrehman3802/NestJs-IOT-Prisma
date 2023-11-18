@@ -350,7 +350,7 @@ export class SensorService {
             const sensor = await this.sensorRepository.findAssignSensorByOrganizationId(orgId)
             const response: ApiResponseDto<SensorDto[]> = {
                 statusCode: HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
                 data: sensor,
                 error: false
             }
@@ -360,6 +360,26 @@ export class SensorService {
         }
     }
 
+    async unAssignedSensorFromDevice(id:number){
+        try {
+            const model = new SensorDto()
+            model.deviceid = null;
+            model.date_updated = new Date()
+            const sensor = await this.sensorRepository.updateSensor(id, model)
+            if (!sensor) {
+                throw new NotImplementedException("Cannot Update Sensor")
+            }
+            const response: ApiResponseDto<SensorDto> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors UnAssigned from device Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
     async getSensorWidgets(orgId: number) {
         // Finding Sensor of an organization
         const sensors = await this.sensorRepository.getAllSensorByOrgId(orgId);

@@ -72,6 +72,12 @@ export class SensorController {
   unAssignedSensor(@Param('id')id:string){
     return this.sensorService.unAssignedSensor(+id)
   }
+  @Permission(Category.SENSOR, PermissionType.UPDATE)
+  @Patch('unAssigned-from-device/:id')
+  unAssignedSensorFromDevice(@Param('id')id:string){
+    return this.sensorService.unAssignedSensorFromDevice(+id)
+  }
+
   @Permission(Category.SENSOR, PermissionType.DELETE)
   @Delete(':id')
   remove(@Param('id') id: string) {

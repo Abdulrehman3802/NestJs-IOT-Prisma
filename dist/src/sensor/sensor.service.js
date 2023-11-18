@@ -344,7 +344,28 @@ let SensorService = class SensorService {
             const sensor = await this.sensorRepository.findAssignSensorByOrganizationId(orgId);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
+                data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async unAssignedSensorFromDevice(id) {
+        try {
+            const model = new create_sensor_dto_1.SensorDto();
+            model.deviceid = null;
+            model.date_updated = new Date();
+            const sensor = await this.sensorRepository.updateSensor(id, model);
+            if (!sensor) {
+                throw new common_1.NotImplementedException("Cannot Update Sensor");
+            }
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensors UnAssigned from device Successfully",
                 data: sensor,
                 error: false
             };
