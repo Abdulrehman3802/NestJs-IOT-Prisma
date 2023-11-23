@@ -8,6 +8,8 @@ export declare class DeviceController {
     create(req: RequestWithUser, createDeviceDto: CreateDeviceDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto>>;
     findAll(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto[]>>;
     findOne(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto>>;
+    finAllDevicesByOrgId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto[]>>;
+    finAllDevicesByFacId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto[]>>;
     finAllDevicesByDepId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto[]>>;
     update(id: string, updateDeviceDto: UpdateDeviceDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-device.dto").ResponseDeviceDto>>;
     remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;

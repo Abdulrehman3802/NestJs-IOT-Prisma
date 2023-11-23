@@ -35,6 +35,9 @@ let DepartmentController = class DepartmentController {
     findOne(id) {
         return this.departmentService.findOne(+id);
     }
+    finAllDepartmentsByOrgId(id) {
+        return this.departmentService.GetAllDepartmentsByOrgId(+id);
+    }
     finAllDepartmentsByFacId(id) {
         return this.departmentService.findAllDepartments(+id);
     }
@@ -71,7 +74,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DepartmentController.prototype, "findOne", null);
 __decorate([
-    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.FACILITY, GeneralEnums_1.PermissionType.VIEW),
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.DEPARTMENT, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DepartmentController.prototype, "finAllDepartmentsByOrgId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.DEPARTMENT, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('by-facId/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

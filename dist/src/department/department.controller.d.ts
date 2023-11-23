@@ -8,6 +8,7 @@ export declare class DepartmentController {
     create(req: RequestWithUser, createDepartmentDto: CreateDepartmentDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-department.dto").ResponseDepartmentDto>>;
     findAll(req: RequestWithUser): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-department.dto").ResponseDepartmentDto[]>>;
     findOne(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-department.dto").ResponseDepartmentDto>>;
+    finAllDepartmentsByOrgId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-department.dto").ResponseDepartmentDto[]>>;
     finAllDepartmentsByFacId(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-department.dto").ResponseDepartmentDto[]>>;
     update(id: string, updateDepartmentDto: UpdateDepartmentDto): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<import("./dto/response/response-department.dto").ResponseDepartmentDto>>;
     remove(id: string): Promise<import("../../core/generics/api-response.dto").ApiResponseDto<null>>;

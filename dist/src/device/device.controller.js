@@ -35,6 +35,12 @@ let DeviceController = class DeviceController {
     findOne(id) {
         return this.deviceService.findOne(+id);
     }
+    finAllDevicesByOrgId(id) {
+        return this.deviceService.GetAllDeviceByOrgId(+id);
+    }
+    finAllDevicesByFacId(id) {
+        return this.deviceService.getAllDeviceByFacilityId(+id);
+    }
     finAllDevicesByDepId(id) {
         return this.deviceService.findAllDevicesByDepId(+id);
     }
@@ -71,7 +77,23 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DeviceController.prototype, "findOne", null);
 __decorate([
-    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.FACILITY, GeneralEnums_1.PermissionType.VIEW),
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.DEVICE, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DeviceController.prototype, "finAllDevicesByOrgId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.DEVICE, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('by-facId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DeviceController.prototype, "finAllDevicesByFacId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.DEVICE, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('by-depId/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
