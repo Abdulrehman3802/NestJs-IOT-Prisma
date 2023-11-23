@@ -286,7 +286,7 @@ export class DepartmentService {
       const allDepartments = await this.departmentRepository.findAllDepartmentsByOrganizationId(orgId);
       const response: ApiResponseDto<ResponseDepartmentDto[]> = {
         statusCode: HttpStatus.OK,
-        message: "Departments Found Associated to Facility",
+        message: "Departments Found Associated to Organization",
         data: allDepartments,
         error: false,
       }

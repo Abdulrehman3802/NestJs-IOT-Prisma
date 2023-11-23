@@ -34,7 +34,19 @@ export class DeviceController {
     return this.deviceService.findOne(+id);
   }
 
-  @Permission(Category.FACILITY, PermissionType.VIEW)
+  @Permission(Category.DEVICE, PermissionType.VIEW)
+  @Get('by-orgId/:id')
+  finAllDevicesByOrgId(@Param('id') id: string) {
+    return this.deviceService.GetAllDeviceByOrgId(+id);
+  }
+
+  @Permission(Category.DEVICE, PermissionType.VIEW)
+  @Get('by-facId/:id')
+  finAllDevicesByFacId(@Param('id') id: string) {
+    return this.deviceService.getAllDeviceByFacilityId(+id);
+  }
+
+  @Permission(Category.DEVICE, PermissionType.VIEW)
   @Get('by-depId/:id')
   finAllDevicesByDepId(@Param('id') id: string) {
     return this.deviceService.findAllDevicesByDepId(+id);

@@ -34,7 +34,13 @@ export class DepartmentController {
     return this.departmentService.findOne(+id);
   }
 
-  @Permission(Category.FACILITY, PermissionType.VIEW)
+  @Permission(Category.DEPARTMENT, PermissionType.VIEW)
+  @Get('by-orgId/:id')
+  finAllDepartmentsByOrgId(@Param('id') id: string) {
+    return this.departmentService.GetAllDepartmentsByOrgId(+id);
+  }
+
+  @Permission(Category.DEPARTMENT, PermissionType.VIEW)
   @Get('by-facId/:id')
   finAllDepartmentsByFacId(@Param('id') id: string) {
     return this.departmentService.findAllDepartments(+id);
