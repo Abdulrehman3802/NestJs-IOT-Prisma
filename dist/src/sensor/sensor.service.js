@@ -449,7 +449,7 @@ let SensorService = class SensorService {
             const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
                 data: sensor,
                 error: false
             };
@@ -472,7 +472,7 @@ let SensorService = class SensorService {
             const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds);
             const response = {
                 statusCode: common_1.HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
                 data: sensor,
                 error: false
             };

@@ -359,8 +359,7 @@ export class SensorService {
             throw error
         }
     }
-
-    async unAssignedSensorFromDevice(id:number){
+        async unAssignedSensorFromDevice(id:number){
         try {
             const model = new SensorDto()
             model.deviceid = null;
@@ -470,7 +469,7 @@ export class SensorService {
             const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds)
             const response: ApiResponseDto<SensorDto[]> = {
                 statusCode: HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
                 data: sensor,
                 error: false
             }
@@ -493,7 +492,7 @@ export class SensorService {
             const sensor = await this.sensorRepository.findSensorByDeviceIds(deviceIds)
             const response: ApiResponseDto<SensorDto[]> = {
                 statusCode: HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
                 data: sensor,
                 error: false
             }

@@ -50,6 +50,16 @@ export class SensorController {
     return this.sensorService.getSensorByOrgId(+id);
   }
 
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Get('/get-sensors-by-facId/:id')
+  getSensorsByFacilityId(@Param('id')id:string) {
+    return this.sensorService.getSensorByFacilityId(+id);
+  }
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Get('/get-sensors-by-depId/:id')
+  getSensorsByDepartmentId(@Param('id')id:string) {
+    return this.sensorService.getSensorByDepartmentId(+id);
+  }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)
   @Get('/get-sensors-by-deviceId/:id')
