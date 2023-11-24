@@ -220,7 +220,7 @@ export class DashboardService {
             FacilityCount: facCount?.data?.length,
             DepartmentCount: depCount?.data?.length,
             DeviceCount: devCount?.data?.length,
-            SensorCount: SensorCount?.data?.length,
+            assignedSensors: SensorCount?.data?.length,
         }
     }
 
@@ -232,7 +232,7 @@ export class DashboardService {
         return {
             DepartmentCount: depCount?.data?.length,
             DeviceCount: devCount?.data?.length,
-            SensorCount: SensorCount?.data?.length,
+            assignedSensors: SensorCount?.data?.length,
         }
     }
 
@@ -241,7 +241,7 @@ export class DashboardService {
         const SensorCount = await this.SensorService.getSensorByDepartmentId(depId);
         return {
             DeviceCount: devCount?.data?.length,
-            SensorCount: SensorCount?.data?.length,
+            assignedSensors: SensorCount?.data?.length,
         }
     }
 
