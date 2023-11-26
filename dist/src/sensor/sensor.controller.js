@@ -45,6 +45,9 @@ let SensorController = class SensorController {
     getSensorsByOrganizationId(id) {
         return this.sensorService.getSensorByOrgId(+id);
     }
+    getAllSensorsByOrganizationIdForSuperAdmin(id) {
+        return this.sensorService.getSensorByOrgId(+id);
+    }
     getSensorsByFacilityId(id) {
         return this.sensorService.getSensorByFacilityId(+id);
     }
@@ -130,6 +133,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SensorController.prototype, "getSensorsByOrganizationId", null);
+__decorate([
+    (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
+    (0, common_1.Get)('/get-all-sensors-by-orgId/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], SensorController.prototype, "getAllSensorsByOrganizationIdForSuperAdmin", null);
 __decorate([
     (0, PermissionDecorator_1.Permission)(GeneralEnums_1.Category.SENSOR, GeneralEnums_1.PermissionType.VIEW),
     (0, common_1.Get)('/get-sensors-by-facId/:id'),

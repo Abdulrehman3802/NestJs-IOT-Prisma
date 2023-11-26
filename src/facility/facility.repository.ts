@@ -38,6 +38,7 @@ export class FacilityRepository {
     findAllFacilitiesOfOrgAdmin(orgId: number) {
         return this.prismaService.facilities.findMany({
             where: {
+                is_active:true,
                 is_deleted: false,
                 customerid: orgId
             }

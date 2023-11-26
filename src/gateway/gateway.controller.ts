@@ -21,9 +21,9 @@ export class GatewayController {
     return this.gatewayService.findAllGatewayOfOrg(+id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.gatewayService.findOne(+id);
+  @Get('/get-all-gateways')
+  findAllGatewaysForSuperAdmin() {
+    return this.gatewayService.findAll();
   }
 
   @Patch('/update-gateway/:id')

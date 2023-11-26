@@ -52,8 +52,19 @@ export class GatewayService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} gateway`;
+  async findAll() {
+    try{
+      const gateways = await this.gateWayRepository.findAllGateways()
+      const response: ApiResponseDto<GatewayResponseDto[]> = {
+        statusCode: HttpStatus.OK,
+        message: "Gateway Found Successfully",
+        data: gateways,
+        error: false
+      }
+      return response
+    }catch (error) {
+throw error
+    }
   }
 
  async updateGateway(id: number, updateGatewayDto: UpdateGatewayDto) {

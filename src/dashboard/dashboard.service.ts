@@ -211,7 +211,7 @@ export class DashboardService {
     }
 
     async getCountForOrg(orgId: number) {
-        const facCount = await this.deviceService.GetAllDeviceByOrgId(orgId);
+        const facCount = await this.facilityService.findAllFacilities(orgId);
         const depCount = await this.departmentService.GetAllDepartmentsByOrgId(orgId);
         const devCount = await this.deviceService.GetAllDeviceByOrgId(orgId);
         const SensorCount = await this.SensorService.getSensorByOrgId(orgId);
@@ -220,7 +220,7 @@ export class DashboardService {
             FacilityCount: facCount?.data?.length,
             DepartmentCount: depCount?.data?.length,
             DeviceCount: devCount?.data?.length,
-            assignedSensors: SensorCount?.data?.length,
+            AssignedSensors: SensorCount?.data?.length,
         }
     }
 
@@ -232,7 +232,7 @@ export class DashboardService {
         return {
             DepartmentCount: depCount?.data?.length,
             DeviceCount: devCount?.data?.length,
-            assignedSensors: SensorCount?.data?.length,
+            AssignedSensors: SensorCount?.data?.length,
         }
     }
 
@@ -241,7 +241,7 @@ export class DashboardService {
         const SensorCount = await this.SensorService.getSensorByDepartmentId(depId);
         return {
             DeviceCount: devCount?.data?.length,
-            assignedSensors: SensorCount?.data?.length,
+            AssignedSensors: SensorCount?.data?.length,
         }
     }
 

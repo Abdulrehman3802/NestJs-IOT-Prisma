@@ -23,6 +23,14 @@ export class GatewayRepository{
         })
     }
 
+    findAllGateways(){
+        return this.prismaService.gateways.findMany({
+            where:{
+                is_deleted:false,
+                is_active:true
+            }
+        })
+    }
     findOne(id: number) {
         return `This action returns a #${id} gateway`;
     }

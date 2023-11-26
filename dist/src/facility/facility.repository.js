@@ -41,6 +41,7 @@ let FacilityRepository = class FacilityRepository {
     findAllFacilitiesOfOrgAdmin(orgId) {
         return this.prismaService.facilities.findMany({
             where: {
+                is_active: true,
                 is_deleted: false,
                 customerid: orgId
             }
