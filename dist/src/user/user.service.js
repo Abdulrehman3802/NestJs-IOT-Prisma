@@ -412,7 +412,7 @@ let UserService = class UserService {
                     users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId);
                 }
                 else if (query == 'DeviceAdmin') {
-                    users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId);
+                    users = await this.userRepository.findAllDeviceAdminsByFacilityId(facilityId);
                 }
             }
             else if (rolename == 'DepartmentAdmin') {

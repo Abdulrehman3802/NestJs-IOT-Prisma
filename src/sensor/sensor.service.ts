@@ -359,6 +359,21 @@ export class SensorService {
             throw error
         }
     }
+
+    async getAllSensorByOrgId(orgId: number) {
+        try {
+            const sensor = await this.sensorRepository.findAllSensorByOrganizationId(orgId)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors Found Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
         async unAssignedSensorFromDevice(id:number){
         try {
             const model = new SensorDto()

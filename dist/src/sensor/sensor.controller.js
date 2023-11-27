@@ -46,7 +46,7 @@ let SensorController = class SensorController {
         return this.sensorService.getSensorByOrgId(+id);
     }
     getAllSensorsByOrganizationIdForSuperAdmin(id) {
-        return this.sensorService.getSensorByOrgId(+id);
+        return this.sensorService.getAllSensorByOrgId(+id);
     }
     getSensorsByFacilityId(id) {
         return this.sensorService.getSensorByFacilityId(+id);

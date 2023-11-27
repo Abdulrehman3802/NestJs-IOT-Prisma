@@ -471,7 +471,7 @@ export class UserService {
         if(query == 'DepartmentAdmin') {
             users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId)
         } else if(query == 'DeviceAdmin') {
-            users = await this.userRepository.findAllDepartmentAdminsByFacilityId(facilityId)
+            users = await this.userRepository.findAllDeviceAdminsByFacilityId(facilityId)
         }
       } else if (rolename == 'DepartmentAdmin') {
         if(query == 'DeviceAdmin') {

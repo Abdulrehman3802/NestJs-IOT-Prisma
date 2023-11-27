@@ -170,6 +170,53 @@ export declare class SensorRepository {
         assigned_by: number;
         sensorname: string;
     })[]>;
+    findAllSensorByOrganizationId(orgId: number): import(".prisma/client").Prisma.PrismaPromise<({
+        customers: {
+            customerid: number;
+            customername: string;
+            contactperson: string;
+            email: string;
+            phone: string;
+            address: string;
+            city: string;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            created_by: number;
+            updated_by: number;
+            street: string;
+            postcode: number;
+            credit: number;
+        };
+        devices: {
+            deviceid: number;
+            devicename: string;
+            departmentid: number;
+            devicetype: string;
+            manufacturer: string;
+            is_active: boolean;
+            date_created: Date;
+            date_updated: Date;
+            is_deleted: boolean;
+            facilityid: number;
+            customerid: number;
+            created_by: number;
+            updated_by: number;
+            email: string;
+        };
+    } & {
+        sensorid: number;
+        deviceid: number;
+        is_active: boolean;
+        customerid: number;
+        is_deleted: boolean;
+        aws_sensorid: string;
+        date_created: Date;
+        date_updated: Date;
+        assigned_by: number;
+        sensorname: string;
+    })[]>;
     findAssignSensorByDeviceId(devId: number): import(".prisma/client").Prisma.PrismaPromise<({
         devices: {
             departments: {

@@ -354,6 +354,21 @@ let SensorService = class SensorService {
             throw error;
         }
     }
+    async getAllSensorByOrgId(orgId) {
+        try {
+            const sensor = await this.sensorRepository.findAllSensorByOrganizationId(orgId);
+            const response = {
+                statusCode: common_1.HttpStatus.OK,
+                message: "Sensors Found Successfully",
+                data: sensor,
+                error: false
+            };
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async unAssignedSensorFromDevice(id) {
         try {
             const model = new create_sensor_dto_1.SensorDto();

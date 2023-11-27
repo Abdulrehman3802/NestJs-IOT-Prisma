@@ -27,6 +27,7 @@ export declare class SensorService {
     unAssignedSensor(id: number): Promise<ApiResponseDto<SensorDto>>;
     getSensorByDeviceId(devId: number): Promise<ApiResponseDto<SensorDto[]>>;
     getSensorByOrgId(orgId: number): Promise<ApiResponseDto<SensorDto[]>>;
+    getAllSensorByOrgId(orgId: number): Promise<ApiResponseDto<SensorDto[]>>;
     unAssignedSensorFromDevice(id: number): Promise<ApiResponseDto<SensorDto>>;
     getSensorWidgets(orgId: number): Promise<{
         statusCode: HttpStatus;

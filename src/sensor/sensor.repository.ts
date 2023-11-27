@@ -155,6 +155,21 @@ export class SensorRepository{
             }
         });
     }
+    findAllSensorByOrganizationId(orgId:number){
+        return this.prismaService.sensors.findMany({
+            where: {
+                customerid: orgId,
+                assigned_by: {not:null},
+                is_deleted: false,
+                is_active: true
+            },
+            include:{
+                customers:true,
+                devices:true
+            }
+        });
+    }
+
     findAssignSensorByDeviceId(devId:number){
         return this.prismaService.sensors.findMany({
             where: {

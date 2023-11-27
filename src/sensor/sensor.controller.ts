@@ -53,7 +53,7 @@ export class SensorController {
   @Permission(Category.SENSOR, PermissionType.VIEW)
   @Get('/get-all-sensors-by-orgId/:id')
   getAllSensorsByOrganizationIdForSuperAdmin(@Param('id')id:string) {
-    return this.sensorService.getSensorByOrgId(+id);
+    return this.sensorService.getAllSensorByOrgId(+id);
   }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)
