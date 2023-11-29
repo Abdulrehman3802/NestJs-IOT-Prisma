@@ -94,7 +94,7 @@ export class AwsService {
       SELECT devEUI, region, measure_name, measure_value::double, time
       FROM sensordata.sensorData
       WHERE devEUI IN (${devEUIs.map((devEUI) => `'${devEUI}'`).join(',')})
-        AND time BETWEEN ago(5m) AND now()
+        AND time BETWEEN ago(6d) AND now()
       ORDER BY devEUI, measure_name, time DESC
     `;
             const request = {
