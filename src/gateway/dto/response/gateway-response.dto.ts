@@ -9,4 +9,5 @@ export class GatewayResponseDto{
     is_deleted:boolean;
     created_by:number;
     updated_by:number;
+    carrier:string;
 }

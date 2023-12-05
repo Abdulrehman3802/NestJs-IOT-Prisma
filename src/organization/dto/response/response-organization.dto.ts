@@ -10,4 +10,6 @@ export class ResponseOrganizationDto {
     is_active?: boolean
     date_created: Date
     date_updated?: Date
+    calibration_date?: Date
+    logo:string
 }

@@ -37,6 +37,8 @@ model customers {
   street                            String?                 @db.VarChar(100)
   postcode                          Int?
   credit                            Int?
+  calibration_date                  DateTime?               @db.Timestamp(6)
+  logo                              String?                 @db.VarChar
   users_customers_created_byTousers users                   @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
   users_customers_updated_byTousers users                   @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
   departments                       departments[]
@@ -127,6 +129,7 @@ model gateways {
   created_by                       Int
   updated_by                       Int
   gateway_id                       String                    @unique(map: "unique_gateway_id") @db.VarChar
+  carrier                          String?                   @db.VarChar
   gatewayfailures                  gatewayfailures[]
   users_gateways_created_byTousers users                     @relation("gateways_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "gateways_createdby_fkey")
   customers                        customers                 @relation(fields: [customerid], references: [customerid], onDelete: NoAction, onUpdate: NoAction)

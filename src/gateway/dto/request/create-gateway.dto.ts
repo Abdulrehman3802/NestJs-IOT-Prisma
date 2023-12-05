@@ -13,6 +13,9 @@ export class CreateGatewayDto {
     @IsOptional()
     @IsString()
     gateway_id:string;
+    @IsOptional()
+    @IsString()
+    carrier:string;
 }
 
 export class GatewayModelDto{
@@ -26,4 +29,5 @@ export class GatewayModelDto{
     is_deleted:boolean;
     created_by:number;
     updated_by:number;
+    carrier:string;
 }

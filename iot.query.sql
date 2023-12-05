@@ -365,3 +365,14 @@ ALTER TABLE IF EXISTS "IoT".notificationsetup
 -------------------------Credit Field Added In Organization-----------------------------------
 ALTER TABLE IF EXISTS "IoT".customers
     ADD COLUMN credit integer;
+
+ --------------------- Gateway change -----------------------
+ ALTER TABLE IF EXISTS "IoT".gateways
+     ADD COLUMN carrier character varying;
+
+------------ Organization change --------------------
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN calibration_date timestamp without time zone;
+
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN logo character varying;

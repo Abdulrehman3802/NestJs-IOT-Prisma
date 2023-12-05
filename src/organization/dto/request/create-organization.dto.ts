@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsEmail, IsNumber } from "class-validator";
+import {IsString, IsNotEmpty, IsOptional, IsEmail, IsNumber, IsDate} from "class-validator";
 
 export class CreateOrganizationDto {
     @IsString()
@@ -29,6 +29,10 @@ export class CreateOrganizationDto {
     @IsNumber()
     @IsOptional()
     credit: number;
+
+    @IsOptional()
+    @IsString()
+    logo:string
 }
 
 export class ModelOrganizationDto {
@@ -44,4 +48,6 @@ export class ModelOrganizationDto {
     date_updated?: Date
     created_by: number
     updated_by: number
+    calibration_date: Date
+    logo:string
 }
