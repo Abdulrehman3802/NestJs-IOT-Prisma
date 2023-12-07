@@ -7,7 +7,8 @@ export enum Category {
   FACILITY = 'Facility',
   SENSOR = 'Sensor',
   DEPARTMENT = 'Department',
-  DEVICE = 'Device'
+  DEVICE = 'Device',
+  LOGO = 'Logo'
 }
 
 export enum PermissionType {

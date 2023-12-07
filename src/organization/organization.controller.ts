@@ -61,7 +61,7 @@ export class OrganizationController {
   remove(@Param('id') id: string) {
     return this.organizationService.remove(+id);
   }
-  @Permission(Category.ORGANIZATION, PermissionType.VIEW)
+  @Permission(Category.LOGO, PermissionType.VIEW)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@Req() req: RequestWithUser, @UploadedFile() file: any, @Body() body) {
