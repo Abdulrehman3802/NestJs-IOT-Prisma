@@ -38,7 +38,7 @@ export class AuthService {
 
     async login(loginDto: LoginDto) {
         try {
-            let orgLogo,orgName
+            let orgLogo,orgName,orgId
             const user = await this.userRepository.findUserByEmail(loginDto.email)
             if (!user) {
                 throw new UnauthorizedException("Incorrect Email or Password")
@@ -66,6 +66,7 @@ export class AuthService {
                 const organization = await this.organizationRepository.findOrganizationByUserId(user.userid)
                 orgName = organization?.customers?.customername
                 orgLogo = organization?.customers?.logo
+                orgId = organization?.customers?.customerid
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -82,6 +83,7 @@ export class AuthService {
                 const facility = await this.facilityRepository.findOneFacility(facilityUser.facilityid)
                 orgName = facility?.customers?.customername
                 orgLogo = facility?.customers?.logo
+                orgId = facility?.customers?.customerid
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -99,6 +101,7 @@ export class AuthService {
                 const department = await this.departmentRepository.findOneDepartment(departmentUser.departmentid)
                 orgName = department?.facilities?.customers?.customername
                 orgLogo = department?.facilities?.customers?.logo
+                orgId = department?.facilities?.customers?.customerid
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -117,6 +120,7 @@ export class AuthService {
                 const device = await this.departmentRepository.findOneDepartment(deviceUser.deviceid)
                 orgName = device?.facilities?.customers?.customername
                 orgLogo = device?.facilities?.customers?.logo
+                orgId = device?.facilities?.customers?.customerid
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -141,6 +145,7 @@ export class AuthService {
                     lastname: user.lastname,
                     email: user.email,
                     address: user.address,
+                    organizatoinId:orgId,
                     organizationLogo:orgLogo,
                     organizationName:orgName,
                     passwordhash: user.passwordhash,
