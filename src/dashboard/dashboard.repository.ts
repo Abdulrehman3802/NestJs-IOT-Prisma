@@ -39,10 +39,15 @@ export class DashboardRepository {
             include:{
                 departments:{
                     include:{
-                        facilities:true
+                        facilities:{
+                            include:{
+                                customers:true,
+                            }
+                        }
                     }
-                }
-            }
+                },
+            },
+
         })
     }
 

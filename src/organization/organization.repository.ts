@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ModelOrganizationDto } from './dto/request/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
 import { OrganizationUserModelDto } from "./dto/request/create-organization-user.dto";
+import {retry} from "rxjs";
 
 @Injectable()
 export class OrganizationRepository {
@@ -41,6 +42,9 @@ export class OrganizationRepository {
         return this.prismaService.organizationusers.findFirst({
             where: {
                 userid: userId,
+            },
+            include:{
+                customers:true
             }
         })
     }

@@ -1,10 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile
+} from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/request/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
 import { JwtAuthGuard, RequestWithUser } from 'core/generics/Guards/PermissionAuthGuard';
 import { Permission } from 'core/generics/Guards/PermissionDecorator';
 import { Category, PermissionType } from 'core/generics/Enums/GeneralEnums';
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @UseGuards(JwtAuthGuard)
 @Controller('organization')
@@ -48,4 +61,10 @@ export class OrganizationController {
   remove(@Param('id') id: string) {
     return this.organizationService.remove(+id);
   }
+  @Permission(Category.ORGANIZATION, PermissionType.VIEW)
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@Req() req: RequestWithUser, @UploadedFile() file: any, @Body() body) {
+      return  this.organizationService.uploadLogo(file, body.organizationName)
+    }
 }

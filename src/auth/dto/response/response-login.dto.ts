@@ -15,5 +15,6 @@ export class ResponseDto{
 }
 export class ResponseLoginDto extends ResponseDto{
     accessToken:string
-
+    organizationName: string;
+    organizationLogo:string
 }

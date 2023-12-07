@@ -57,6 +57,9 @@ export class FacilityRepository {
         return this.prismaService.facilities.findFirst({
             where: {
                 facilityid: id,
+            },
+            include:{
+                customers:true
             }
         })
     }

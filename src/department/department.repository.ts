@@ -64,6 +64,13 @@ export class DepartmentRepository {
         return this.prismaService.departments.findFirst({
             where: {
                 departmentid: id,
+            },
+            include:{
+                facilities:{
+                    include:{
+                        customers:true
+                    }
+                }
             }
         })
     }

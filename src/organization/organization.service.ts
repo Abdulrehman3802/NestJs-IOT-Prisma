@@ -1,7 +1,11 @@
 import { Injectable, HttpStatus, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { CreateOrganizationDto, ModelOrganizationDto } from './dto/request/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import {
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { promises as fs } from 'fs';
 import { OrganizationRepository } from './organization.repository';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { ResponseOrganizationDto } from './dto/response/response-organization.dto';
@@ -15,10 +19,16 @@ import { DeviceService } from 'src/device/device.service';
 import { SensorService } from 'src/sensor/sensor.service';
 import { DashboardService } from "../dashboard/dashboard.service";
 import { CreateDashboardDto } from "../dashboard/dto/request/create-dashboard.dto";
+import {ConfigService} from "@nestjs/config";
 
 
 @Injectable()
 export class OrganizationService {
+  private awsAccessKey: string;
+  private awsSecretKeyAccess: string;
+  private awsRegion: string;
+  private awsBucket: string;
+  private awsClient: S3Client;
   constructor(
     private readonly organizationRepository: OrganizationRepository,
     private readonly userService: UserService,
@@ -28,8 +38,21 @@ export class OrganizationService {
     private readonly deviceService: DeviceService,
     private readonly dashboardService: DashboardService,
     private readonly sensorService: SensorService,
+    private readonly configService:ConfigService
 
-  ) { }
+  ) {
+    this.awsAccessKey = this.configService.get('AWS_ACCESS_KEY');
+    this.awsSecretKeyAccess = this.configService.get('AWS_SECRET_ACCESS_KEY');
+    this.awsRegion = this.configService.get('AWS_S3_REGION');
+    this.awsBucket = this.configService.get('AWS_S3_BUCKET_NAME');
+    this.awsClient = new S3Client({
+      region: 'ap-south-1',
+      credentials: {
+        accessKeyId: this.awsAccessKey,
+        secretAccessKey: this.awsSecretKeyAccess,
+      },
+    });
+  }
 
   async create(createOrganizationDto: CreateOrganizationDto, token: Token) {
     try {
@@ -178,4 +201,26 @@ export class OrganizationService {
     }
   }
 
+  async uploadLogo(file:any, organizationName:string){
+    try{
+      console.log(file,"sadasfs")
+      const fileName = `iot.${organizationName}.${file.originalname}`
+      return this.uploadToAWS(file.buffer,fileName)
+    }catch (error) {
+      throw error
+    }
+  }
+  async uploadToAWS(fileBuffer: Buffer, fileName: string) {
+    const params = {
+      Bucket: this.awsBucket,
+      Key: fileName,
+      Body: fileBuffer,
+    };
+    try {
+     await this.awsClient.send(new PutObjectCommand(params));
+      return `https://${this.awsBucket}.s3.amazonaws.com/${fileName}`;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

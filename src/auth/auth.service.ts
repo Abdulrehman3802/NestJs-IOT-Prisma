@@ -38,6 +38,7 @@ export class AuthService {
 
     async login(loginDto: LoginDto) {
         try {
+            let orgLogo,orgName
             const user = await this.userRepository.findUserByEmail(loginDto.email)
             if (!user) {
                 throw new UnauthorizedException("Incorrect Email or Password")
@@ -63,6 +64,8 @@ export class AuthService {
 
             if (role.roles.name == "OrganizationAdmin") {
                 const organization = await this.organizationRepository.findOrganizationByUserId(user.userid)
+                orgName = organization?.customers?.customername
+                orgLogo = organization?.customers?.logo
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -77,6 +80,8 @@ export class AuthService {
             if (role.roles.name == "FacilityAdmin") {
                 const facilityUser = await this.facilityRepository.findFacilityByUserId(user.userid)
                 const facility = await this.facilityRepository.findOneFacility(facilityUser.facilityid)
+                orgName = facility?.customers?.customername
+                orgLogo = facility?.customers?.logo
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -92,6 +97,8 @@ export class AuthService {
             if (role.roles.name == "DepartmentAdmin") {
                 const departmentUser = await this.departmentRepository.findDepartmentByUserId(user.userid)
                 const department = await this.departmentRepository.findOneDepartment(departmentUser.departmentid)
+                orgName = department?.facilities?.customers?.customername
+                orgLogo = department?.facilities?.customers?.logo
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -108,6 +115,8 @@ export class AuthService {
             if (role.roles.name == "DeviceAdmin") {
                 const deviceUser = await this.deviceRepository.findDeviceByUserId(user.userid)
                 const device = await this.departmentRepository.findOneDepartment(deviceUser.deviceid)
+                orgName = device?.facilities?.customers?.customername
+                orgLogo = device?.facilities?.customers?.logo
                 accessToken = this.jwtService.sign(
                     {
                         id: user.userid,
@@ -132,6 +141,8 @@ export class AuthService {
                     lastname: user.lastname,
                     email: user.email,
                     address: user.address,
+                    organizationLogo:orgLogo,
+                    organizationName:orgName,
                     passwordhash: user.passwordhash,
                     phonenumber: user.phonenumber,
                     createdby: user.createdby,
