@@ -30,6 +30,22 @@ export class CreateOrganizationDto {
     @IsOptional()
     credit: number;
 
+    @IsNumber()
+    @IsOptional()
+    interval1: number;
+
+    @IsNumber()
+    @IsOptional()
+    interval2: number;
+
+    @IsNumber()
+    @IsOptional()
+    interval3: number;
+
+    @IsNumber()
+    @IsOptional()
+    interval4: number;
+
     @IsOptional()
     @IsString()
     logo:string
@@ -50,4 +66,8 @@ export class ModelOrganizationDto {
     updated_by: number
     calibration_date: Date
     logo:string
+    interval1: number
+    interval2: number
+    interval3: number
+    interval4: number
 }

@@ -13,3 +13,10 @@ export class ResponseOrganizationDto {
     calibration_date?: Date
     logo:string
 }
+
+export class ResponseOrganizationInterval {
+    interval1? : number
+    interval2? : number
+    interval3? : number
+    interval4? : number
+}

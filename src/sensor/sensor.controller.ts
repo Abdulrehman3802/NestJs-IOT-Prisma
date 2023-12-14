@@ -1,6 +1,6 @@
 import {Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards} from '@nestjs/common';
 import { SensorService } from './sensor.service';
-import {CreateSensorDto, SensorDto} from './dto/request/create-sensor.dto';
+import {CheckpointReportDto, CreateSensorDto, SensorDto} from './dto/request/create-sensor.dto';
 import { UpdateSensorDto } from './dto/request/update-sensor.dto';
 import {JwtAuthGuard, RequestWithUser} from "../../core/generics/Guards/PermissionAuthGuard";
 import {Permission} from "../../core/generics/Guards/PermissionDecorator";
@@ -14,6 +14,12 @@ export class SensorController {
   @Post('/assign-sensor')
   assignSensor(@Req()req:RequestWithUser,@Body() createSensorDto: CreateSensorDto) {
     return this.sensorService.assignSensor(req.token.id,createSensorDto);
+  }
+
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Post('/checkpoint-report/:id')
+  getCheckpointReport(@Param('id')id:string,@Body() body:CheckpointReportDto){
+    return this.sensorService.checkPointReport(+id,body.days,body.startDate);
   }
   @Permission(Category.SENSOR, PermissionType.VIEW)
   @Get('/get-assign-sensors')

@@ -39,6 +39,10 @@ model customers {
   credit                            Int?
   calibration_date                  DateTime?               @db.Timestamp(6)
   logo                              String?                 @db.VarChar
+  interval1                         Int?
+  interval2                         Int?
+  interval3                         Int?
+  interval4                         Int?
   users_customers_created_byTousers users                   @relation("customers_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_createdby_fkey")
   users_customers_updated_byTousers users                   @relation("customers_updated_byTousers", fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "customers_updatedby_fkey")
   departments                       departments[]
@@ -139,16 +143,18 @@ model gateways {
 }
 
 model readings {
-  readingid         Int      @id @default(autoincrement())
-  sensorid          Int
-  deviceid          Int
-  gatewayid         Int
-  measure           String   @db.VarChar(20)
-  sensorvalue       Float
-  reading_timestamp DateTime @db.Timestamptz(6)
-  devices           devices  @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
-  gateways          gateways @relation(fields: [gatewayid], references: [gatewayid], onDelete: NoAction, onUpdate: NoAction)
-  sensors           sensors  @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
+  readingid         Int       @id @default(autoincrement())
+  sensorid          Int?
+  deviceid          Int?
+  gatewayid         Int?
+  measure           String?   @db.VarChar(100)
+  aws_id            String?   @db.VarChar(100)
+  location          String?   @db.VarChar(100)
+  sensorvalue       String?   @db.VarChar(100)
+  reading_timestamp String?   @db.VarChar(100)
+  devices           devices?  @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
+  gateways          gateways? @relation(fields: [gatewayid], references: [gatewayid], onDelete: NoAction, onUpdate: NoAction)
+  sensors           sensors?  @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model roles {
@@ -182,22 +188,32 @@ model sensors {
 }
 
 model sensortypes {
-  sensortypeid Int       @id @default(autoincrement())
-  property     String?   @db.VarChar(255)
-  unit         String?   @db.VarChar(50)
-  minvalue     Int?
-  maxvalue     Int?
-  sensorid     Int
-  aws_sensorid String    @db.VarChar(50)
-  is_hidden    Boolean?  @default(false)
-  is_deleted   Boolean?  @default(false)
-  date_created DateTime? @default(now()) @db.Timestamp(6)
-  date_updated DateTime? @default(now()) @db.Timestamp(6)
-  updated_by   Int
-  description  String?   @db.VarChar(100)
-  name         String?   @db.VarChar(100)
-  sensors      sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
-  users        users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
+  sensortypeid   Int       @id @default(autoincrement())
+  property       String?   @db.VarChar(255)
+  unit           String?   @db.VarChar(50)
+  minvalue       Int?
+  maxvalue       Int?
+  sensorid       Int
+  aws_sensorid   String    @db.VarChar(50)
+  is_hidden      Boolean?  @default(false)
+  is_deleted     Boolean?  @default(false)
+  date_created   DateTime? @default(now()) @db.Timestamp(6)
+  date_updated   DateTime? @default(now()) @db.Timestamp(6)
+  updated_by     Int
+  description    String?   @db.VarChar(100)
+  name           String?   @db.VarChar(100)
+  alarm_enable   Boolean?  @default(false)
+  delay          Int?
+  day_min        Int?
+  day_max        Int?
+  night_min      Int?
+  night_max      Int?
+  warning        Int?
+  healthy_status Boolean?
+  offline_alert  String?   @default("Off") @db.VarChar(100)
+  is_active      Boolean?  @default(false)
+  sensors        sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
+  users          users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
 }
 
 model staff {

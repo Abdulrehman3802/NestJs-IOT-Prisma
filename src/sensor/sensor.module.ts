@@ -10,9 +10,10 @@ import {AwsService} from "../aws/aws.service";
 import {DeviceModule} from "../device/device.module";
 import { DeviceService } from 'src/device/device.service';
 import {DepartmentModule} from "../department/department.module";
+import {OrganizationModule} from "../organization/organization.module";
 
 @Module({
-  imports:[JwtModule,AwsModule, forwardRef(() => DeviceModule), forwardRef(() => DepartmentModule)],
+  imports:[JwtModule,AwsModule, forwardRef(() => DeviceModule), forwardRef(() => DepartmentModule), forwardRef(()=> OrganizationModule)],
   controllers: [SensorController],
   providers: [SensorService,SensorRepository,PrismaService,PermissionsRepository,AwsService],
   exports: [SensorService]

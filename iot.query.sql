@@ -277,35 +277,25 @@ ALTER TABLE IF EXISTS "IoT".facilities
 ----------------SensorType table changes --------------------------------
 ALTER TABLE "IoT".sensortypes
     ALTER COLUMN minvalue TYPE integer;
-
 ALTER TABLE "IoT".sensortypes
     ALTER COLUMN maxvalue TYPE integer;
-
 ALTER TABLE IF EXISTS "IoT".sensortypes
     RENAME sensortypename TO property;
-
 ALTER TABLE IF EXISTS "IoT".sensortypes
     RENAME measurementunit TO unit;
-
 ALTER TABLE IF EXISTS "IoT".sensortypes
     ADD COLUMN description character varying(100);
-
 ALTER TABLE IF EXISTS "IoT".sensortypes
     ADD COLUMN name character varying(100);
-
 ------------------------- Gateway table changes --------------------------------
     ALTER TABLE IF EXISTS "IoT".gateways
         RENAME gatewayname TO gateway_note;
-
     ALTER TABLE IF EXISTS "IoT".gateways
         ALTER COLUMN gateway_note DROP NOT NULL;
-
     ALTER TABLE IF EXISTS "IoT".gateways
         ADD COLUMN gateway_id character varying NOT NULL;
-
         ALTER TABLE "IoT".gateways
         ADD CONSTRAINT unique_gateway_id UNIQUE (gateway_id);
-
 ------------------------- Add NotificationSetup table --------------------------------
 CREATE SEQUENCE IF NOT EXISTS "IoT".notificationsetup_notificationsetupid_seq
     INCREMENT 1
@@ -313,7 +303,6 @@ CREATE SEQUENCE IF NOT EXISTS "IoT".notificationsetup_notificationsetupid_seq
     MINVALUE 1
     MAXVALUE 9223372036854775807
     CACHE 1;
-
 CREATE TABLE "IoT".notificationsetup
 (
     notificationsetupid integer NOT NULL DEFAULT nextval('"IoT".notificationsetup_notificationsetupid_seq'::regclass),
@@ -339,40 +328,109 @@ CREATE TABLE "IoT".notificationsetup
         ON DELETE NO ACTION
         NOT VALID
 );
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     OWNER to postgres;
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     ADD COLUMN is_active boolean;
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     ADD COLUMN is_deleted boolean;
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     ADD COLUMN date_created timestamp with time zone;
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     ADD COLUMN date_updated timestamp with time zone;
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     ADD COLUMN created_by integer NOT NULL;
-
 ALTER TABLE IF EXISTS "IoT".notificationsetup
     ADD COLUMN updated_by integer NOT NULL;
-
-
 -------------------------Credit Field Added In Organization-----------------------------------
 ALTER TABLE IF EXISTS "IoT".customers
     ADD COLUMN credit integer;
-
  --------------------- Gateway change -----------------------
  ALTER TABLE IF EXISTS "IoT".gateways
      ADD COLUMN carrier character varying;
-
 ------------ Organization change --------------------
 ALTER TABLE IF EXISTS "IoT".customers
     ADD COLUMN calibration_date timestamp without time zone;
-
 ALTER TABLE IF EXISTS "IoT".customers
     ADD COLUMN logo character varying;
+------------ Readings TABLE --------------------
+ALTER TABLE IF EXISTS "IoT".readings DROP COLUMN IF EXISTS aws_id;
+ALTER TABLE IF EXISTS "IoT".readings
+    ADD COLUMN aws_id character varying(100) NOT NULL;
+ALTER TABLE IF EXISTS "IoT".readings
+        ALTER COLUMN sensorid DROP NOT NULL;
+ALTER TABLE IF EXISTS "IoT".readings
+        ALTER COLUMN deviceid DROP NOT NULL;
+ALTER TABLE IF EXISTS "IoT".readings
+            ALTER COLUMN gatewayid DROP NOT NULL;
+ALTER TABLE IF EXISTS "IoT".readings
+                ADD COLUMN location character varying(100);
+ALTER TABLE IF EXISTS "IoT".readings DROP COLUMN IF EXISTS sensorvalue;
+ALTER TABLE IF EXISTS "IoT".readings
+                    ADD COLUMN sensorvalue character varying(100) NOT NULL;
+                    ALTER TABLE IF EXISTS "IoT".readings DROP COLUMN IF EXISTS reading_timestamp;
+                    ALTER TABLE IF EXISTS "IoT".readings
+                        ADD COLUMN reading_timestamp character varying(100) NOT NULL;
+ALTER TABLE "IoT".readings
+    ALTER COLUMN measure TYPE character varying(100) COLLATE pg_catalog."default";
+    ALTER TABLE IF EXISTS "IoT".readings
+        ALTER COLUMN location SET NOT NULL;
+
+        ALTER TABLE IF EXISTS "IoT".readings
+            ALTER COLUMN measure DROP NOT NULL;
+
+        ALTER TABLE IF EXISTS "IoT".readings
+            ALTER COLUMN aws_id DROP NOT NULL;
+
+        ALTER TABLE IF EXISTS "IoT".readings
+            ALTER COLUMN sensorvalue DROP NOT NULL;
+
+        ALTER TABLE IF EXISTS "IoT".readings
+            ALTER COLUMN reading_timestamp DROP NOT NULL;
+
+
+------------------- Alarm Delay Changes in SensorType -----------------
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN alarm_enable boolean DEFAULT false;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN delay integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN day_min integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN day_max integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN night_min integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN night_max integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN warning integer;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN healthy_status boolean;
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN offline_alert character varying(100) DEFAULT 'Off';
+
+ALTER TABLE IF EXISTS "IoT".sensortypes
+    ADD COLUMN is_active boolean DEFAULT false;
+
+
+
+-------------------- Interval in Organization ---------
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN interval1 integer;
+
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN interval2 integer;
+
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN interval3 integer;
+
+ALTER TABLE IF EXISTS "IoT".customers
+    ADD COLUMN interval4 integer;

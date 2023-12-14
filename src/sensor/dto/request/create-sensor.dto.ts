@@ -16,6 +16,10 @@ export class CreateSensorDto {
 
 }
 
+export class CheckpointReportDto{
+    days: number;
+    startDate : string;
+}
 
 export class SensorDto{
     deviceid: number

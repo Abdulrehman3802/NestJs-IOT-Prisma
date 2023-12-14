@@ -50,6 +50,12 @@ export class OrganizationController {
     return this.organizationService.findOrganizationCredit(+id);
   }
 
+  @Permission(Category.ORGANIZATION, PermissionType.VIEW)
+  @Get('interval/:id')
+  findInterval(@Param('id') id: string) {
+    return this.organizationService.findOrganizationInterval(+id);
+  }
+
   @Permission(Category.ORGANIZATION, PermissionType.UPDATE)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrganizationDto: UpdateOrganizationDto) {

@@ -8,7 +8,7 @@ import {
 import { promises as fs } from 'fs';
 import { OrganizationRepository } from './organization.repository';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
-import { ResponseOrganizationDto } from './dto/response/response-organization.dto';
+import { ResponseOrganizationDto, ResponseOrganizationInterval } from './dto/response/response-organization.dto';
 import { UserService } from "../user/user.service";
 import { CreateUserDto } from "../user/dto/request/create-user.dto";
 import { RolesService } from "../roles/roles.service";
@@ -64,11 +64,13 @@ export class OrganizationService {
         updated_by: id,
         calibration_date:new Date(),
         date_created: new Date(),
-        date_updated: new Date()
+        date_updated: new Date(),
       }
       if (organizationModel.credit == undefined) {
         organizationModel.credit = 0;
       }
+
+
       const organization = await this.organizationRepository.createOrganization(organizationModel);
       if (!organization) {
         throw new NotImplementedException('Cannot create organization');
@@ -155,12 +157,37 @@ export class OrganizationService {
     }
   }
 
+  async findOrganizationInterval(orgId: number) {
+    try {
+      const organization = await this.organizationRepository.findOrganization(orgId);
+      if (!organization) {
+        throw new NotFoundException(`Organization Not Found With Id ${orgId}`);
+      }
+      
+      const response: ApiResponseDto<ResponseOrganizationInterval> = {
+        statusCode: HttpStatus.OK,
+        message: "Organization Interval Fetched Successfully!",
+        data: {
+          interval1: organization.interval1,
+          interval2: organization.interval2,
+          interval3: organization.interval3,
+          interval4: organization.interval4
+        },
+        error: false
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
     try {
       const organization = await this.organizationRepository.findOrganization(id);
       if (!organization) {
         throw new NotFoundException(`Organization Not Found with id: ${id}`);
       }
+
       const updatedOrganization = await this.organizationRepository.updateOrganization(id, updateOrganizationDto);
       const response: ApiResponseDto<ResponseOrganizationDto> = {
         statusCode: HttpStatus.OK,

@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AwsService } from './aws.service';
-import { CreateAwsDto } from './dto/Request/create-aw.dto';
 import { UpdateAwsDto } from './dto/Request/update-aw.dto';
 
 @Controller('aws')
@@ -10,6 +9,10 @@ export class AwsController {
   @Get('/get-sensors')
   getSensors() {
     return this.awsService.getSensors();
+  }
+  @Post('/save-sensor-data')
+  saveAWSData() {
+    return this.awsService.saveAWSData();
   }
 
   @Get('/get-all-aws-sensors')

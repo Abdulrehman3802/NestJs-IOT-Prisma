@@ -9,7 +9,7 @@ import {tsTsxJsJsxRegex} from "ts-loader/dist/constants";
 import {DepartmentService} from "../department/department.service";
 import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
 import {ResponseConfigurationDto} from "./dto/response/response-configuration.dto";
-import {SensorWidgetsDto} from "./dto/response/sensor-widgets.dto";
+import {OrganizationService} from "../organization/organization.service";
 
 
 @Injectable()
@@ -17,6 +17,7 @@ export class SensorService {
     constructor(
         private readonly sensorRepository: SensorRepository,
         private readonly awsService: AwsService,
+        @Inject(forwardRef(() => OrganizationService)) private readonly organizationService: OrganizationService,
         @Inject(forwardRef(() => DepartmentService)) private readonly departmentService: DepartmentService,
         @Inject(forwardRef(() => DeviceService)) private readonly deviceService: DeviceService,
     ) {
@@ -129,7 +130,7 @@ export class SensorService {
     async getSensorConfiguration(sensorId: number) {
         try {
             const sensorTypes = await this.sensorRepository.getSensorType(sensorId)
-            if(sensorTypes.length == 0) {
+            if (sensorTypes.length == 0) {
                 throw new NotFoundException(`Sensor configuration with id ${sensorId} does not exist`)
             }
             const response: ApiResponseDto<ResponseConfigurationDto[]> = {
@@ -147,7 +148,7 @@ export class SensorService {
     async ShowSensorConfiguration(sensorId: number) {
         try {
             const sensorConfiguration = await this.sensorRepository.showSensorConfiguration(sensorId)
-            if(!sensorConfiguration){
+            if (!sensorConfiguration) {
                 throw new NotFoundException(`Sensor configuration with id ${sensorId} does not exist`)
             }
             const response: ApiResponseDto<ResponseConfigurationDto[]> = {
@@ -162,10 +163,10 @@ export class SensorService {
         }
     }
 
-    async updateSensorConfiguration(userId: number, configuration:UpdateConfigurationDto[]) {
+    async updateSensorConfiguration(userId: number, configuration: UpdateConfigurationDto[]) {
         try {
             const sensorConfiguration = await this.sensorRepository.updateSensorConfiguration(userId, configuration)
-            if(!sensorConfiguration){
+            if (!sensorConfiguration) {
                 throw new NotImplementedException("Cannot Update Sensor Configuration")
             }
             const response: ApiResponseDto<null> = {
@@ -374,7 +375,8 @@ export class SensorService {
             throw error
         }
     }
-        async unAssignedSensorFromDevice(id:number){
+
+    async unAssignedSensorFromDevice(id: number) {
         try {
             const model = new SensorDto()
             model.deviceid = null;
@@ -394,6 +396,7 @@ export class SensorService {
             throw error
         }
     }
+
     async getSensorWidgets(orgId: number) {
         // Finding Sensor of an organization
         const sensors = await this.sensorRepository.getAllSensorByOrgId(orgId);
@@ -519,5 +522,127 @@ export class SensorService {
 
     remove(id: number) {
         return `This action removes a #${id} sensor`;
+    }
+
+    async checkPointReport(id: number, days: number, startDate: string) {
+        try {
+            // Getting all sensor of organization
+            const data = await this.sensorRepository.getAllSensorByOrgId(id)
+            // Getting time interval of organization
+            const timeInterval = await this.organizationService.findOrganizationInterval(id)
+            if (data.length == 0) {
+                const response: ApiResponseDto<SensorDto[]> = {
+                    statusCode: HttpStatus.OK,
+                    message: "Sensors not found so cannot create Check point report",
+                    data: [],
+                    error: false
+                }
+                return response
+            }
+            // Separating aws_id of organization sensors
+            const awsIds = data.map((obj) => {
+                return obj.aws_sensorid
+            })
+            // DB call of reading table to fetch data for sensor of organization
+            const reportData = await this.awsService.getSensorDataForReport(awsIds, days, startDate)
+            const report = await this.groupReadingsByDate(reportData)
+            return this.filterReadingsWithIntervalsForFinalReport(report, timeInterval.data)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async groupReadingsByDate(sensorData: any[]) {
+        // Group the readings by date, aws_id, and sensorValue
+        const sensorReadings = {};
+        for (const reading of sensorData) {
+            const {readingid, measure, aws_id, reading_timestamp, sensorvalue} = reading;
+            // separating date from timestamp
+            const date = reading_timestamp.split(' ')[0];
+            // For separating object by Date
+            if (!sensorReadings[date]) {
+                sensorReadings[date] = {};
+            }
+            // For separating object by Date and Aws_id
+            if (!sensorReadings[date][aws_id]) {
+                sensorReadings[date][aws_id] = {};
+            }
+
+            if (!sensorReadings[date][aws_id][sensorvalue]) {
+                sensorReadings[date][aws_id][sensorvalue] = [];
+            }
+            // For separating object by Date , aws_id and sensor value
+            sensorReadings[date][aws_id][sensorvalue].push({
+                readingid,
+                measure,
+                reading_timestamp,
+            });
+        }
+
+        // Prepare the response for sending it to check intervals
+        const reportResponse = [];
+        for (const date in sensorReadings) {
+            const awsData = sensorReadings[date];
+            for (const aws_id in awsData) {
+                const sensorValues = awsData[aws_id];
+                for (const sensorValue in sensorValues) {
+                    const readings = sensorValues[sensorValue];
+                    reportResponse.push({
+                        date,
+                        aws_id,
+                        sensorValue,
+                        readings,
+                    });
+                }
+            }
+        }
+        return reportResponse;
+    }
+    async filterReadingsWithIntervalsForFinalReport(response: any[], intervals: any) {
+        // Function for matching intervals and filtering other objects from response
+        const filteredObject = response.map((object) => {
+            const times = [
+                intervals.interval1,
+                intervals.interval2,
+                intervals.interval3,
+                intervals.interval4,
+            ];
+
+            const filteredReadings = [];
+
+            times.forEach((interval) => {
+                let closestReading = null;
+                let minDifference = Number.MAX_SAFE_INTEGER;
+
+                object.readings.forEach((reading) => {
+                    // Because reading_timestream is string first converting it into date
+                    const readingTime = new Date(reading.reading_timestamp);
+                    // Getting hour and minutes from reading_timestamp
+                    const readingHour = readingTime.getHours();
+                    const readingMinutes = readingTime.getMinutes();
+                    // Matching them here
+                    if (readingHour === interval) {
+                        const difference = Math.abs(readingMinutes - 0); // Considering the minutes as 0 for comparison
+                        // For getting only one value for one interval that is most near to interval
+                        if (difference < minDifference) {
+                            minDifference = difference;
+                            // Adding interval in response
+                            closestReading = {...reading, interval: interval};
+                        }
+                    }
+                });
+
+                if (closestReading) {
+                    filteredReadings.push(closestReading);
+                }
+            });
+
+            return {...object, readings: filteredReadings};
+        });
+        // Filter out objects where sensorValue is "battery"
+        const filteredResponse = filteredObject.filter(
+            (obj) => obj.sensorValue !== "battery"
+        );
+        return filteredResponse;
     }
 }
