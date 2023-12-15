@@ -519,11 +519,9 @@ export class SensorService {
             throw error
         }
     }
-
     remove(id: number) {
         return `This action removes a #${id} sensor`;
     }
-
     async checkPointReport(id: number, days: number, startDate: string) {
         try {
             // Getting all sensor of organization
@@ -540,18 +538,27 @@ export class SensorService {
                 return response
             }
             // Separating aws_id of organization sensors
-            const awsIds = data.map((obj) => {
-                return obj.aws_sensorid
-            })
+            const awsIds = data.map((obj) => {return obj.aws_sensorid})
+            const sensorIds = data.map((obj) => {return obj.sensorid})
+            const sensorTypes = await this.sensorRepository.getSensorTypesOfSensors(sensorIds)
             // DB call of reading table to fetch data for sensor of organization
             const reportData = await this.awsService.getSensorDataForReport(awsIds, days, startDate)
-            const report = await this.groupReadingsByDate(reportData)
-            return this.filterReadingsWithIntervalsForFinalReport(report, timeInterval.data)
+            const readingsByDate = await this.groupReadingsByDate(reportData)
+            const report = await this.filterReadingsWithIntervalsForFinalReport(readingsByDate, timeInterval.data)
+            const finalResponse = report.flatMap((objects) => {
+                return sensorTypes.map((sensor) => {
+                    if (sensor.aws_sensorid === objects.aws_id && sensor.property === objects.sensorValue) {
+                        objects.sensorValue = sensor.name;
+                        return { min: sensor.minvalue, max: sensor.maxvalue, ...objects };
+                    }
+                    return null; // Return null for entries that don't meet the condition
+                }).filter((entry) => entry !== null); // Filter out null entries
+            });
+            return {intervals: timeInterval.data, checkPoints:finalResponse}
         } catch (error) {
             throw error
         }
     }
-
     async groupReadingsByDate(sensorData: any[]) {
         // Group the readings by date, aws_id, and sensorValue
         const sensorReadings = {};
@@ -599,7 +606,6 @@ export class SensorService {
         return reportResponse;
     }
     async filterReadingsWithIntervalsForFinalReport(response: any[], intervals: any) {
-        // Function for matching intervals and filtering other objects from response
         const filteredObject = response.map((object) => {
             const times = [
                 intervals.interval1,
@@ -609,40 +615,48 @@ export class SensorService {
             ];
 
             const filteredReadings = [];
+            const includedIntervals = new Set(); // To keep track of intervals already included in readings
 
             times.forEach((interval) => {
                 let closestReading = null;
                 let minDifference = Number.MAX_SAFE_INTEGER;
 
                 object.readings.forEach((reading) => {
-                    // Because reading_timestream is string first converting it into date
                     const readingTime = new Date(reading.reading_timestamp);
-                    // Getting hour and minutes from reading_timestamp
                     const readingHour = readingTime.getHours();
                     const readingMinutes = readingTime.getMinutes();
-                    // Matching them here
+
                     if (readingHour === interval) {
-                        const difference = Math.abs(readingMinutes - 0); // Considering the minutes as 0 for comparison
-                        // For getting only one value for one interval that is most near to interval
+                        const difference = Math.abs(readingMinutes - 0);
+
                         if (difference < minDifference) {
                             minDifference = difference;
-                            // Adding interval in response
-                            closestReading = {...reading, interval: interval};
+                            closestReading = { ...reading, interval };
                         }
                     }
                 });
 
                 if (closestReading) {
                     filteredReadings.push(closestReading);
+                    includedIntervals.add(interval); // Record the included interval
+                } else if (!includedIntervals.has(interval)) {
+                    // If interval is missing and not included previously, add an object with 0 value
+                    filteredReadings.push({
+                        readingid: 0,
+                        measure: "0",
+                        reading_timestamp: `00-00-00:00:00.000`,
+                        interval,
+                    });
                 }
             });
 
-            return {...object, readings: filteredReadings};
+            return { ...object, readings: filteredReadings};
         });
-        // Filter out objects where sensorValue is "battery"
+
         const filteredResponse = filteredObject.filter(
             (obj) => obj.sensorValue !== "battery"
         );
         return filteredResponse;
     }
+
 }
