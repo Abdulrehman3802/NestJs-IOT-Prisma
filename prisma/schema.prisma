@@ -149,7 +149,7 @@ model readings {
   gatewayid         Int?
   measure           String?   @db.VarChar(100)
   aws_id            String?   @db.VarChar(100)
-  location          String?   @db.VarChar(100)
+  location          String    @db.VarChar(100)
   sensorvalue       String?   @db.VarChar(100)
   reading_timestamp String?   @db.VarChar(100)
   devices           devices?  @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
@@ -177,7 +177,7 @@ model sensors {
   date_created            DateTime?                 @default(now()) @db.Timestamp(6)
   date_updated            DateTime?                 @default(now()) @db.Timestamp(6)
   assigned_by             Int?
-  sensorname              String?                   @db.VarChar
+  sensorname              String                    @db.VarChar
   alerts                  alerts[]
   readings                readings[]
   sensorgatewayassignment sensorgatewayassignment[]
@@ -188,32 +188,22 @@ model sensors {
 }
 
 model sensortypes {
-  sensortypeid   Int       @id @default(autoincrement())
-  property       String?   @db.VarChar(255)
-  unit           String?   @db.VarChar(50)
-  minvalue       Int?
-  maxvalue       Int?
-  sensorid       Int
-  aws_sensorid   String    @db.VarChar(50)
-  is_hidden      Boolean?  @default(false)
-  is_deleted     Boolean?  @default(false)
-  date_created   DateTime? @default(now()) @db.Timestamp(6)
-  date_updated   DateTime? @default(now()) @db.Timestamp(6)
-  updated_by     Int
-  description    String?   @db.VarChar(100)
-  name           String?   @db.VarChar(100)
-  alarm_enable   Boolean?  @default(false)
-  delay          Int?
-  day_min        Int?
-  day_max        Int?
-  night_min      Int?
-  night_max      Int?
-  warning        Int?
-  healthy_status Boolean?
-  offline_alert  String?   @default("Off") @db.VarChar(100)
-  is_active      Boolean?  @default(false)
-  sensors        sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
-  users          users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
+  sensortypeid Int       @id @default(autoincrement())
+  property     String?   @db.VarChar(255)
+  unit         String?   @db.VarChar(50)
+  minvalue     Int?
+  maxvalue     Int?
+  sensorid     Int
+  aws_sensorid String    @db.VarChar(50)
+  is_hidden    Boolean?  @default(false)
+  is_deleted   Boolean?  @default(false)
+  date_created DateTime? @default(now()) @db.Timestamp(6)
+  date_updated DateTime? @default(now()) @db.Timestamp(6)
+  updated_by   Int
+  description  String?   @db.VarChar(100)
+  name         String?   @db.VarChar(100)
+  sensors      sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
+  users        users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
 }
 
 model staff {
@@ -300,13 +290,13 @@ model facilities {
   customerid                         Int?
   created_by                         Int
   updated_by                         Int
+  longitude                          Int?
+  latitude                           Int?
   facility_type                      String?             @db.VarChar(100)
   street                             String?             @db.VarChar(100)
   city                               String?             @db.VarChar(100)
   postcode                           Int?
-  site_manager                       String?             @db.VarChar
-  longitude                          Int?
-  latitude                           Int?
+  site_manager                       String?             @db.VarChar(100)
   timezone                           String?             @db.VarChar(100)
   currency                           String?             @db.VarChar(100)
   departments                        departments[]
