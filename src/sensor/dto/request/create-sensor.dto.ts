@@ -11,7 +11,7 @@ export class CreateSensorDto {
     @IsNotEmpty()
     aws_sensorid: string
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     sensorname: string
 
 }
