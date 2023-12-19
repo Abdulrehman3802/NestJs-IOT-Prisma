@@ -11,7 +11,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleInit() {
-    await this.$connect();
+    try {
+      await this.$connect();
+    } catch (error) {
+      console.error('Error connecting to the database:', error);
+    }
   }
 
   async enableShutdownHooks(app: INestApplication) {
@@ -22,6 +26,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleDestroy() {
-    await this.$disconnect();
+    try {
+      await this.$disconnect();
+    } catch (error) {
+      console.error('Error disconnecting from the database:', error);
+    }
   }
 }

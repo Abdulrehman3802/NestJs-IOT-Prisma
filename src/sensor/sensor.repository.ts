@@ -128,6 +128,18 @@ export class SensorRepository{
         })
     }
 
+    findByAwsIdWithOrgId(awsId:string,orgId:number){
+        return this.prismaService.sensors.findFirst({
+            where:{
+                is_active:true,
+                aws_sensorid:awsId,
+                is_deleted:false,
+                customerid: orgId,
+                deviceid:null
+            }
+        })
+    }
+
     findAssignSensor() {
         return this.prismaService.sensors.findMany({
             where: {

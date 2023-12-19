@@ -32,6 +32,9 @@ export class SensorService {
             let sensor
             const model = {
                 ...createSensorDto,
+                sensorname:createSensorDto.sensorname ||"",
+                // customerid:createSensorDto.customerid,
+                // aws_sensorid:createSensorDto.aws_sensorid,
                 is_active: true,
                 is_deleted: false,
                 date_created: new Date(),
@@ -40,11 +43,17 @@ export class SensorService {
             }
             // Find If sensor is there But not assigned to anything
             const existingSensor = await this.sensorRepository.findByAwsId(createSensorDto.aws_sensorid)
+            const existingSensorWithOrgId = await this.sensorRepository.findByAwsIdWithOrgId(createSensorDto.aws_sensorid,createSensorDto.customerid)
             if (existingSensor) {
                 // Update un assign sensor and assign to the org or device
-                sensor = await this.sensorRepository.updateSensor(existingSensor.sensorid, model)
+                sensor = await this.sensorRepository.updateSensor(existingSensor.sensorid , model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
-            } else {
+            }
+            else if(existingSensorWithOrgId){
+                sensor = await this.sensorRepository.updateSensor(existingSensorWithOrgId.sensorid , model)
+                if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
+            }
+            else {
                 // Simply assign sensor
                 sensor = await this.sensorRepository.assignSensor(model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
