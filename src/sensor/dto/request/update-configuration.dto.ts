@@ -31,5 +31,8 @@ export class UpdateConfigurationDto{
     @IsOptional()
     @IsBoolean()
     is_hidden: boolean;
+    @IsOptional()
+    @IsBoolean()
+    is_active: boolean;
 
 }

@@ -149,7 +149,7 @@ model readings {
   gatewayid         Int?
   measure           String?   @db.VarChar(100)
   aws_id            String?   @db.VarChar(100)
-  location          String    @db.VarChar(100)
+  location          String?   @db.VarChar(100)
   sensorvalue       String?   @db.VarChar(100)
   reading_timestamp String?   @db.VarChar(100)
   devices           devices?  @relation(fields: [deviceid], references: [deviceid], onDelete: NoAction, onUpdate: NoAction)
@@ -177,7 +177,7 @@ model sensors {
   date_created            DateTime?                 @default(now()) @db.Timestamp(6)
   date_updated            DateTime?                 @default(now()) @db.Timestamp(6)
   assigned_by             Int?
-  sensorname              String                    @db.VarChar
+  sensorname              String?                   @db.VarChar
   alerts                  alerts[]
   readings                readings[]
   sensorgatewayassignment sensorgatewayassignment[]
@@ -202,6 +202,7 @@ model sensortypes {
   updated_by   Int
   description  String?   @db.VarChar(100)
   name         String?   @db.VarChar(100)
+  is_active    Boolean?  @default(false)
   sensors      sensors   @relation(fields: [sensorid], references: [sensorid], onDelete: NoAction, onUpdate: NoAction)
   users        users     @relation(fields: [updated_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "sensortypes_updatedby_fkey")
 }

@@ -43,6 +43,7 @@ export class SensorTypeModelDTO{
     name: string;
     aws_sensorid: string;
     is_hidden: boolean;
+    is_active: boolean;
     is_deleted: boolean;
     date_created: Date;
     date_updated: Date;

@@ -58,7 +58,7 @@ export class SensorService {
                 sensor = await this.sensorRepository.assignSensor(model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
                 // create 4 sensor type humidity and so on for later configuration
-                let sensorTypeModel = [
+                let sensorTypeModel: SensorTypeModelDTO[] = [
                     {
                         property: "humidity",
                         unit: "c",
@@ -68,6 +68,7 @@ export class SensorService {
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
+                        is_active: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
@@ -83,6 +84,7 @@ export class SensorService {
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
+                        is_active: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
@@ -98,6 +100,7 @@ export class SensorService {
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
+                        is_active: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
@@ -113,6 +116,7 @@ export class SensorService {
                         sensorid: sensor.sensorid,
                         aws_sensorid: createSensorDto.aws_sensorid,
                         is_hidden: false,
+                        is_active: false,
                         is_deleted: false,
                         date_created: new Date(),
                         date_updated: new Date(),
