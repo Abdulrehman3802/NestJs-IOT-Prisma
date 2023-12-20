@@ -538,10 +538,13 @@ export class SensorService {
             // Getting time interval of organization
             const timeInterval = await this.organizationService.findOrganizationInterval(id)
             if (data.length == 0) {
-                const response: ApiResponseDto<SensorDto[]> = {
+                const response: ApiResponseDto<any> = {
                     statusCode: HttpStatus.OK,
                     message: "Sensors not found so cannot create Check point report",
-                    data: [],
+                    data: {
+                        intervals: timeInterval.data,
+                        checkPoints:[]
+                    },
                     error: false
                 }
                 return response
@@ -563,7 +566,13 @@ export class SensorService {
                     return null; // Return null for entries that don't meet the condition
                 }).filter((entry) => entry !== null); // Filter out null entries
             });
-            return {intervals: timeInterval.data, checkPoints:finalResponse}
+            const dataResponse: ApiResponseDto<any> = {
+                statusCode: HttpStatus.OK,
+                message: "Checkpoint Report Created Successfully",
+                data: {intervals: timeInterval.data, checkPoints:finalResponse},
+                error: false
+            }
+            return dataResponse
         } catch (error) {
             throw error
         }
@@ -665,7 +674,7 @@ export class SensorService {
         const filteredResponse = filteredObject.filter(
             (obj) => obj.sensorValue !== "battery"
         );
-        return filteredResponse;
+       return filteredResponse
     }
 
 }

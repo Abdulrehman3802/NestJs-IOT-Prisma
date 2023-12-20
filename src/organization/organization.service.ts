@@ -78,6 +78,8 @@ export class OrganizationService {
       // Creation of Organization Admin
       const userDto = new CreateUserDto()
       userDto.email = organization.email
+      userDto.firstname = organization.contactperson
+      userDto.phonenumber = organization.phone
       const user = await this.userService.create(userDto, token)
       // Now Creation OF user Role
       const orgAdminId = await this.roleService.findRoleByName('OrganizationAdmin')
