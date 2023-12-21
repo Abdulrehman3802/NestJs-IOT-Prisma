@@ -168,6 +168,7 @@ export class SensorRepository{
             }
         });
     }
+
     findAllSensorByOrganizationId(orgId:number){
         return this.prismaService.sensors.findMany({
             where: {
@@ -212,6 +213,45 @@ export class SensorRepository{
         })
     }
 
+    //#region Get Sensor by Org/Fac/Dep for Equipment Screen
+    findEquipmentSensorByOrgId(orgId:number){
+            return this.prismaService.sensors.findMany({
+                where: {
+                    customerid: orgId,
+                    assigned_by: {not:null},
+                    deviceid: {not:null},
+                    is_deleted: false,
+                    is_active: true
+                },
+                include:{
+                    devices:{
+                        include:{
+                            departments:true
+                        }
+                    },
+                }
+            });
+        }
+        
+        findEquipmentSensorByDeviceIds(deviceIds:number[]){
+            return this.prismaService.sensors.findMany({
+                where:{
+                    deviceid: {
+                        in:deviceIds
+                    },
+                    is_deleted:false,
+                },
+                include:{
+                    devices:{
+                        include:{
+                            departments:true
+                        }
+                    },
+                }
+            })
+        }
+
+    //#endregion
     updateSensor(id: number, updateSensorDto: SensorDto) {
         return this.prismaService.sensors.update({
             where:{

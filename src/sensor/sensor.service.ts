@@ -349,7 +349,7 @@ export class SensorService {
             const sensor = await this.sensorRepository.findAssignSensorByDeviceId(devId)
             const response: ApiResponseDto<SensorDto[]> = {
                 statusCode: HttpStatus.OK,
-                message: "Sensors updated Successfully",
+                message: "Sensors Found Successfully",
                 data: sensor,
                 error: false
             }
@@ -388,6 +388,65 @@ export class SensorService {
             throw error
         }
     }
+
+    //#region Get Sensors By Org/Fac/Dep for Equipment Screen on Frontend
+    async getEquipmentSensorByOrgId(orgId: number) {
+        try {
+            const sensor = await this.sensorRepository.findEquipmentSensorByOrgId(orgId)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors Found Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    } 
+
+    async getEquipmentSensorByFacId(facId: number) {
+        try {
+            const departments = await this.departmentService.GetAllDepartmentIdsByFacilityId(facId)
+            let departmentIds = departments.data.map((obj) => {
+                return obj.departmentid
+            })
+            const device = await this.deviceService.findDevicesByDepartmentIds(departmentIds)
+            let deviceIds = device.data.map((obj) => {
+                return obj.deviceid
+            })
+            const sensor = await this.sensorRepository.findEquipmentSensorByDeviceIds(deviceIds)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors Found Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    } 
+
+    async getEquipmentSensorByDepId(depId: number) {
+        try {
+            const devices = await this.deviceService.findAllDevicesByDepId(depId)
+            let deviceIds = devices.data.map((obj) => {
+                return obj.deviceid
+            })
+            const sensor = await this.sensorRepository.findEquipmentSensorByDeviceIds(deviceIds)
+            const response: ApiResponseDto<SensorDto[]> = {
+                statusCode: HttpStatus.OK,
+                message: "Sensors Found Successfully",
+                data: sensor,
+                error: false
+            }
+            return response
+        } catch (error) {
+            throw error
+        }
+    } 
+    //#endregion
 
     async unAssignedSensorFromDevice(id: number) {
         try {
@@ -431,16 +490,6 @@ export class SensorService {
             this.sensorRepository.getSensorTypesOfSensors(sensorIds),
             this.awsService.getSensorDataForWidgets(awsIds),
         ]);
-
-        if (awsSensorData.length === 0) {
-            return {
-                statusCode: HttpStatus.OK,
-                message: "Widget Not Found!",
-                data: [],
-                error: false,
-            };
-        }
-
         const batteryDataBySensor = {};
         const mergedData = [];
 
@@ -482,11 +531,29 @@ export class SensorService {
                 });
             }
         });
+        const allSensorTypes = sensorType.map((type) => ({
+            property: type.property,
+            sensorId: type.sensorid,
+            awsSensorId: type.aws_sensorid,
+            minValue: type.minvalue,
+            maxValue: type.maxvalue,
+            sensorName: type.name,
+        }));
+
+        const responseArray = allSensorTypes.map((sensorType) => {
+            const matchingData = mergedData.find((data) => data.awsSensorId === sensorType.awsSensorId);
+            return {
+                ...sensorType,
+                value: matchingData?.value || null,
+                batteryValue: matchingData ? matchingData.batteryValue : null,
+                readingDateTime: matchingData ? matchingData.readingDateTime : null,
+            };
+        });
 
         return {
             statusCode: HttpStatus.OK,
             message: "Widget Found Successfully!",
-            data: mergedData,
+            data: responseArray,
             error: false,
         };
     }

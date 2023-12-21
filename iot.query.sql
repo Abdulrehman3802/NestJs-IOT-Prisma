@@ -390,37 +390,9 @@ ALTER TABLE "IoT".readings
 
 
 ------------------- Alarm Delay Changes in SensorType -----------------
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN alarm_enable boolean DEFAULT false;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN delay integer;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN day_min integer;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN day_max integer;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN night_min integer;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN night_max integer;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN warning integer;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN healthy_status boolean;
-
-ALTER TABLE IF EXISTS "IoT".sensortypes
-    ADD COLUMN offline_alert character varying(100) DEFAULT 'Off';
 
 ALTER TABLE IF EXISTS "IoT".sensortypes
     ADD COLUMN is_active boolean DEFAULT false;
-
-
 
 -------------------- Interval in Organization ---------
 ALTER TABLE IF EXISTS "IoT".customers

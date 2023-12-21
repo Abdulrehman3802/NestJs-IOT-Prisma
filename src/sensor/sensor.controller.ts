@@ -84,6 +84,28 @@ export class SensorController {
   getAllUnAssignedSensors(@Req()req:RequestWithUser) {
     return this.sensorService.getAllUnAssignedSensors(req.token);
   }
+
+//#region Sensors Display for Equipment Table on Frontend
+@Permission(Category.SENSOR, PermissionType.VIEW)
+@Get('/get-equipment-sensors-by-orgId/:id')
+getEquipmentSensorsByOrgId(@Param('id')id:string) {
+    return this.sensorService.getEquipmentSensorByOrgId(+id);
+  }
+
+@Permission(Category.SENSOR, PermissionType.VIEW)
+@Get('/get-equipment-sensors-by-facId/:id')
+getEquipmentSensorsByFacId(@Param('id')id:string) {
+    return this.sensorService.getEquipmentSensorByFacId(+id);
+  }
+
+@Permission(Category.SENSOR, PermissionType.VIEW)
+@Get('/get-equipment-sensors-by-depId/:id')
+getEquipmentSensorsByDepId(@Param('id')id:string) {
+    return this.sensorService.getEquipmentSensorByDepId(+id);
+  }
+
+//#endregion
+
   @Permission(Category.SENSOR, PermissionType.UPDATE)
   @Patch('/update-sensor/:id')
   updateAssignedSensor(@Req()req:RequestWithUser,@Param('id') id: string, @Body() updateSensorDto: UpdateSensorDto) {
