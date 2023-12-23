@@ -21,6 +21,12 @@ export class CheckpointReportDto{
     startDate : string;
 }
 
+export class GraphDto{
+    sensorTypeId:number;
+    endDate: string;
+    startDate : string;
+}
+
 export class SensorDto{
     deviceid: number
     is_active: boolean

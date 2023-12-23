@@ -109,6 +109,13 @@ export class SensorRepository{
             data:model
         })
     }
+    getSensorTypeById(typeId:number){
+        return this.prismaService.sensortypes.findFirst({
+            where:{
+                sensortypeid: typeId
+            }
+        })
+    }
     findUnAssignedSensor() {
         return this.prismaService.sensors.findMany({
             where:{
@@ -269,6 +276,29 @@ export class SensorRepository{
                 is_deleted:false
             }
         })
+    }
+
+    async getGraphOfSensor(aws_id:string,startDate:string,endDate:string){
+        if(startDate == endDate){
+            return this.prismaService.readings.findMany({
+                where:{
+                    aws_id:aws_id,
+                    reading_timestamp:{
+                        gte:startDate,
+                    }
+                }
+            })
+        }else {
+            return this.prismaService.readings.findMany({
+                where: {
+                    aws_id: aws_id,
+                    reading_timestamp: {
+                        gte: startDate,
+                        lte: endDate
+                    }
+                }
+            })
+        }
     }
     remove(id: number) {
         return `This action removes a #${id} sensor`;

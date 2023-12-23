@@ -1,11 +1,12 @@
 import {Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards} from '@nestjs/common';
 import { SensorService } from './sensor.service';
-import {CheckpointReportDto, CreateSensorDto, SensorDto} from './dto/request/create-sensor.dto';
+import {CheckpointReportDto, CreateSensorDto, GraphDto, SensorDto} from './dto/request/create-sensor.dto';
 import { UpdateSensorDto } from './dto/request/update-sensor.dto';
 import {JwtAuthGuard, RequestWithUser} from "../../core/generics/Guards/PermissionAuthGuard";
 import {Permission} from "../../core/generics/Guards/PermissionDecorator";
 import {Category, PermissionType} from "../../core/generics/Enums/GeneralEnums";
 import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
+import {busboyExceptions} from "@nestjs/platform-express/multer/multer/multer.constants";
 @UseGuards(JwtAuthGuard)
 @Controller('sensor')
 export class SensorController {
@@ -21,6 +22,13 @@ export class SensorController {
   getCheckpointReport(@Param('id')id:string,@Body() body:CheckpointReportDto){
     return this.sensorService.checkPointReport(+id,body.days,body.startDate);
   }
+
+  @Permission(Category.SENSOR, PermissionType.VIEW)
+  @Post('/graph-report/:id')
+  getGraph(@Param('id')id:string,@Body() body:GraphDto){
+    return this.sensorService.getGraphForSensor(body.sensorTypeId,id,body.startDate,body.endDate);
+  }
+
   @Permission(Category.SENSOR, PermissionType.VIEW)
   @Get('/get-assign-sensors')
   getAllAssignedSensors(@Req()req:RequestWithUser,) {
