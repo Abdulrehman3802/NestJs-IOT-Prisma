@@ -749,25 +749,40 @@ export class SensorService {
        return filteredResponse
     }
 
-    async getGraphForSensor(sensorTypeId:number,aws_id:string,startDate:string,endDate:string){
-        try{
-            const startingDate = new Date(startDate)
-            startingDate.setDate(startingDate.getDate()-1)
-            let endingDate = new Date(endDate).toISOString()
-            const data = await this.sensorRepository.getGraphOfSensor(aws_id,startingDate.toISOString(),endingDate)
-            if(data.length == 0)
-            {
+    async getGraphForSensor(sensorTypeId: number, aws_id: string, startDate: string, endDate: string) {
+        try {
+            const startingDate = new Date(startDate);
+            startingDate.setDate(startingDate.getDate() - 1);
+            let endingDate = new Date(endDate).toISOString();
+            const data = await this.sensorRepository.getGraphOfSensor(aws_id, startingDate.toISOString(), endingDate);
+            if (data.length === 0) {
                 const response: ApiResponseDto<any> = {
                     statusCode: HttpStatus.OK,
                     message: `No readings found against ${aws_id}`,
                     data: [],
-                    error: false
-                }
-                return response
+                    error: false,
+                };
+                return response;
             }
-            const sensorType = await this.sensorRepository.getSensorTypeById(sensorTypeId)
-            const getSpecificProperty = data.filter((object)=> sensorType.property == object.sensorvalue)
-            const groupedResponse = getSpecificProperty.reduce((acc, reading) => {
+    
+            const sensorType = await this.sensorRepository.getSensorTypeById(sensorTypeId);
+            const getSpecificProperty = data.filter((object) => sensorType.property === object.sensorvalue);
+    
+            // Use a Set to keep track of unique entries based on reading timestamp's time and measure
+            const uniqueEntries = new Set();
+    
+            // Filter out duplicates
+            const filteredData = getSpecificProperty.filter((reading) => {
+                const key = `${reading.reading_timestamp.split(' ')[1]}-${reading.measure}`;
+               
+                if (!uniqueEntries.has(key)) {
+                    uniqueEntries.add(key);
+                    return true;
+                }
+                return false;
+            });
+            
+          const groupedResponse = filteredData.reduce((acc, reading) => {
                 const date = reading.reading_timestamp.split(' ')[0]; // Extracting date from the timestamp
                 if (!acc[date]) {
                     acc[date] = [];
@@ -775,15 +790,22 @@ export class SensorService {
                 acc[date].push(reading);
                 return acc;
             }, {});
+    
             const response: ApiResponseDto<any> = {
                 statusCode: HttpStatus.OK,
                 message: `Graph created for ${aws_id}`,
-                data: {...groupedResponse,sensorName:sensorType.name,minvalue:sensorType.minvalue,maxvalue:sensorType.maxvalue,sensorTypeId:sensorType.sensortypeid},
-                error: false
-            }
-            return response
-        }catch (error) {
-            throw error
+                data: {
+                    ...groupedResponse,
+                    sensorName: sensorType.name,
+                    minvalue: sensorType.minvalue,
+                    maxvalue: sensorType.maxvalue,
+                    sensorTypeId: sensorType.sensortypeid,
+                },
+                error: false,
+            };
+            return response;
+        } catch (error) {
+            throw error;
         }
     }
 

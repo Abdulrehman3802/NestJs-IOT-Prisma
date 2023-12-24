@@ -22,6 +22,10 @@ export class CreateDeviceDto {
     @IsOptional()
     @IsNumber()
     customerid: number;
+    
+    @IsOptional()
+    @IsNumber()
+    delaytime: number;
 
     @IsString()
     @IsOptional()
@@ -37,6 +41,7 @@ export class ModelDeviceDto {
     departmentid: number;
     facilityid: number;
     customerid: number;
+    delaytime: number;
     devicetype: string;
     manufacturer: string;
     email:string

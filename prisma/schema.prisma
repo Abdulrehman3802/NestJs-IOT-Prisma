@@ -93,6 +93,7 @@ model devices {
   created_by                      Int
   updated_by                      Int
   email                           String                  @db.VarChar(100)
+  delaytime                       Int?                    @default(0)
   alertnotifications              alertnotifications[]
   devicedashboard                 devicedashboard[]
   users_devices_created_byTousers users                   @relation("devices_created_byTousers", fields: [created_by], references: [userid], onDelete: NoAction, onUpdate: NoAction, map: "devices_createdby_fkey")

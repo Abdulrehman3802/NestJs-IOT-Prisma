@@ -406,3 +406,9 @@ ALTER TABLE IF EXISTS "IoT".customers
 
 ALTER TABLE IF EXISTS "IoT".customers
     ADD COLUMN interval4 integer;
+
+----------------------- Delay time in Equipment ---------------------
+ALTER TABLE IF EXISTS "IoT".devices
+    ADD COLUMN delaytime integer Default 0;
+
+
