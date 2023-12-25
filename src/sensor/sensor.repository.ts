@@ -40,7 +40,8 @@ export class SensorRepository{
         return this.prismaService.sensortypes.findMany({
             where:{
                 sensorid: {in:sensorId},
-                is_active:true
+                is_active:true,
+                is_hidden:false// add field of is hidden here
             }
         })
     }

@@ -542,7 +542,7 @@ export class SensorService {
         }));
 
         const responseArray = allSensorTypes.map((sensorType) => {
-            const matchingData = mergedData.find((data) => data.awsSensorId === sensorType.awsSensorId);
+            const matchingData = mergedData.find((data) => data.awsSensorId === sensorType.awsSensorId && data.property === sensorType.property);
             return {
                 ...sensorType,
                 value: matchingData?.value || null,
