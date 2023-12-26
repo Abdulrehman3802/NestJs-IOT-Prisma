@@ -796,6 +796,7 @@ export class SensorService {
                 message: `Graph created for ${aws_id}`,
                 data: {
                     ...groupedResponse,
+                    dates:Object.keys(groupedResponse),
                     sensorName: sensorType.name,
                     minvalue: sensorType.minvalue,
                     maxvalue: sensorType.maxvalue,
