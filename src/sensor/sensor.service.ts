@@ -10,6 +10,8 @@ import {DepartmentService} from "../department/department.service";
 import {UpdateConfigurationDto} from "./dto/request/update-configuration.dto";
 import {ResponseConfigurationDto} from "./dto/response/response-configuration.dto";
 import {OrganizationService} from "../organization/organization.service";
+import {parseForESLint} from "@typescript-eslint/parser";
+import {filter} from "rxjs";
 
 
 @Injectable()
@@ -32,7 +34,7 @@ export class SensorService {
             let sensor
             const model = {
                 ...createSensorDto,
-                sensorname:createSensorDto.sensorname ||"",
+                sensorname: createSensorDto.sensorname || "",
                 // customerid:createSensorDto.customerid,
                 // aws_sensorid:createSensorDto.aws_sensorid,
                 is_active: true,
@@ -43,17 +45,15 @@ export class SensorService {
             }
             // Find If sensor is there But not assigned to anything
             const existingSensor = await this.sensorRepository.findByAwsId(createSensorDto.aws_sensorid)
-            const existingSensorWithOrgId = await this.sensorRepository.findByAwsIdWithOrgId(createSensorDto.aws_sensorid,createSensorDto.customerid)
+            const existingSensorWithOrgId = await this.sensorRepository.findByAwsIdWithOrgId(createSensorDto.aws_sensorid, createSensorDto.customerid)
             if (existingSensor) {
                 // Update un assign sensor and assign to the org or device
-                sensor = await this.sensorRepository.updateSensor(existingSensor.sensorid , model)
+                sensor = await this.sensorRepository.updateSensor(existingSensor.sensorid, model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
-            }
-            else if(existingSensorWithOrgId){
-                sensor = await this.sensorRepository.updateSensor(existingSensorWithOrgId.sensorid , model)
+            } else if (existingSensorWithOrgId) {
+                sensor = await this.sensorRepository.updateSensor(existingSensorWithOrgId.sensorid, model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
-            }
-            else {
+            } else {
                 // Simply assign sensor
                 sensor = await this.sensorRepository.assignSensor(model)
                 if (!sensor) throw new NotImplementedException("Cannot Assign Sensor")
@@ -403,7 +403,7 @@ export class SensorService {
         } catch (error) {
             throw error
         }
-    } 
+    }
 
     async getEquipmentSensorByFacId(facId: number) {
         try {
@@ -426,7 +426,7 @@ export class SensorService {
         } catch (error) {
             throw error
         }
-    } 
+    }
 
     async getEquipmentSensorByDepId(depId: number) {
         try {
@@ -445,7 +445,8 @@ export class SensorService {
         } catch (error) {
             throw error
         }
-    } 
+    }
+
     //#endregion
 
     async unAssignedSensorFromDevice(id: number) {
@@ -534,11 +535,12 @@ export class SensorService {
         const allSensorTypes = sensorType.map((type) => ({
             property: type.property,
             sensorId: type.sensorid,
-            sensorTypeId:type.sensortypeid,
+            sensorTypeId: type.sensortypeid,
             awsSensorId: type.aws_sensorid,
             minValue: type.minvalue,
             maxValue: type.maxvalue,
             sensorName: type.name,
+            deviceName: type.sensors.devices.devicename
         }));
 
         const responseArray = allSensorTypes.map((sensorType) => {
@@ -600,10 +602,12 @@ export class SensorService {
             throw error
         }
     }
+
     remove(id: number) {
         return `This action removes a #${id} sensor`;
     }
-    async checkPointReport(id: number, days: number, startDate: string) {
+
+    async checkPointReport(id: number, days: number, startDate: string, sensorsIds: number[]) {
         try {
             // Getting all sensor of organization
             const data = await this.sensorRepository.getAllSensorByOrgId(id)
@@ -615,33 +619,57 @@ export class SensorService {
                     message: "Sensors not found so cannot create Check point report",
                     data: {
                         intervals: timeInterval.data,
-                        checkPoints:[]
+                        checkPoints: []
                     },
                     error: false
                 }
                 return response
             }
             // Separating aws_id of organization sensors
-            const awsIds = data.map((obj) => {return obj.aws_sensorid})
-            const sensorIds = data.map((obj) => {return obj.sensorid})
+            const awsIds = data.map((obj) => {
+                return obj.aws_sensorid
+            })
+            const sensorIds = data.map((obj) => {
+                return obj.sensorid
+            })
             const sensorTypes = await this.sensorRepository.getSensorTypesOfSensors(sensorIds)
             // DB call of reading table to fetch data for sensor of organization
             const reportData = await this.awsService.getSensorDataForReport(awsIds, days, startDate)
             const readingsByDate = await this.groupReadingsByDate(reportData)
             const report = await this.filterReadingsWithIntervalsForFinalReport(readingsByDate, timeInterval.data)
-            const finalResponse = report.flatMap((objects) => {
+            let finalResponse = report.flatMap((objects) => {
                 return sensorTypes.map((sensor) => {
                     if (sensor.aws_sensorid === objects.aws_id && sensor.property === objects.sensorValue) {
                         objects.sensorValue = sensor.name;
-                        return { min: sensor.minvalue, max: sensor.maxvalue, ...objects };
+                        return {
+                            min: sensor.minvalue,
+                            max: sensor.maxvalue,
+                            sensorTypeId: sensor.sensortypeid, ...objects
+                        };
                     }
                     return null; // Return null for entries that don't meet the condition
                 }).filter((entry) => entry !== null); // Filter out null entries
             });
+            if (sensorsIds.length > 0) {
+                finalResponse = finalResponse.map((object) => {
+                    if (sensorsIds.includes(object.sensorTypeId)) {
+                        return object
+                    } else {
+                        return null
+                    }
+                }).filter((entry) => entry !== null); // Filter out null entries
+            }
+            let graphSensors = finalResponse.map((objects) => {
+                return {
+                    sensorTypeId: objects.sensorTypeId,
+                    sensorValue: objects.sensorValue,
+                    aws_id: objects.aws_id
+                }
+            })
             const dataResponse: ApiResponseDto<any> = {
                 statusCode: HttpStatus.OK,
                 message: "Checkpoint Report Created Successfully",
-                data: {intervals: timeInterval.data, checkPoints:finalResponse},
+                data: {intervals: timeInterval.data, checkPoints: finalResponse, sensors: graphSensors},
                 error: false
             }
             return dataResponse
@@ -649,6 +677,7 @@ export class SensorService {
             throw error
         }
     }
+
     async groupReadingsByDate(sensorData: any[]) {
         // Group the readings by date, aws_id, and sensorValue
         const sensorReadings = {};
@@ -695,6 +724,7 @@ export class SensorService {
         }
         return reportResponse;
     }
+
     async filterReadingsWithIntervalsForFinalReport(response: any[], intervals: any) {
         const filteredObject = response.map((object) => {
             const times = [
@@ -721,7 +751,7 @@ export class SensorService {
 
                         if (difference < minDifference) {
                             minDifference = difference;
-                            closestReading = { ...reading, interval };
+                            closestReading = {...reading, interval};
                         }
                     }
                 });
@@ -740,13 +770,13 @@ export class SensorService {
                 }
             });
 
-            return { ...object, readings: filteredReadings};
+            return {...object, readings: filteredReadings};
         });
 
         const filteredResponse = filteredObject.filter(
             (obj) => obj.sensorValue !== "battery"
         );
-       return filteredResponse
+        return filteredResponse
     }
 
     async getGraphForSensor(sensorTypeId: number, aws_id: string, startDate: string, endDate: string) {
@@ -764,25 +794,25 @@ export class SensorService {
                 };
                 return response;
             }
-    
+
             const sensorType = await this.sensorRepository.getSensorTypeById(sensorTypeId);
             const getSpecificProperty = data.filter((object) => sensorType.property === object.sensorvalue);
-    
+
             // Use a Set to keep track of unique entries based on reading timestamp's time and measure
             const uniqueEntries = new Set();
-    
+
             // Filter out duplicates
             const filteredData = getSpecificProperty.filter((reading) => {
                 const key = `${reading.reading_timestamp.split(' ')[1]}-${reading.measure}`;
-               
+
                 if (!uniqueEntries.has(key)) {
                     uniqueEntries.add(key);
                     return true;
                 }
                 return false;
             });
-            
-          const groupedResponse = filteredData.reduce((acc, reading) => {
+
+            const groupedResponse = filteredData.reduce((acc, reading) => {
                 const date = reading.reading_timestamp.split(' ')[0]; // Extracting date from the timestamp
                 if (!acc[date]) {
                     acc[date] = [];
@@ -790,13 +820,13 @@ export class SensorService {
                 acc[date].push(reading);
                 return acc;
             }, {});
-    
+
             const response: ApiResponseDto<any> = {
                 statusCode: HttpStatus.OK,
                 message: `Graph created for ${aws_id}`,
                 data: {
                     ...groupedResponse,
-                    dates:Object.keys(groupedResponse),
+                    dates: Object.keys(groupedResponse),
                     sensorName: sensorType.name,
                     minvalue: sensorType.minvalue,
                     maxvalue: sensorType.maxvalue,
@@ -809,5 +839,4 @@ export class SensorService {
             throw error;
         }
     }
-
 }

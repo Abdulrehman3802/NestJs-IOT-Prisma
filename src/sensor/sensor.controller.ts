@@ -20,7 +20,7 @@ export class SensorController {
   @Permission(Category.SENSOR, PermissionType.VIEW)
   @Post('/checkpoint-report/:id')
   getCheckpointReport(@Param('id')id:string,@Body() body:CheckpointReportDto){
-    return this.sensorService.checkPointReport(+id,body.days,body.startDate);
+    return this.sensorService.checkPointReport(+id,body.days,body.startDate,body.sensorIds);
   }
 
   @Permission(Category.SENSOR, PermissionType.VIEW)

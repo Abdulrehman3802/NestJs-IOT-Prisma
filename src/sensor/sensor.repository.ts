@@ -42,7 +42,19 @@ export class SensorRepository{
                 sensorid: {in:sensorId},
                 is_active:true,
                 is_hidden:false// add field of is hidden here
-            }
+            }, 
+            include: {
+                sensors: {
+                    select: {
+                        sensorid: true,
+                        devices: {
+                            select: {
+                                devicename: true,
+                            },
+                        },
+                    },
+                },
+            },
         })
     }
 
@@ -70,6 +82,7 @@ export class SensorRepository{
                     aws_sensorid: config.aws_sensorid,
                     is_hidden: config.is_hidden,
                     description: config.description,
+                    is_active:config.is_active,
                     name: config.name,
                     updated_by:userid,
                     date_updated:new Date()

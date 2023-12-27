@@ -1,4 +1,4 @@
-import {IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
+import {IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
 
 export class CreateSensorDto {
     @IsNumber()
@@ -17,13 +17,20 @@ export class CreateSensorDto {
 }
 
 export class CheckpointReportDto{
+    @IsArray()
+    sensorIds:number[];
+    @IsNumber()
     days: number;
+    @IsString()
     startDate : string;
 }
 
 export class GraphDto{
+    @IsNumber()
     sensorTypeId:number;
+    @IsString()
     endDate: string;
+    @IsString()
     startDate : string;
 }
 
