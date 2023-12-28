@@ -666,10 +666,12 @@ export class SensorService {
                     aws_id: objects.aws_id
                 }
             })
+            const uniqueSensors = Array.from(new Set(graphSensors.map(sensor => sensor.sensorTypeId)))
+                .map(sensorTypeId => graphSensors.find(sensor => sensor.sensorTypeId === sensorTypeId));
             const dataResponse: ApiResponseDto<any> = {
                 statusCode: HttpStatus.OK,
                 message: "Checkpoint Report Created Successfully",
-                data: {intervals: timeInterval.data, checkPoints: finalResponse, sensors: graphSensors},
+                data: {intervals: timeInterval.data, checkPoints: finalResponse, sensors: uniqueSensors},
                 error: false
             }
             return dataResponse
