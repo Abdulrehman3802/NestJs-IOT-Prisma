@@ -806,9 +806,10 @@ export class SensorService {
             // Filter out duplicates
             const filteredData = getSpecificProperty.filter((reading) => {
                 const key = `${reading.reading_timestamp.split(' ')[1]}-${reading.measure}`;
-
-                if (!uniqueEntries.has(key)) {
-                    uniqueEntries.add(key);
+                const key2 = key.split(':')
+                const finalKey = `${key2[0]}:${key2[1]}-${reading.measure}`;
+                if (!uniqueEntries.has(finalKey)) {
+                    uniqueEntries.add(finalKey);
                     return true;
                 }
                 return false;
