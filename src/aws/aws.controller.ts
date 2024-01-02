@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
 import { AwsService } from './aws.service';
 import { UpdateAwsDto } from './dto/Request/update-aw.dto';
-
+import {JwtAuthGuard} from "../../core/generics/Guards/PermissionAuthGuard";
+@UseGuards(JwtAuthGuard)
 @Controller('aws')
 export class AwsController {
   constructor(private readonly awsService: AwsService) {}

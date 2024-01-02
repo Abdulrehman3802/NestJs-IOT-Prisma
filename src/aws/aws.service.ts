@@ -1,12 +1,12 @@
-import {Injectable} from '@nestjs/common';
-import {AwsDto, ReadingsDto} from './dto/Request/create-aw.dto';
+import {HttpStatus, Injectable, InternalServerErrorException} from '@nestjs/common';
+import {AwsDto} from './dto/Request/create-aw.dto';
 import {UpdateAwsDto} from './dto/Request/update-aw.dto';
 import {QueryRequest} from 'aws-sdk/clients/timestreamquery';
 import * as AWS from 'aws-sdk';
 import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
-import {ConfigService} from "@nestjs/config";
 import {AwsSensorData} from "./dto/response/aws-sensor.dto";
 import {PrismaService} from "../prisma/prisma.service";
+import {ApiResponseDto} from "../../core/generics/api-response.dto";
 
 @Injectable()
 export class AwsService {
@@ -14,7 +14,7 @@ export class AwsService {
     private readonly dynamoDBClient: DocumentClient;
 
     constructor(
-        private readonly prismaService:PrismaService
+        private readonly prismaService: PrismaService
     ) {
         this.timestreamClient = new AWS.TimestreamQuery({
             region: 'ap-southeast-2',
@@ -51,11 +51,11 @@ export class AwsService {
             });
             return scalarObject
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Internal Server Error");
         }
     }
 
-// Getting single sensor data
+    // Getting single sensor data for later use not calling yet
     async getDataOfSpecificSensor(awsId: string) {
         try {
             const query = `
@@ -126,10 +126,11 @@ export class AwsService {
             const uniqueValues = Object.values(uniqueData);
             return uniqueValues;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Internal Server Error");
         }
     }
-       async findAll() {
+
+    async findAll() {
         try {
             const request: QueryRequest = {
                 QueryString:
@@ -145,7 +146,7 @@ export class AwsService {
             });
             return Array.from(uniqueSensorIds);
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Internal Server Error");
         }
     }
 
@@ -160,49 +161,58 @@ export class AwsService {
     remove(id: number) {
         return `This action removes a #${id} aw`;
     }
-    // Assuming you have a Prisma service called `prismaService`
 
     async saveAWSData() {
         try {
+            const latestReading = await this.prismaService.readings.findFirst({
+                orderBy: {
+                    reading_timestamp: 'desc',
+                },
+            });
             const request: QueryRequest = {
-                QueryString: 'SELECT * FROM sensordata.sensorData WHERE time BETWEEN ago(5m) AND now()'
-            };
-
+                QueryString: `SELECT * FROM sensordata.sensorData WHERE time > '${latestReading.reading_timestamp}'`
+            }
             // Getting data from AWS
             const response = await this.timestreamClient.query(request).promise();
             const fieldTitles = ['location', 'aws_id', 'sensorvalue', 'reading_timestamp', 'measure'];
-
-            const scalarObject: AwsDto[] = response.Rows?.map((item) => {
-                const obj: AwsDto = {
+            const scalarObject = response.Rows.map((item) => {
+                const obj = {
                     measure: '',
                     aws_id: '',
                     location: '',
                     sensorvalue: '',
                     reading_timestamp: '',
-                };
-
-                item.Data.forEach((scalarItem, index) => {
+                }satisfies AwsDto;
+                item.Data?.forEach((scalarItem, index) => {
+                    const fieldTitle = fieldTitles[index];
                     if (scalarItem.ScalarValue) {
-                        const fieldTitle = fieldTitles[index];
                         obj[fieldTitle] = scalarItem.ScalarValue;
                     }
                 });
-
                 return obj;
-            });
-
-            // Filter out objects with null or empty string values for any field
-            const filteredScalarObject = scalarObject.filter((obj) => {
-                return Object.values(obj).every((value) => value !== null && value !== '');
+            }).filter((obj) => Object.values(obj).every((value) => value !== null && value !== ''));
+            const existingMeasure = await this.prismaService.readings.findMany({
+                where: {
+                    reading_timestamp: latestReading.reading_timestamp
+                }
+            })
+            const filteredArray = scalarObject.filter((obj) => {
+                // Some function matches the object according to callback conditions and then return true or false
+                // According to these true false filter include or exclude objects from array
+                return !existingMeasure.some((object) => (
+                    obj.aws_id === object.aws_id &&
+                    obj.measure === object.measure &&
+                    obj.reading_timestamp === object.reading_timestamp &&
+                    obj.sensorvalue === object.sensorvalue
+                ));
             });
             // Creating Data in DB
             await this.prismaService.readings.createMany({
-                data: filteredScalarObject
+                data: filteredArray
             });
-
-            return filteredScalarObject;
+            return filteredArray;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Internal Server Error");
         }
     }
     async getSensorDataForReport(ids: string[], days: number, selectedDate: string) {
@@ -210,16 +220,12 @@ export class AwsService {
             if (!selectedDate) {
                 throw new Error("Selected date is required.");
             }
-
             const startDate = new Date(selectedDate);
-            startDate.setDate(startDate.getDate()-days)
+            startDate.setDate(startDate.getDate() - days)
             const endDate = new Date(selectedDate);
-            // endDate.setDate(endDate.getDate() + days);
-
             if (isNaN(endDate.getTime())) {
                 throw new Error("Invalid date range.");
             }
-
             const sensorData = await this.prismaService.readings.findMany({
                 where: {
                     aws_id: {
@@ -231,12 +237,10 @@ export class AwsService {
                     }
                 }
             });
-
             console.log("Length of Data", sensorData.length);
             return sensorData;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Internal Server Error");
         }
     }
-
 }
