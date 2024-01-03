@@ -1,0 +1,1 @@
+{"version":3,"file":"PermissionDecorator.js","sourceRoot":"","sources":["../../../../core/generics/Guards/PermissionDecorator.ts"],"names":[],"mappings":";;;AAAA,2CAA6C;AAGtC,MAAM,UAAU,GAAG,CAAC,QAAkB,EAAE,UAA0B,EAAE,EAAE;IAC3E,OAAO,IAAA,oBAAW,EAAC,aAAa,EAAE,EAAE,QAAQ,EAAE,QAAQ,EAAE,cAAc,EAAE,UAAU,EAAE,CAAC,CAAC;AACxF,CAAC,CAAC;AAFW,QAAA,UAAU,cAErB"}

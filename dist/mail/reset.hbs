@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Reset</title>
+  </head>
+  <body>
+    <div
+      style="
+        width: 80%;
+        margin: 0 auto;
+        padding: 40px;
+        font-family: Montserrat, sans-serif;
+      "
+    >
+      <!-- header -->
+      <header
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 120px;
+          border-bottom: 1px solid #cedef2;
+        "
+      >
+      <img src=" ./images/iotlogo.svg" alt="" />
+        <div
+          class="social_icons"
+          style="display: flex; align-items: center; gap: 24px"
+        >
+          <a href="#"></a>
+            <img src="Social icon - Twitter.png" alt="Twitter" />
+          </a>
+          <a href="#"><img src="FB.png" alt="Facebook" /></a>
+          <a href="#"
+            ><img src="Social icon - IG.png" alt="Instagram"
+          /></a>
+        </div>
+      </header>
+      <!-- content -->
+      <div
+        class="content"
+        style="padding: 40px 0; padding: 10px 0; line-height: 24px"
+      >
+        <div class="greet" style="font-size: 20px; font-weight: bold">
+          <p>Hi {{username}},</p>
+        </div>
+        <p class="message">
+          We heard that you lost your Safeline Iot password. Sorry about
+          that!<br />But don't worry! You can use the following button to reset
+          your password:
+        </p>
+        <!-- button -->
+        <div style="text-align: center">
+          <a
+            href="http://localhost:5000/{{token}}"
+            style="
+                 background-color: #5266d4;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    display: flex;
+    width: 119px;
+    text-align: center;
+            "
+            >Reset Password</a
+          >
+        </div>
+        <p>
+          If you did not request a password reset, please ignore this email.
+        </p>
+        <p>Thanks,<br />Safeline Iot</p>
+      </div>
+      <!-- footer -->
+      <div style="text-align: center">
+        <p>
+          This email was sent to {{to}}. If you no longer wish to receive these
+          emails, you can <a href="#" style="color: #5266d4">unsubscribe</a>.
+        </p>
+        <p>&copy; 2023 Safeline Iot. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
