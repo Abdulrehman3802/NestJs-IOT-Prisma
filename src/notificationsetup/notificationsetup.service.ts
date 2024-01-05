@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotAcceptableException, NotImplementedException } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException, NotAcceptableException, NotImplementedException } from '@nestjs/common';
 import { CreateNotificationsetupDto, FindQueryForUsers, ModelCreateNotificationsetupDto } from './dto/request/create-notificationsetup.dto';
 import { UpdateNotificationsetupDto } from './dto/request/update-notificationsetup.dto';
 import { NotificationsetupRepository } from './notificationsetup.repository';
@@ -113,7 +113,7 @@ export class NotificationsetupService {
       }
       return response
     } catch(error) {
-        throw error
+        throw new InternalServerErrorException("Something went wrong")
     }
   }
   //#endregion
@@ -131,7 +131,7 @@ export class NotificationsetupService {
       }
       return response
     }catch(error){
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
   
@@ -170,7 +170,7 @@ export class NotificationsetupService {
       }
       return response
     }catch(error){
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
   //#endregion

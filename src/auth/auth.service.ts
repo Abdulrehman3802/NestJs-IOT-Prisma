@@ -1,6 +1,7 @@
 import {
     HttpStatus,
     Injectable,
+    InternalServerErrorException,
     NotFoundException,
     NotImplementedException,
     UnauthorizedException
@@ -161,7 +162,7 @@ export class AuthService {
             };
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -205,7 +206,7 @@ export class AuthService {
             };
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -238,7 +239,7 @@ export class AuthService {
             };
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -280,7 +281,7 @@ export class AuthService {
             };
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 }

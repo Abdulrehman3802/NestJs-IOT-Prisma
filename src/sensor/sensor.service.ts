@@ -1,4 +1,4 @@
-import {HttpStatus, Inject, Injectable, NotImplementedException, forwardRef, NotFoundException} from '@nestjs/common';
+import {HttpStatus, Inject, Injectable, NotImplementedException, forwardRef, NotFoundException, InternalServerErrorException} from '@nestjs/common';
 import {CreateSensorDto, SensorDto, SensorTypeModelDTO} from './dto/request/create-sensor.dto';
 import {UpdateSensorDto} from './dto/request/update-sensor.dto';
 import {SensorRepository} from "./sensor.repository";
@@ -136,7 +136,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -154,7 +154,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -172,7 +172,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -190,7 +190,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -207,7 +207,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -224,7 +224,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -241,7 +241,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -262,7 +262,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -294,7 +294,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -317,7 +317,7 @@ export class SensorService {
             }
             return response;
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -340,7 +340,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -355,7 +355,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -370,7 +370,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -385,7 +385,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -401,7 +401,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -424,7 +424,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -443,7 +443,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -466,7 +466,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -576,7 +576,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -599,7 +599,7 @@ export class SensorService {
             }
             return response
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -676,7 +676,7 @@ export class SensorService {
             }
             return dataResponse
         } catch (error) {
-            throw error
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -839,7 +839,7 @@ export class SensorService {
             };
             return response;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 }

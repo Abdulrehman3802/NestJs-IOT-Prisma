@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {Request} from "express";
 import { PermissionsRepository } from './permissions/permissions.repository';
@@ -49,7 +49,7 @@ export class AppService {
       return { permissions : transformedPermissions};
 
     } catch(error) {
-        throw error
+        throw new InternalServerErrorException("Something went wrong")
     }
   }
 }

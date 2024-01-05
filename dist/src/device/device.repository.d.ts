@@ -20,6 +20,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     createDeviceUser(model: CreateDeviceUserModelDto): import(".prisma/client").Prisma.Prisma__deviceusersClient<{
         deviceuserid: number;
@@ -48,6 +49,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }[]>;
     findAllDevicesByOrganizationId(orgId: number): import(".prisma/client").Prisma.PrismaPromise<{
         deviceid: number;
@@ -64,6 +66,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }[]>;
     findAllDevicesByFacilityId(facilityId: number): import(".prisma/client").Prisma.PrismaPromise<{
         deviceid: number;
@@ -80,6 +83,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }[]>;
     findAllDevicesByDepartmentId(departmentId: number): import(".prisma/client").Prisma.PrismaPromise<{
         deviceid: number;
@@ -96,6 +100,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }[]>;
     findDevicesByDepartmentIds(departmentIds: number[]): import(".prisma/client").Prisma.PrismaPromise<{
         deviceid: number;
@@ -112,6 +117,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }[]>;
     findDeviceByUserId(userId: number): import(".prisma/client").Prisma.Prisma__deviceusersClient<{
         deviceuserid: number;
@@ -134,6 +140,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     updateDevice(id: number, body: UpdateDeviceDto): import(".prisma/client").Prisma.Prisma__devicesClient<{
         deviceid: number;
@@ -150,6 +157,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     deleteDevice(id: number): import(".prisma/client").Prisma.Prisma__devicesClient<{
         deviceid: number;
@@ -166,6 +174,7 @@ export declare class DeviceRepository {
         created_by: number;
         updated_by: number;
         email: string;
+        delaytime: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     deleteDeviceByOrganizationId(orgid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     deleteDeviceByFacilityId(facilityid: number): import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;

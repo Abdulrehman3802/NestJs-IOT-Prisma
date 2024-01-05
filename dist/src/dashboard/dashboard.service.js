@@ -88,7 +88,7 @@ let DashboardService = class DashboardService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findDashboard(findDashboardDto, token) {
@@ -160,7 +160,7 @@ let DashboardService = class DashboardService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findDashboardByFacId(token) {
@@ -179,7 +179,7 @@ let DashboardService = class DashboardService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findDashboardByDepId(token) {
@@ -198,7 +198,7 @@ let DashboardService = class DashboardService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findDashboardByOrganizationId(token) {
@@ -217,7 +217,7 @@ let DashboardService = class DashboardService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getCountForOrg(orgId) {

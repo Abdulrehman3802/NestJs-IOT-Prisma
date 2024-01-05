@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, forwardRef, Inject } from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, forwardRef, Inject, InternalServerErrorException } from '@nestjs/common';
 import { DepartmentRepository } from './department.repository';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { CreateDepartmentDto, ModelDepartmentDto } from './dto/request/create-department.dto';
@@ -93,7 +93,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -113,7 +113,7 @@ export class DepartmentService {
       }
       return response;
     } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -138,7 +138,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -155,7 +155,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -184,7 +184,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -210,7 +210,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -232,7 +232,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -247,7 +247,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -262,7 +262,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -277,7 +277,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -292,7 +292,7 @@ export class DepartmentService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -307,7 +307,7 @@ export class DepartmentService {
       }
       return response;
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 }

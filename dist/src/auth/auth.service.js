@@ -139,7 +139,7 @@ let AuthService = class AuthService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async changePassword(userid, body) {
@@ -181,7 +181,7 @@ let AuthService = class AuthService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getResetToken(email) {
@@ -213,7 +213,7 @@ let AuthService = class AuthService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async resetPassword(body) {
@@ -254,7 +254,7 @@ let AuthService = class AuthService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, Inject, forwardRef, InternalServerErrorException } from '@nestjs/common';
 import { CreateDeviceDto, ModelDeviceDto } from './dto/request/create-device.dto';
 import { UpdateDeviceDto } from './dto/request/update-device.dto';
 import { DeviceRepository } from './device.repository';
@@ -97,7 +97,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -117,7 +117,7 @@ export class DeviceService {
       }
       return response;
     } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -144,7 +144,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -160,7 +160,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -192,7 +192,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -223,7 +223,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -241,7 +241,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -257,7 +257,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -273,7 +273,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -289,7 +289,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -305,7 +305,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
   async GetAllDeviceByOrgId(orgId: number){
@@ -319,7 +319,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -334,7 +334,7 @@ export class DeviceService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -350,7 +350,7 @@ export class DeviceService {
       }
       return response;
     }catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 

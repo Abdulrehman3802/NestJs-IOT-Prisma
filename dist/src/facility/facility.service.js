@@ -65,7 +65,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createFacilityStaff(userid, facilityid, is_admin) {
@@ -84,7 +84,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll(decodedtoken) {
@@ -106,7 +106,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOne(id) {
@@ -124,7 +124,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async update(id, updateFacilityDto) {
@@ -139,7 +139,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async remove(id) {
@@ -161,7 +161,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async removeByOrganizationId(orgid) {
@@ -176,7 +176,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllFacilities(orgId) {
@@ -191,7 +191,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllFacilityForSuperAdmin() {
@@ -206,7 +206,7 @@ let FacilityService = class FacilityService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

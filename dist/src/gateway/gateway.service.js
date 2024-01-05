@@ -32,7 +32,7 @@ let GatewayService = class GatewayService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllGatewayOfOrg(id) {
@@ -47,7 +47,7 @@ let GatewayService = class GatewayService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll() {
@@ -62,7 +62,7 @@ let GatewayService = class GatewayService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async updateGateway(id, updateGatewayDto) {
@@ -80,7 +80,7 @@ let GatewayService = class GatewayService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async deleteGateway(id) {
@@ -98,7 +98,7 @@ let GatewayService = class GatewayService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

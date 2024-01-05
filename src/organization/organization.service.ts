@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotImplementedException, InternalServerErrorException } from '@nestjs/common';
 import { CreateOrganizationDto, ModelOrganizationDto } from './dto/request/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/request/update-organization.dto';
 import {
@@ -101,7 +101,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
 
   }
@@ -117,7 +117,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
 
   }
@@ -136,7 +136,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -155,7 +155,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -179,7 +179,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -199,7 +199,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -226,7 +226,7 @@ export class OrganizationService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -236,7 +236,7 @@ export class OrganizationService {
       const fileName = `iot.${organizationName}.${file.originalname}`
       return this.uploadToAWS(file.buffer,fileName)
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
   async uploadToAWS(fileBuffer: Buffer, fileName: string) {
@@ -249,7 +249,7 @@ export class OrganizationService {
      await this.awsClient.send(new PutObjectCommand(params));
       return `https://${this.awsBucket}.s3.amazonaws.com/${fileName}`;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 }

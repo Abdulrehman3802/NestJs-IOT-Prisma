@@ -51,7 +51,7 @@ let AwsService = class AwsService {
             return scalarObject;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException("Internal Server Error");
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getDataOfSpecificSensor(awsId) {
@@ -85,7 +85,7 @@ let AwsService = class AwsService {
             return uniqueValues;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorDataForWidgets(devEUIs) {
@@ -121,7 +121,7 @@ let AwsService = class AwsService {
             return uniqueValues;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException("Internal Server Error");
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll() {
@@ -142,7 +142,7 @@ let AwsService = class AwsService {
             return Array.from(uniqueSensorIds);
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException("Internal Server Error");
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     findOne(id) {
@@ -200,7 +200,7 @@ let AwsService = class AwsService {
             return filteredArray;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException("Internal Server Error");
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorDataForReport(ids, days, selectedDate) {
@@ -229,7 +229,7 @@ let AwsService = class AwsService {
             return sensorData;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException("Internal Server Error");
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

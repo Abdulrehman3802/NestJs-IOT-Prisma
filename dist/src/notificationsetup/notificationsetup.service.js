@@ -98,7 +98,7 @@ let NotificationsetupService = class NotificationsetupService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll(id) {
@@ -113,7 +113,7 @@ let NotificationsetupService = class NotificationsetupService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findUsersForNotificationSetupByOrganizationId(id, query) {
@@ -142,7 +142,7 @@ let NotificationsetupService = class NotificationsetupService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     update(id, updateNotificationsetupDto) {

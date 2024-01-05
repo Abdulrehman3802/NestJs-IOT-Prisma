@@ -1,4 +1,4 @@
-import {Injectable, HttpStatus, NotAcceptableException, NotFoundException, Inject, forwardRef} from "@nestjs/common";
+import {Injectable, HttpStatus, NotAcceptableException, NotFoundException, Inject, forwardRef, InternalServerErrorException} from "@nestjs/common";
 import {DashboardRepository} from "./dashboard.repository";
 import {CreateDashboardDto, FindDashboardDto} from "./dto/request/create-dashboard.dto";
 import {ApiResponseDto, Token} from "core/generics/api-response.dto";
@@ -76,7 +76,7 @@ export class DashboardService {
             }
             return response;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 
@@ -149,7 +149,7 @@ export class DashboardService {
             }
             return response;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 
@@ -168,7 +168,7 @@ export class DashboardService {
             }
             return response;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 
@@ -187,7 +187,7 @@ export class DashboardService {
             }
             return response;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 
@@ -206,7 +206,7 @@ export class DashboardService {
             }
             return response;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 

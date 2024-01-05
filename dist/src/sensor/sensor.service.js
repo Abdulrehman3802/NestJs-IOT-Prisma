@@ -131,7 +131,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorConfiguration(sensorId) {
@@ -149,7 +149,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async ShowSensorConfiguration(sensorId) {
@@ -167,7 +167,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async updateSensorConfiguration(userId, configuration) {
@@ -185,7 +185,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async unAssignSensorOnOrganziationDeletion(orgid) {
@@ -202,7 +202,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async unAssignSensorOnFacilityOrDepartmentDeletion(deviceIds) {
@@ -219,7 +219,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async unAssignSensorOnDeviceDeletion(deviceid) {
@@ -236,7 +236,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getAllAssignedSensor(token) {
@@ -258,7 +258,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getAllUnAssignedSensors(token) {
@@ -288,7 +288,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async updateAssignedSensor(userid, id, updateDto) {
@@ -310,7 +310,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async unAssignedSensor(id) {
@@ -333,7 +333,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorByDeviceId(devId) {
@@ -348,7 +348,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorByOrgId(orgId) {
@@ -363,7 +363,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getAllSensorByOrgId(orgId) {
@@ -378,7 +378,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getEquipmentSensorByOrgId(orgId) {
@@ -393,7 +393,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getEquipmentSensorByFacId(facId) {
@@ -416,7 +416,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getEquipmentSensorByDepId(depId) {
@@ -435,7 +435,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async unAssignedSensorFromDevice(id) {
@@ -456,7 +456,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorWidgets(orgId) {
@@ -546,7 +546,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getSensorByFacilityId(facId) {
@@ -569,7 +569,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     remove(id) {
@@ -638,7 +638,7 @@ let SensorService = class SensorService {
             return dataResponse;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async groupReadingsByDate(sensorData) {
@@ -767,7 +767,7 @@ let SensorService = class SensorService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

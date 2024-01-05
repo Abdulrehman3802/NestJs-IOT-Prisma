@@ -1,4 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable} from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, InternalServerErrorException} from '@nestjs/common';
 import { CreateRoleDto, CreateRoleModelDto } from './dto/Request/create-role.dto';
 import { UpdateRoleDto } from './dto/Request/update-role.dto';
 import { RolesRepository } from './roles.repository';
@@ -48,7 +48,7 @@ export class RolesService {
 
       return response;
    } catch(error) {
-        throw error;
+        throw new InternalServerErrorException("Something went wrong");
       }
 
   }
@@ -57,7 +57,7 @@ export class RolesService {
     try{
         return this.rolesRepository.createUserRole(userRoleDto)
     }catch (error) {
-        throw error
+        throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -82,7 +82,7 @@ export class RolesService {
  
        return response;
     } catch(error) {
-         throw error;
+         throw new InternalServerErrorException("Something went wrong");
        }
    }
 
@@ -117,7 +117,7 @@ export class RolesService {
 
     return response;
   } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
   }
 }
 
@@ -143,7 +143,7 @@ async findRoleByName(name:string){
       };
       return response;
     } catch(error) {
-        throw error
+        throw new InternalServerErrorException("Something went wrong")
       }
   }
 
@@ -166,7 +166,7 @@ async findRoleByName(name:string){
       }
       return response;
     } catch(error) {
-        throw error
+        throw new InternalServerErrorException("Something went wrong")
       }
   }
 
@@ -183,7 +183,7 @@ async findRoleByName(name:string){
       }
       return response;
     } catch(error) {
-        throw error
+        throw new InternalServerErrorException("Something went wrong")
       }
   }
 }

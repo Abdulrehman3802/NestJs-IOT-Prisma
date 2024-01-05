@@ -57,7 +57,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll() {
@@ -72,7 +72,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findUnAssignedUsers() {
@@ -123,7 +123,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOne(id) {
@@ -141,7 +141,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async update(id, updateUserStaffDto) {
@@ -173,7 +173,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async remove(id) {
@@ -192,7 +192,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createStaffUser(createStaffUserDto, token) {
@@ -238,7 +238,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createFacilityStaff(createFacilityAdminDto, token) {
@@ -288,7 +288,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createDepartmentStaff(createDepartmentAdminDto, token) {
@@ -338,7 +338,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createDeviceStaff(createDeviceAdminDto, token) {
@@ -382,7 +382,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAdminStaff(query, token) {
@@ -433,7 +433,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllOrganizationStaffByOrganizationId(id) {
@@ -470,7 +470,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAdminStaffByOrganizationId(query, id) {
@@ -495,7 +495,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAdminStaffByFacilityId(query, id) {
@@ -520,7 +520,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAdminStaffByDepartmentId(query, id) {
@@ -542,7 +542,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findUserStaff(query, token) {
@@ -587,7 +587,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findUserStaffByOrganizationId(query, id) {
@@ -609,7 +609,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findUserStaffByFacilityId(query, id) {
@@ -631,7 +631,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findUserStaffByDepartmentId(query, id) {
@@ -650,7 +650,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async updateFacilityStaff(updateFacilityAdminDto) {
@@ -675,7 +675,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async updateDepartmentStaff(updateDepartmentAdminDto) {
@@ -700,7 +700,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async updateDeviceStaff(updateDeviceAdminDto) {
@@ -725,7 +725,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async deleteFacilityStaff(query) {
@@ -742,7 +742,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async deleteDepartmentStaff(query) {
@@ -759,7 +759,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async deleteDeviceStaff(query) {
@@ -776,7 +776,7 @@ let UserService = class UserService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async passwordGenerator() {

@@ -38,7 +38,7 @@ let RolesService = class RolesService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createUserRole(userRoleDto) {
@@ -46,7 +46,7 @@ let RolesService = class RolesService {
             return this.rolesRepository.createUserRole(userRoleDto);
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async assignRoletoUser(assignRoleDto) {
@@ -68,7 +68,7 @@ let RolesService = class RolesService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll(token) {
@@ -96,7 +96,7 @@ let RolesService = class RolesService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findRoleByName(name) {
@@ -119,7 +119,7 @@ let RolesService = class RolesService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async update(id, updateRoleDto) {
@@ -139,7 +139,7 @@ let RolesService = class RolesService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async remove(id) {
@@ -154,7 +154,7 @@ let RolesService = class RolesService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

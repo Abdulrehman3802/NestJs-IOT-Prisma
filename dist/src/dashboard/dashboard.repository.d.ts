@@ -156,6 +156,7 @@ export declare class DashboardRepository {
             created_by: number;
             updated_by: number;
             email: string;
+            delaytime: number;
         };
     } & {
         devicedashboardid: number;

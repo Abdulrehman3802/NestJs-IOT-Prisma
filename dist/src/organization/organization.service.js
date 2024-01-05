@@ -81,7 +81,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll() {
@@ -96,7 +96,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOne(id) {
@@ -114,7 +114,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOrganizationCredit(orgId) {
@@ -132,7 +132,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOrganizationInterval(orgId) {
@@ -155,7 +155,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async update(id, updateOrganizationDto) {
@@ -174,7 +174,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async remove(id) {
@@ -196,7 +196,7 @@ let OrganizationService = class OrganizationService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async uploadLogo(file, organizationName) {
@@ -206,7 +206,7 @@ let OrganizationService = class OrganizationService {
             return this.uploadToAWS(file.buffer, fileName);
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async uploadToAWS(fileBuffer, fileName) {
@@ -220,7 +220,7 @@ let OrganizationService = class OrganizationService {
             return `https://${this.awsBucket}.s3.amazonaws.com/${fileName}`;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

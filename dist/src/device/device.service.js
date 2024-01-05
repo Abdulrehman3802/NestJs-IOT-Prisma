@@ -67,7 +67,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createDeviceStaff(userid, deviceid, is_admin) {
@@ -86,7 +86,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll(token) {
@@ -114,7 +114,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findDevicesByDepartmentIds(departmentIds) {
@@ -129,7 +129,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOne(id) {
@@ -161,7 +161,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async update(id, updateDeviceDto) {
@@ -190,7 +190,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async remove(id) {
@@ -206,7 +206,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async removeByOrganizationId(orgid) {
@@ -221,7 +221,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async removeByFacilityId(facilityid) {
@@ -236,7 +236,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async removeByDepartmentId(departmentid) {
@@ -251,7 +251,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllDevicesByDepId(depId) {
@@ -266,7 +266,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async GetAllDeviceByOrgId(orgId) {
@@ -281,7 +281,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async getAllDeviceByFacilityId(facilityId) {
@@ -296,7 +296,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllDeviceForSuperAdmin() {
@@ -311,7 +311,7 @@ let DeviceService = class DeviceService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

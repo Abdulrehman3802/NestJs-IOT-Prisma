@@ -1,4 +1,4 @@
-import {ConflictException, HttpStatus, Injectable, NotFoundException, NotImplementedException} from '@nestjs/common';
+import {ConflictException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, NotImplementedException} from '@nestjs/common';
 import {CreateUserDto, CreateFacilityAdminDto, CreateDepartmentAdminDto, CreateDeviceAdminDto, CreateStaffUserDto} from './dto/request/create-user.dto';
 import {UpdateDepartmentAdminDto, UpdateDeviceAdminDto, UpdateFacilityAdminDto, UpdateUserDto, UpdateUserStaffDto} from './dto/request/update-user.dto';
 import {UserRepository} from "./user.repository";
@@ -71,7 +71,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
   //#endregion
@@ -88,7 +88,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -148,7 +148,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -166,7 +166,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
   //#endregion
@@ -205,7 +205,7 @@ export class UserService {
       }
       return response;
     } catch(error) {
-      throw error 
+      throw new InternalServerErrorException("Something went wrong") 
     }
   }
   //#endregion
@@ -227,7 +227,7 @@ export class UserService {
       }
       return response;
     } catch(error) {
-      throw error 
+      throw new InternalServerErrorException("Something went wrong") 
     }
   }
   //#endregion 
@@ -287,7 +287,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -340,7 +340,7 @@ export class UserService {
         }
         return response
     } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -392,7 +392,7 @@ export class UserService {
         }
         return response
     } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -439,7 +439,7 @@ export class UserService {
         }
         return response
     } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -487,7 +487,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -529,7 +529,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -555,7 +555,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -581,7 +581,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -605,7 +605,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -646,7 +646,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -669,7 +669,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -692,7 +692,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -713,7 +713,7 @@ export class UserService {
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
   //#endregion
@@ -745,7 +745,7 @@ export class UserService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -775,7 +775,7 @@ export class UserService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -805,7 +805,7 @@ export class UserService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
   //#endregion 
@@ -826,7 +826,7 @@ export class UserService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -844,7 +844,7 @@ export class UserService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -862,7 +862,7 @@ export class UserService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
   //#endregion

@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/Request/create-permission.dto';
 import { UpdatePermissionDto } from './dto/Request/update-permission.dto';
 import { PermissionsRepository } from './permissions.repository';
@@ -28,7 +28,7 @@ export class PermissionsService {
  
        return response;
     } catch(error) {
-         throw error;
+         throw new InternalServerErrorException("Something went wrong");
        }
  
    }

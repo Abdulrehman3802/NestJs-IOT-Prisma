@@ -1,4 +1,4 @@
-import {HttpStatus, Injectable, NotImplementedException} from '@nestjs/common';
+import {HttpStatus, Injectable, InternalServerErrorException, NotImplementedException} from '@nestjs/common';
 import { CreateGatewayDto } from './dto/request/create-gateway.dto';
 import { UpdateGatewayDto } from './dto/request/update-gateway.dto';
 import {GatewayRepository} from "./gateway.repository";
@@ -33,7 +33,7 @@ export class GatewayService {
       }
       return response
     }catch(error){
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -48,7 +48,7 @@ export class GatewayService {
       }
       return response
     }catch(error){
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -63,7 +63,7 @@ export class GatewayService {
       }
       return response
     }catch (error) {
-throw error
+throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -81,7 +81,7 @@ throw error
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -99,7 +99,7 @@ throw error
       }
       return response
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 }

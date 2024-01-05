@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, HttpStatus, NotFoundException, NotAcceptableException, Inject, forwardRef, InternalServerErrorException } from '@nestjs/common';
 import { FacilityRepository } from './facility.repository';
 import { ApiResponseDto, Token } from 'core/generics/api-response.dto';
 import { CreateFacilityDto, ModelFacilityDto } from './dto/request/create-facility.dto';
@@ -80,7 +80,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -100,7 +100,7 @@ export class FacilityService {
       }
       return response;
     } catch(error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 
@@ -123,7 +123,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -141,7 +141,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -158,7 +158,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -185,7 +185,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -202,7 +202,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -217,7 +217,7 @@ export class FacilityService {
       }
       return response;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException("Something went wrong");
     }
   }
 
@@ -232,7 +232,7 @@ export class FacilityService {
       }
       return response;
     }catch (error) {
-      throw error
+      throw new InternalServerErrorException("Something went wrong")
     }
   }
 }

@@ -262,6 +262,7 @@ export declare class SensorRepository {
             created_by: number;
             updated_by: number;
             email: string;
+            delaytime: number;
         };
     } & {
         sensorid: number;
@@ -306,6 +307,7 @@ export declare class SensorRepository {
             created_by: number;
             updated_by: number;
             email: string;
+            delaytime: number;
         };
     } & {
         sensorid: number;
@@ -362,6 +364,7 @@ export declare class SensorRepository {
             created_by: number;
             updated_by: number;
             email: string;
+            delaytime: number;
         };
     } & {
         sensorid: number;
@@ -406,6 +409,7 @@ export declare class SensorRepository {
             created_by: number;
             updated_by: number;
             email: string;
+            delaytime: number;
         };
     } & {
         sensorid: number;

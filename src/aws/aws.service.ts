@@ -51,7 +51,7 @@ export class AwsService {
             });
             return scalarObject
         } catch (error) {
-            throw new InternalServerErrorException("Internal Server Error");
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -87,7 +87,7 @@ export class AwsService {
             const uniqueValues = Object.values(uniqueMeasureNames);
             return uniqueValues;
         } catch (error) {
-            throw error;
+            throw new InternalServerErrorException("Something went wrong");
         }
     }
 
@@ -126,7 +126,7 @@ export class AwsService {
             const uniqueValues = Object.values(uniqueData);
             return uniqueValues;
         } catch (error) {
-            throw new InternalServerErrorException("Internal Server Error");
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -146,7 +146,7 @@ export class AwsService {
             });
             return Array.from(uniqueSensorIds);
         } catch (error) {
-            throw new InternalServerErrorException("Internal Server Error");
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 
@@ -212,7 +212,7 @@ export class AwsService {
             });
             return filteredArray;
         } catch (error) {
-            throw new InternalServerErrorException("Internal Server Error");
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
     async getSensorDataForReport(ids: string[], days: number, selectedDate: string) {
@@ -240,7 +240,7 @@ export class AwsService {
             console.log("Length of Data", sensorData.length);
             return sensorData;
         } catch (error) {
-            throw new InternalServerErrorException("Internal Server Error");
+            throw new InternalServerErrorException("Something went wrong")
         }
     }
 }

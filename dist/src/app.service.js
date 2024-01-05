@@ -41,7 +41,7 @@ let AppService = class AppService {
             return { permissions: transformedPermissions };
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };

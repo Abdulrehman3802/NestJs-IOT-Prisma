@@ -28,7 +28,7 @@ let PermissionsService = class PermissionsService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     findAll(roleid) {

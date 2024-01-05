@@ -69,7 +69,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async createDepartmentStaff(userid, departmentid, is_admin) {
@@ -88,7 +88,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAll(decodedtoken) {
@@ -113,7 +113,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async GetAllDepartmentIdsByFacilityId(facilityid) {
@@ -128,7 +128,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findOne(id) {
@@ -157,7 +157,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async update(id, updateDepartmentDto) {
@@ -183,7 +183,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async remove(id) {
@@ -202,7 +202,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async removeByOrganizationId(orgid) {
@@ -217,7 +217,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async removeByFacilityId(facilityid) {
@@ -232,7 +232,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllDepartments(facId) {
@@ -247,7 +247,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async GetAllDepartmentsByOrgId(orgId) {
@@ -262,7 +262,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
     async findAllDepartmentsForSuperAdmin() {
@@ -277,7 +277,7 @@ let DepartmentService = class DepartmentService {
             return response;
         }
         catch (error) {
-            throw error;
+            throw new common_1.InternalServerErrorException("Something went wrong");
         }
     }
 };
