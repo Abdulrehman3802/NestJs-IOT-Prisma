@@ -619,7 +619,8 @@ export class SensorService {
                     message: "Sensors not found so cannot create Check point report",
                     data: {
                         intervals: timeInterval.data,
-                        checkPoints: []
+                        checkPoints: [],
+                        sensors:[]
                     },
                     error: false
                 }
