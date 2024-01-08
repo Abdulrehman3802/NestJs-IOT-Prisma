@@ -58,6 +58,9 @@ let OrganizationService = class OrganizationService {
             if (!organization) {
                 throw new common_1.NotImplementedException('Cannot create organization');
             }
+            const dashBoardDro = new create_dashboard_dto_1.CreateDashboardDto();
+            dashBoardDro.customerid = organization.customerid;
+            await this.dashboardService.createDashboard(dashBoardDro);
             const userDto = new create_user_dto_1.CreateUserDto();
             userDto.email = organization.email;
             userDto.firstname = organization.contactperson;
@@ -69,9 +72,6 @@ let OrganizationService = class OrganizationService {
             orgUser.customerid = organization.customerid;
             orgUser.userid = user.data.userid;
             await this.organizationRepository.createOrganizationUser(orgUser);
-            const dashBoardDro = new create_dashboard_dto_1.CreateDashboardDto();
-            dashBoardDro.customerid = organization.customerid;
-            await this.dashboardService.createDashboard(dashBoardDro);
             const response = {
                 statusCode: common_1.HttpStatus.CREATED,
                 message: "Organization Created Successfully!",

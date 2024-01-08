@@ -55,6 +55,7 @@ export declare class SensorService {
     getSensorByDepartmentId(depId: number): Promise<ApiResponseDto<SensorDto[]>>;
     getSensorByFacilityId(facId: number): Promise<ApiResponseDto<SensorDto[]>>;
     remove(id: number): string;
+    removeNullEntries(obj: any): Promise<any>;
     checkPointReport(id: number, days: number, startDate: string, sensorsIds: number[]): Promise<ApiResponseDto<any>>;
     groupReadingsByDate(sensorData: any[]): Promise<any[]>;
     filterReadingsWithIntervalsForFinalReport(response: any[], intervals: any): Promise<any[]>;

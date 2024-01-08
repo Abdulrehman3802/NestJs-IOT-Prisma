@@ -75,6 +75,9 @@ export class OrganizationService {
       if (!organization) {
         throw new NotImplementedException('Cannot create organization');
       }
+      const dashBoardDro = new CreateDashboardDto()
+      dashBoardDro.customerid = organization.customerid
+      await this.dashboardService.createDashboard(dashBoardDro)
       // Creation of Organization Admin
       const userDto = new CreateUserDto()
       userDto.email = organization.email
@@ -89,9 +92,6 @@ export class OrganizationService {
       orgUser.customerid = organization.customerid
       orgUser.userid = user.data.userid
       await this.organizationRepository.createOrganizationUser(orgUser)
-      const dashBoardDro = new CreateDashboardDto()
-      dashBoardDro.customerid = organization.customerid
-      await this.dashboardService.createDashboard(dashBoardDro)
       // Returning Response
       const response: ApiResponseDto<ResponseOrganizationDto> = {
         statusCode: HttpStatus.CREATED,

@@ -606,19 +606,24 @@ export class SensorService {
     remove(id: number) {
         return `This action removes a #${id} sensor`;
     }
+    async removeNullEntries(obj) {
+        await  Object.keys(obj).forEach(key => obj[key] === null && delete obj[key]);
+        return obj;
+    }
 
     async checkPointReport(id: number, days: number, startDate: string, sensorsIds: number[]) {
         try {
             // Getting all sensor of organization
             const data = await this.sensorRepository.getAllSensorByOrgId(id)
             // Getting time interval of organization
-            const timeInterval = await this.organizationService.findOrganizationInterval(id)
+            let timeInterval = await this.organizationService.findOrganizationInterval(id)
+           timeInterval = await this.removeNullEntries(timeInterval.data)
             if (data.length == 0) {
                 const response: ApiResponseDto<any> = {
                     statusCode: HttpStatus.OK,
                     message: "Sensors not found so cannot create Check point report",
                     data: {
-                        intervals: timeInterval.data,
+                        intervals: timeInterval,
                         checkPoints: [],
                         sensors:[]
                     },
@@ -637,7 +642,7 @@ export class SensorService {
             // DB call of reading table to fetch data for sensor of organization
             const reportData = await this.awsService.getSensorDataForReport(awsIds, days, startDate)
             const readingsByDate = await this.groupReadingsByDate(reportData)
-            const report = await this.filterReadingsWithIntervalsForFinalReport(readingsByDate, timeInterval.data)
+            const report = await this.filterReadingsWithIntervalsForFinalReport(readingsByDate, timeInterval)
             let finalResponse = report.flatMap((objects) => {
                 return sensorTypes.map((sensor) => {
                     if (sensor.aws_sensorid === objects.aws_id && sensor.property === objects.sensorValue) {
@@ -651,6 +656,7 @@ export class SensorService {
                     return null; // Return null for entries that don't meet the condition
                 }).filter((entry) => entry !== null); // Filter out null entries
             });
+
             if (sensorsIds.length > 0) {
                 finalResponse = finalResponse.map((object) => {
                     if (sensorsIds.includes(object.sensorTypeId)) {
@@ -660,7 +666,11 @@ export class SensorService {
                     }
                 }).filter((entry) => entry !== null); // Filter out null entries
             }
-            let graphSensors = finalResponse.map((objects) => {
+            const filteredResponse = finalResponse.map((object) => {
+                object.readings = object.readings.filter((reading) => (reading.interval) );
+                return object;
+            });
+            let graphSensors = filteredResponse.map((objects) => {
                 return {
                     sensorTypeId: objects.sensorTypeId,
                     sensorValue: objects.sensorValue,
@@ -672,7 +682,7 @@ export class SensorService {
             const dataResponse: ApiResponseDto<any> = {
                 statusCode: HttpStatus.OK,
                 message: "Checkpoint Report Created Successfully",
-                data: {intervals: timeInterval.data, checkPoints: finalResponse, sensors: uniqueSensors},
+                data: {intervals: timeInterval, checkPoints: filteredResponse, sensors: uniqueSensors},
                 error: false
             }
             return dataResponse
